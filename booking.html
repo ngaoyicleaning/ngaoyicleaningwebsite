@@ -4,385 +4,792 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Cleaning Service | Ngaoyi Cleaning</title>
-    <meta name="description" content="Book professional cleaning services online. Choose your service, schedule, and add-ons for a spotless clean.">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="/assets/css/styles.css" rel="stylesheet">
     
-    <!-- Tailwind Configuration -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'primary': '#003b6f',
-                        'primary-light': '#0056a3',
-                        'secondary': '#000000',
-                        'accent': '#00c6ff',
-                        'light-gray': '#e9ecef'
-                    },
-                    fontFamily: {
-                        'sans': ['Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif']
-                    }
-                }
-            }
+    <style>
+        .step-active {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
         }
-    </script>
-    
-    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+        .step-completed {
+            background-color: #10b981;
+            color: white;
+        }
+        .step-pending {
+            background-color: #e5e7eb;
+            color: #6b7280;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
-<body class="font-sans text-gray-700 bg-white">
+<body class="font-sans text-gray-700 bg-gray-50 min-h-screen">
     <!-- Navigation -->
     <header class="sticky top-0 z-40 bg-white shadow-md">
         <nav class="container mx-auto px-4 py-3">
             <div class="flex justify-between items-center">
                 <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-full overflow-hidden flex items-center justify-center">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-700 to-blue-400 rounded-full overflow-hidden flex items-center justify-center">
                         <img src="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png" 
                              alt="Ngaoyi Cleaning Logo" class="w-full h-full object-cover">
                     </div>
                     <div>
-                        <h1 class="text-2xl font-bold text-primary">Ngaoyi Cleaning</h1>
-                        <p class="text-sm text-gray-600">Professional Cleaning Services</p>
+                        <h1 class="text-xl font-bold text-blue-700">Ngaoyi Cleaning</h1>
+                        <p class="text-xs text-gray-600">Book Your Service</p>
                     </div>
                 </div>
                 
-                <!-- Desktop Menu -->
-                <div class="hidden md:flex items-center space-x-6">
-                    <a href="/" class="text-gray-700 hover:text-primary font-medium transition-colors duration-200">Home</a>
-                    <a href="/services.html" class="text-gray-700 hover:text-primary font-medium transition-colors duration-200">Services</a>
-                    <a href="/pricing.html" class="text-gray-700 hover:text-primary font-medium transition-colors duration-200">Pricing</a>
-                    <a href="/about.html" class="text-gray-700 hover:text-primary font-medium transition-colors duration-200">About</a>
-                    <a href="/booking.html" class="bg-gradient-to-r from-primary to-accent text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg transition-all duration-200">Book Now</a>
-                </div>
-                
-                <!-- Mobile Menu Button -->
-                <button id="mobile-menu-toggle" class="md:hidden text-primary text-2xl" aria-label="Toggle menu">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-            
-            <!-- Mobile Menu -->
-            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-4">
-                <a href="/" class="block text-gray-700 font-medium hover:text-primary transition-colors duration-200">Home</a>
-                <a href="/services.html" class="block text-gray-700 font-medium hover:text-primary transition-colors duration-200">Services</a>
-                <a href="/pricing.html" class="block text-gray-700 font-medium hover:text-primary transition-colors duration-200">Pricing</a>
-                <a href="/about.html" class="block text-gray-700 font-medium hover:text-primary transition-colors duration-200">About</a>
-                <a href="/booking.html" class="block bg-gradient-to-r from-primary to-accent text-white px-6 py-2 rounded-full font-semibold text-center hover:shadow-lg transition-all duration-200">Book Now</a>
+                <a href="/ngaoyicleaningwebsite/index.html" class="text-blue-700 hover:text-blue-900">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
             </div>
         </nav>
     </header>
 
-    <main class="py-8">
-        <!-- Progress Bar -->
-        <div class="container mx-auto px-4 mb-8">
-            <div class="flex items-center justify-center">
-                <div class="flex items-center">
-                    <div class="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold">1</div>
-                    <div class="h-1 w-24 bg-primary"></div>
-                    <div class="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold">2</div>
-                    <div class="h-1 w-24 bg-gray-300"></div>
-                    <div class="w-10 h-10 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center font-bold">3</div>
+    <main class="container mx-auto px-4 py-8">
+        <!-- Progress Steps -->
+        <div class="max-w-4xl mx-auto mb-8">
+            <div class="flex justify-between items-center">
+                <div class="flex flex-col items-center">
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center mb-2 step-active">
+                        <span class="font-bold">1</span>
+                    </div>
+                    <span class="text-sm font-medium">Service Details</span>
                 </div>
-            </div>
-            <div class="flex justify-center mt-2 text-sm">
-                <div class="text-primary font-semibold mr-24">Service Details</div>
-                <div class="text-gray-500">Add-ons</div>
-                <div class="text-gray-500 ml-24">Summary</div>
+                <div class="h-1 w-1/4 bg-gray-200"></div>
+                <div class="flex flex-col items-center">
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center mb-2 step-pending">
+                        <span class="font-bold">2</span>
+                    </div>
+                    <span class="text-sm font-medium text-gray-500">Add-ons</span>
+                </div>
+                <div class="h-1 w-1/4 bg-gray-200"></div>
+                <div class="flex flex-col items-center">
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center mb-2 step-pending">
+                        <span class="font-bold">3</span>
+                    </div>
+                    <span class="text-sm font-medium text-gray-500">Summary & Pay</span>
+                </div>
             </div>
         </div>
 
-        <!-- Booking Form -->
-        <section class="py-8">
-            <div class="container mx-auto px-4 max-w-4xl">
-                <h1 class="text-3xl font-bold text-primary mb-2">Book Your Cleaning Service</h1>
-                <p class="text-gray-600 mb-8">Fill in your details and select your preferred service</p>
+        <!-- Step 1: Service Details -->
+        <div id="step1" class="max-w-2xl mx-auto">
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <h2 class="text-2xl font-bold text-blue-700 mb-6">Select Your Cleaning Service</h2>
                 
-                <form id="booking-form" class="bg-white rounded-xl shadow-lg p-6 md:p-8">
-                    <!-- Personal Information -->
-                    <div class="mb-8">
-                        <h2 class="text-xl font-semibold text-primary mb-4 pb-2 border-b">Personal Information</h2>
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="full-name" class="block text-gray-700 font-medium mb-2">Full Name *</label>
-                                <input type="text" id="full-name" required
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition">
+                <!-- Service Type -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">1. Service Type</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <button class="service-type-btn border-2 border-gray-200 p-4 rounded-lg hover:border-blue-500 transition-colors" data-type="once-off" data-price="350">
+                            <div class="text-left">
+                                <div class="font-semibold text-blue-700">Once-Off Cleaning</div>
+                                <div class="text-gray-600 text-sm mt-1">Perfect for move-in/out or special events</div>
+                                <div class="font-bold text-blue-700 mt-2">From R350</div>
                             </div>
-                            <div>
-                                <label for="email" class="block text-gray-700 font-medium mb-2">Email Address *</label>
-                                <input type="email" id="email" required
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition">
-                            </div>
-                            <div>
-                                <label for="phone" class="block text-gray-700 font-medium mb-2">Phone Number *</label>
-                                <input type="tel" id="phone" required
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition">
-                            </div>
-                            <div>
-                                <label for="address" class="block text-gray-700 font-medium mb-2">Street Address *</label>
-                                <input type="text" id="address" required
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition"
-                                       placeholder="We need this for accurate pricing">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Service Selection -->
-                    <div class="mb-8">
-                        <h2 class="text-xl font-semibold text-primary mb-4 pb-2 border-b">Service Details</h2>
+                        </button>
                         
-                        <div class="mb-6">
-                            <label for="service-type" class="block text-gray-700 font-medium mb-2">Service Type *</label>
-                            <select id="service-type" required
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition bg-white">
-                                <option value="">Select a service</option>
-                                <option value="weekly">Weekly Recurring</option>
-                                <option value="biweekly">Bi-weekly Recurring</option>
-                                <option value="monthly">Monthly Recurring</option>
-                                <option value="once-off">Once-Off Cleaning</option>
-                                <option value="deep">Deep Cleaning</option>
-                                <option value="emergency">Emergency Service</option>
-                                <option value="commercial">Commercial Cleaning</option>
-                            </select>
-                        </div>
-
-                        <div class="grid md:grid-cols-2 gap-6 mb-6">
-                            <div>
-                                <label for="property-size" class="block text-gray-700 font-medium mb-2">Property Size *</label>
-                                <select id="property-size" required
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition bg-white">
-                                    <option value="">Select property size</option>
-                                    <option value="1-bed">1-Bedroom</option>
-                                    <option value="2-bed">2-Bedroom</option>
-                                    <option value="3-bed">3-Bedroom</option>
-                                    <option value="4-bed">4-Bedroom</option>
-                                    <option value="5+bed">5+ Bedroom</option>
-                                    <option value="office">Office/Commercial</option>
-                                </select>
+                        <button class="service-type-btn border-2 border-gray-200 p-4 rounded-lg hover:border-blue-500 transition-colors" data-type="recurring" data-price="240">
+                            <div class="text-left">
+                                <div class="font-semibold text-blue-700">Recurring Plan</div>
+                                <div class="text-gray-600 text-sm mt-1">Weekly, bi-weekly, or monthly</div>
+                                <div class="font-bold text-blue-700 mt-2">From R240/session</div>
                             </div>
-                            
-                            <div>
-                                <label for="materials" class="block text-gray-700 font-medium mb-2">Cleaning Materials</label>
-                                <select id="materials"
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition bg-white">
-                                    <option value="customer-supply">I will supply materials</option>
-                                    <option value="we-supply">We supply materials (+R150)</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="cleaning-date" class="block text-gray-700 font-medium mb-2">Preferred Date *</label>
-                                <input type="date" id="cleaning-date" required
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition">
-                            </div>
-                            
-                            <div>
-                                <label for="time-slot" class="block text-gray-700 font-medium mb-2">Preferred Time Slot *</label>
-                                <select id="time-slot" required
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition bg-white">
-                                    <option value="">Select time slot</option>
-                                    <option value="9am">9:00 AM - 11:00 AM</option>
-                                    <option value="11am">11:00 AM - 1:00 PM</option>
-                                    <option value="1pm">1:00 PM - 3:00 PM</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Special Instructions -->
-                    <div class="mb-8">
-                        <label for="instructions" class="block text-gray-700 font-medium mb-2">Special Instructions</label>
-                        <textarea id="instructions" rows="3"
-                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition"
-                                  placeholder="Any special requests, pet information, access instructions, or specific areas to focus on..."></textarea>
-                    </div>
-
-                    <!-- Price Summary -->
-                    <div class="bg-gray-50 p-6 rounded-lg mb-8">
-                        <h3 class="text-lg font-semibold text-primary mb-4">Price Estimate</h3>
-                        <div class="space-y-2">
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Base Service:</span>
-                                <span id="base-price" class="font-semibold">R 0</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Materials:</span>
-                                <span id="materials-price" class="font-semibold">R 0</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Emergency Surcharge:</span>
-                                <span id="emergency-surcharge" class="font-semibold">R 0</span>
-                            </div>
-                            <div class="border-t pt-2">
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">Subtotal:</span>
-                                    <span id="subtotal" class="font-semibold">R 0</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Next Step Button -->
-                    <div class="flex justify-end">
-                        <button type="button" id="next-to-addons"
-                                class="bg-gradient-to-r from-primary to-accent text-white px-8 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                                disabled>
-                            Continue to Add-ons <i class="fas fa-arrow-right ml-2"></i>
                         </button>
                     </div>
-                </form>
-
-                <!-- Live Price Calculation Script -->
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        // Set minimum date
-                        const dateField = document.getElementById('cleaning-date');
-                        if (dateField) {
-                            const today = new Date().toISOString().split('T')[0];
-                            dateField.min = today;
-                        }
-
-                        // Pricing data
-                        const pricing = {
-                            'weekly': { '1-bed': 240, '2-bed': 320, '3-bed': 380, '4-bed': 440, '5+bed': 500, 'office': 600 },
-                            'biweekly': { '1-bed': 300, '2-bed': 400, '3-bed': 470, '4-bed': 540, '5+bed': 610, 'office': 700 },
-                            'monthly': { '1-bed': 360, '2-bed': 480, '3-bed': 560, '4-bed': 640, '5+bed': 720, 'office': 800 },
-                            'once-off': { '1-bed': 350, '2-bed': 450, '3-bed': 550, '4-bed': 650, '5+bed': 750, 'office': 850 },
-                            'deep': { '1-bed': 1200, '2-bed': 1750, '3-bed': 2300, '4-bed': 2850, '5+bed': 3400, 'office': 4000 },
-                            'emergency': { '1-bed': 525, '2-bed': 675, '3-bed': 825, '4-bed': 975, '5+bed': 1125, 'office': 1275 },
-                            'commercial': { '1-bed': 500, '2-bed': 600, '3-bed': 700, '4-bed': 800, '5+bed': 900, 'office': 1000 }
-                        };
-
-                        // Form elements
-                        const serviceType = document.getElementById('service-type');
-                        const propertySize = document.getElementById('property-size');
-                        const materials = document.getElementById('materials');
-                        const nextButton = document.getElementById('next-to-addons');
-
-                        // Price display elements
-                        const basePriceEl = document.getElementById('base-price');
-                        const materialsPriceEl = document.getElementById('materials-price');
-                        const emergencySurchargeEl = document.getElementById('emergency-surcharge');
-                        const subtotalEl = document.getElementById('subtotal');
-
-                        function calculatePrice() {
-                            const service = serviceType.value;
-                            const size = propertySize.value;
-                            const materialsOption = materials.value;
-                            const isEmergency = service === 'emergency';
-                            
-                            let basePrice = 0;
-                            let materialsPrice = 0;
-                            let emergencySurcharge = 0;
-
-                            // Calculate base price
-                            if (service && size && pricing[service] && pricing[service][size]) {
-                                basePrice = pricing[service][size];
-                            }
-
-                            // Calculate materials price
-                            if (materialsOption === 'we-supply') {
-                                materialsPrice = 150;
-                            }
-
-                            // Calculate emergency surcharge (50% of base for emergency service)
-                            if (isEmergency) {
-                                emergencySurcharge = Math.round(basePrice * 0.5);
-                            }
-
-                            // Calculate subtotal
-                            const subtotal = basePrice + materialsPrice + emergencySurcharge;
-
-                            // Update display
-                            basePriceEl.textContent = `R ${basePrice}`;
-                            materialsPriceEl.textContent = `R ${materialsPrice}`;
-                            emergencySurchargeEl.textContent = `R ${emergencySurcharge}`;
-                            subtotalEl.textContent = `R ${subtotal}`;
-
-                            // Enable/disable next button
-                            const isValid = service && size && dateField.value;
-                            nextButton.disabled = !isValid;
-
-                            // Store in localStorage for next step
-                            localStorage.setItem('bookingData', JSON.stringify({
-                                fullName: document.getElementById('full-name').value,
-                                email: document.getElementById('email').value,
-                                phone: document.getElementById('phone').value,
-                                address: document.getElementById('address').value,
-                                serviceType: service,
-                                propertySize: size,
-                                materialsOption: materialsOption,
-                                cleaningDate: dateField.value,
-                                timeSlot: document.getElementById('time-slot').value,
-                                instructions: document.getElementById('instructions').value,
-                                basePrice: basePrice,
-                                materialsPrice: materialsPrice,
-                                emergencySurcharge: emergencySurcharge,
-                                subtotal: subtotal
-                            }));
-                        }
-
-                        // Add event listeners
-                        [serviceType, propertySize, materials, dateField].forEach(el => {
-                            if (el) el.addEventListener('change', calculatePrice);
-                        });
-
-                        // Also calculate on input for text fields
-                        ['full-name', 'email', 'phone', 'address'].forEach(id => {
-                            const el = document.getElementById(id);
-                            if (el) el.addEventListener('input', calculatePrice);
-                        });
-
-                        // Initial calculation
-                        calculatePrice();
-
-                        // Next button handler
-                        nextButton.addEventListener('click', function() {
-                            // Validate required fields
-                            const requiredFields = ['full-name', 'email', 'phone', 'address', 'service-type', 'property-size', 'cleaning-date', 'time-slot'];
-                            let isValid = true;
-                            
-                            requiredFields.forEach(fieldId => {
-                                const field = document.getElementById(fieldId);
-                                if (!field || !field.value.trim()) {
-                                    isValid = false;
-                                    field.classList.add('border-red-500');
-                                } else {
-                                    field.classList.remove('border-red-500');
-                                }
-                            });
-
-                            if (isValid) {
-                                window.location.href = '/booking-addons.html';
-                            } else {
-                                alert('Please fill in all required fields marked with *');
-                            }
-                        });
-                    });
-                </script>
+                </div>
+                
+                <!-- Property Size -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">2. Property Size</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <button class="property-size-btn border-2 border-gray-200 p-4 rounded-lg hover:border-blue-500 transition-colors" data-size="1-bed" data-price-mod="0">
+                            <div class="font-semibold text-blue-700">1 Bedroom</div>
+                            <div class="text-gray-600 text-sm mt-1">Small apartment</div>
+                        </button>
+                        
+                        <button class="property-size-btn border-2 border-gray-200 p-4 rounded-lg hover:border-blue-500 transition-colors" data-size="2-bed" data-price-mod="100">
+                            <div class="font-semibold text-blue-700">2 Bedroom</div>
+                            <div class="text-gray-600 text-sm mt-1">Standard home</div>
+                        </button>
+                        
+                        <button class="property-size-btn border-2 border-gray-200 p-4 rounded-lg hover:border-blue-500 transition-colors" data-size="3-bed" data-price-mod="200">
+                            <div class="font-semibold text-blue-700">3 Bedroom</div>
+                            <div class="text-gray-600 text-sm mt-1">Family home</div>
+                        </button>
+                        
+                        <button class="property-size-btn border-2 border-gray-200 p-4 rounded-lg hover:border-blue-500 transition-colors" data-size="4-bed" data-price-mod="300">
+                            <div class="font-semibold text-blue-700">4+ Bedroom</div>
+                            <div class="text-gray-600 text-sm mt-1">Large home</div>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Frequency (for recurring only) -->
+                <div id="frequency-section" class="mb-8 hidden">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">3. Cleaning Frequency</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <button class="frequency-btn border-2 border-gray-200 p-4 rounded-lg hover:border-blue-500 transition-colors" data-frequency="weekly" data-discount="0.15">
+                            <div class="font-semibold text-blue-700">Weekly</div>
+                            <div class="text-green-600 text-sm mt-1">Save 15%</div>
+                        </button>
+                        
+                        <button class="frequency-btn border-2 border-gray-200 p-4 rounded-lg hover:border-blue-500 transition-colors" data-frequency="bi-weekly" data-discount="0.10">
+                            <div class="font-semibold text-blue-700">Bi-weekly</div>
+                            <div class="text-green-600 text-sm mt-1">Save 10%</div>
+                        </button>
+                        
+                        <button class="frequency-btn border-2 border-gray-200 p-4 rounded-lg hover:border-blue-500 transition-colors" data-frequency="monthly" data-discount="0.05">
+                            <div class="font-semibold text-blue-700">Monthly</div>
+                            <div class="text-green-600 text-sm mt-1">Save 5%</div>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Date & Time -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">4. Date & Time</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">Preferred Date</label>
+                            <input type="date" id="service-date" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">Time Slot</label>
+                            <select id="time-slot" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white">
+                                <option value="">Select time slot</option>
+                                <option value="9am">9:00 AM - 11:00 AM</option>
+                                <option value="11am">11:00 AM - 1:00 PM</option>
+                                <option value="1pm">1:00 PM - 3:00 PM</option>
+                                <option value="3pm">3:00 PM - 5:00 PM</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Customer Details -->
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">5. Your Details</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">Full Name *</label>
+                            <input type="text" id="customer-name" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" required>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">Phone Number *</label>
+                            <input type="tel" id="customer-phone" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2">Email Address *</label>
+                        <input type="email" id="customer-email" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" required>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">Street Address *</label>
+                        <textarea id="customer-address" rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" required></textarea>
+                    </div>
+                </div>
+                
+                <!-- Price Summary -->
+                <div class="mt-8 p-4 bg-blue-50 rounded-lg">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <div class="font-semibold text-blue-700">Estimated Total</div>
+                            <div class="text-sm text-gray-600">Excluding add-ons</div>
+                        </div>
+                        <div class="text-2xl font-bold text-blue-700" id="estimated-total">R 0</div>
+                    </div>
+                </div>
+                
+                <!-- Next Button -->
+                <div class="mt-8">
+                    <button id="next-to-addons" class="w-full bg-blue-700 text-white py-3 rounded-lg font-semibold hover:bg-blue-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        Continue to Add-ons
+                    </button>
+                </div>
             </div>
-        </section>
+        </div>
+
+        <!-- Step 2: Add-ons (Hidden Initially) -->
+        <div id="step2" class="max-w-2xl mx-auto hidden">
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <h2 class="text-2xl font-bold text-blue-700 mb-6">Add-on Services</h2>
+                
+                <div class="space-y-4 mb-8">
+                    <!-- Window Cleaning -->
+                    <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-blue-500 transition-colors">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="addon-windows" class="w-5 h-5 text-blue-600 rounded focus:ring-blue-500">
+                            <label for="addon-windows" class="ml-3">
+                                <div class="font-semibold text-blue-700">Window Cleaning</div>
+                                <div class="text-gray-600 text-sm">Interior and accessible exterior windows</div>
+                            </label>
+                        </div>
+                        <div class="font-bold text-blue-700">R 150</div>
+                    </div>
+                    
+                    <!-- Oven Cleaning -->
+                    <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-blue-500 transition-colors">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="addon-oven" class="w-5 h-5 text-blue-600 rounded focus:ring-blue-500">
+                            <label for="addon-oven" class="ml-3">
+                                <div class="font-semibold text-blue-700">Oven Cleaning</div>
+                                <div class="text-gray-600 text-sm">Deep clean of oven interior and exterior</div>
+                            </label>
+                        </div>
+                        <div class="font-bold text-blue-700">R 180</div>
+                    </div>
+                    
+                    <!-- Fridge Cleaning -->
+                    <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-blue-500 transition-colors">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="addon-fridge" class="w-5 h-5 text-blue-600 rounded focus:ring-blue-500">
+                            <label for="addon-fridge" class="ml-3">
+                                <div class="font-semibold text-blue-700">Fridge Cleaning</div>
+                                <div class="text-gray-600 text-sm">Interior deep clean and organization</div>
+                            </label>
+                        </div>
+                        <div class="font-bold text-blue-700">R 100</div>
+                    </div>
+                    
+                    <!-- Laundry Service -->
+                    <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-blue-500 transition-colors">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="addon-laundry" class="w-5 h-5 text-blue-600 rounded focus:ring-blue-500">
+                            <label for="addon-laundry" class="ml-3">
+                                <div class="font-semibold text-blue-700">Laundry Service</div>
+                                <div class="text-gray-600 text-sm">Wash, dry, and fold (per hour)</div>
+                            </label>
+                        </div>
+                        <div class="font-bold text-blue-700">R 80/hr</div>
+                    </div>
+                </div>
+                
+                <!-- Special Instructions -->
+                <div class="mb-8">
+                    <label class="block text-gray-700 font-medium mb-2">Special Instructions</label>
+                    <textarea id="special-instructions" rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="Any specific requirements, pet information, access instructions, etc."></textarea>
+                </div>
+                
+                <!-- Navigation Buttons -->
+                <div class="flex space-x-4">
+                    <button id="back-to-service" class="flex-1 border-2 border-blue-700 text-blue-700 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+                        Back to Service Details
+                    </button>
+                    <button id="next-to-summary" class="flex-1 bg-blue-700 text-white py-3 rounded-lg font-semibold hover:bg-blue-800 transition-colors">
+                        Review & Pay
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Summary & Payment (Hidden Initially) -->
+        <div id="step3" class="max-w-2xl mx-auto hidden">
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <h2 class="text-2xl font-bold text-blue-700 mb-6">Booking Summary</h2>
+                
+                <!-- Booking Details -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Service Details</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Service Type:</span>
+                            <span class="font-semibold" id="summary-service-type">-</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Property Size:</span>
+                            <span class="font-semibold" id="summary-property-size">-</span>
+                        </div>
+                        <div class="flex justify-between" id="summary-frequency-row">
+                            <span class="text-gray-600">Frequency:</span>
+                            <span class="font-semibold" id="summary-frequency">-</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Date:</span>
+                            <span class="font-semibold" id="summary-date">-</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Time Slot:</span>
+                            <span class="font-semibold" id="summary-time">-</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Customer Details -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Your Details</h3>
+                    <div class="space-y-2">
+                        <div class="text-gray-700"><span class="font-medium">Name:</span> <span id="summary-name">-</span></div>
+                        <div class="text-gray-700"><span class="font-medium">Phone:</span> <span id="summary-phone">-</span></div>
+                        <div class="text-gray-700"><span class="font-medium">Email:</span> <span id="summary-email">-</span></div>
+                        <div class="text-gray-700"><span class="font-medium">Address:</span> <span id="summary-address">-</span></div>
+                    </div>
+                </div>
+                
+                <!-- Add-ons -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Add-on Services</h3>
+                    <div id="summary-addons" class="space-y-2">
+                        <div class="text-gray-600 italic">No add-ons selected</div>
+                    </div>
+                </div>
+                
+                <!-- Special Instructions -->
+                <div class="mb-8" id="summary-instructions-section">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Special Instructions</h3>
+                    <div id="summary-instructions" class="text-gray-700 italic">None provided</div>
+                </div>
+                
+                <!-- Price Breakdown -->
+                <div class="mb-8 p-4 bg-blue-50 rounded-lg">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Price Breakdown</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Base Price:</span>
+                            <span class="font-semibold" id="summary-base-price">R 0</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Add-ons:</span>
+                            <span class="font-semibold" id="summary-addons-price">R 0</span>
+                        </div>
+                        <div class="flex justify-between text-green-600" id="summary-discount-row">
+                            <span>Discount:</span>
+                            <span class="font-semibold" id="summary-discount">R 0</span>
+                        </div>
+                        <div class="border-t pt-3 mt-3">
+                            <div class="flex justify-between text-lg">
+                                <span class="font-bold text-blue-700">Total:</span>
+                                <span class="font-bold text-blue-700" id="summary-total">R 0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Terms Agreement -->
+                <div class="mb-8 p-4 border border-gray-200 rounded-lg">
+                    <div class="flex items-start">
+                        <input type="checkbox" id="agree-terms" class="w-5 h-5 text-blue-600 rounded focus:ring-blue-500 mt-1">
+                        <label for="agree-terms" class="ml-3 text-gray-700">
+                            I agree to the <a href="/ngaoyicleaningwebsite/terms.html" class="text-blue-600 hover:text-blue-800">Terms & Conditions</a> and <a href="/ngaoyicleaningwebsite/privacy.html" class="text-blue-600 hover:text-blue-800">Privacy Policy</a>. I understand that:
+                            <ul class="list-disc ml-5 mt-2 text-sm space-y-1">
+                                <li>Cancellations within 24 hours incur a 50% fee</li>
+                                <li>Full payment is required to confirm booking</li>
+                                <li>Prices may vary based on actual property condition</li>
+                            </ul>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Navigation Buttons -->
+                <div class="flex space-x-4">
+                    <button id="back-to-addons" class="flex-1 border-2 border-blue-700 text-blue-700 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+                        Back to Add-ons
+                    </button>
+                    <button id="proceed-payment" class="flex-1 bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        <i class="fas fa-lock mr-2"></i>Proceed to Payment
+                    </button>
+                </div>
+            </div>
+        </div>
     </main>
 
     <!-- Footer -->
     <footer class="bg-black text-white py-8">
         <div class="container mx-auto px-4">
-            <div class="text-center">
-                <p class="text-gray-400">Need help? Call us at <a href="tel:+27707643709" class="text-accent">070 764 3709</a></p>
-                <div class="mt-4">
-                    <a href="/privacy.html" class="text-gray-400 hover:text-accent text-sm mx-2">Privacy Policy</a>
-                    <a href="/terms.html" class="text-gray-400 hover:text-accent text-sm mx-2">Terms & Conditions</a>
-                </div>
-                <p class="text-gray-500 text-sm mt-4">&copy; 2024 Ngaoyi Cleaning. All rights reserved.</p>
+            <div class="border-t border-gray-800 pt-8 text-center text-gray-500">
+                <p>&copy; 2024 Ngaoyi Cleaning. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <script src="/assets/js/site.js"></script>
+    <script>
+        // Store booking data
+        let bookingData = {
+            serviceType: null,
+            propertySize: null,
+            frequency: null,
+            date: null,
+            timeSlot: null,
+            customerName: '',
+            customerPhone: '',
+            customerEmail: '',
+            customerAddress: '',
+            addons: [],
+            specialInstructions: '',
+            basePrice: 0,
+            discount: 0,
+            addonsPrice: 0,
+            totalPrice: 0
+        };
+
+        // Initialize date picker
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('service-date').min = today;
+            
+            // Set default date to tomorrow
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const tomorrowStr = tomorrow.toISOString().split('T')[0];
+            document.getElementById('service-date').value = tomorrowStr;
+            
+            updateProgress();
+        });
+
+        // Step 1: Service Type Selection
+        document.querySelectorAll('.service-type-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remove active class from all buttons
+                document.querySelectorAll('.service-type-btn').forEach(b => {
+                    b.classList.remove('border-blue-500', 'bg-blue-50');
+                });
+                
+                // Add active class to clicked button
+                this.classList.add('border-blue-500', 'bg-blue-50');
+                
+                bookingData.serviceType = this.dataset.type;
+                bookingData.basePrice = parseInt(this.dataset.price);
+                
+                // Show/hide frequency section
+                const frequencySection = document.getElementById('frequency-section');
+                if (bookingData.serviceType === 'recurring') {
+                    frequencySection.classList.remove('hidden');
+                } else {
+                    frequencySection.classList.add('hidden');
+                    bookingData.frequency = null;
+                }
+                
+                updatePrice();
+                checkStep1Completion();
+            });
+        });
+
+        // Step 1: Property Size Selection
+        document.querySelectorAll('.property-size-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remove active class from all buttons
+                document.querySelectorAll('.property-size-btn').forEach(b => {
+                    b.classList.remove('border-blue-500', 'bg-blue-50');
+                });
+                
+                // Add active class to clicked button
+                this.classList.add('border-blue-500', 'bg-blue-50');
+                
+                bookingData.propertySize = this.dataset.size;
+                updatePrice();
+                checkStep1Completion();
+            });
+        });
+
+        // Step 1: Frequency Selection
+        document.querySelectorAll('.frequency-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remove active class from all buttons
+                document.querySelectorAll('.frequency-btn').forEach(b => {
+                    b.classList.remove('border-blue-500', 'bg-blue-50');
+                });
+                
+                // Add active class to clicked button
+                this.classList.add('border-blue-500', 'bg-blue-50');
+                
+                bookingData.frequency = this.dataset.frequency;
+                bookingData.discountRate = parseFloat(this.dataset.discount);
+                updatePrice();
+            });
+        });
+
+        // Step 1: Input validation
+        const inputs = ['customer-name', 'customer-phone', 'customer-email', 'customer-address'];
+        inputs.forEach(id => {
+            document.getElementById(id).addEventListener('input', function() {
+                bookingData[id.replace('customer-', '')] = this.value;
+                checkStep1Completion();
+            });
+        });
+
+        // Date and time selection
+        document.getElementById('service-date').addEventListener('change', function() {
+            bookingData.date = this.value;
+            checkStep1Completion();
+        });
+
+        document.getElementById('time-slot').addEventListener('change', function() {
+            bookingData.timeSlot = this.value;
+            checkStep1Completion();
+        });
+
+        // Step 1: Check completion and enable next button
+        function checkStep1Completion() {
+            const required = bookingData.serviceType && 
+                           bookingData.propertySize && 
+                           bookingData.date && 
+                           bookingData.timeSlot && 
+                           bookingData.name && 
+                           bookingData.phone && 
+                           bookingData.email && 
+                           bookingData.address;
+            
+            const nextBtn = document.getElementById('next-to-addons');
+            nextBtn.disabled = !required;
+            
+            return required;
+        }
+
+        // Update price calculation
+        function updatePrice() {
+            if (!bookingData.serviceType || !bookingData.propertySize) return;
+            
+            // Base price based on property size
+            let basePrice = bookingData.basePrice;
+            if (bookingData.propertySize === '2-bed') basePrice += 100;
+            if (bookingData.propertySize === '3-bed') basePrice += 200;
+            if (bookingData.propertySize === '4-bed') basePrice += 300;
+            
+            bookingData.basePrice = basePrice;
+            
+            // Apply discount for recurring services
+            bookingData.discount = 0;
+            if (bookingData.serviceType === 'recurring' && bookingData.discountRate) {
+                bookingData.discount = Math.round(basePrice * bookingData.discountRate);
+            }
+            
+            // Update display
+            const subtotal = basePrice - bookingData.discount;
+            document.getElementById('estimated-total').textContent = `R ${subtotal}`;
+        }
+
+        // Step 1 to Step 2
+        document.getElementById('next-to-addons').addEventListener('click', function() {
+            if (!checkStep1Completion()) return;
+            
+            // Save Step 1 data
+            bookingData.name = document.getElementById('customer-name').value;
+            bookingData.phone = document.getElementById('customer-phone').value;
+            bookingData.email = document.getElementById('customer-email').value;
+            bookingData.address = document.getElementById('customer-address').value;
+            bookingData.date = document.getElementById('service-date').value;
+            bookingData.timeSlot = document.getElementById('time-slot').value;
+            
+            // Switch to Step 2
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+            
+            // Update progress
+            updateProgress(2);
+        });
+
+        // Step 2: Add-ons selection
+        document.querySelectorAll('input[type="checkbox"][id^="addon-"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const addonName = this.id.replace('addon-', '');
+                const addonPrice = this.closest('div').querySelector('.font-bold').textContent;
+                
+                if (this.checked) {
+                    bookingData.addons.push({
+                        name: addonName,
+                        price: addonPrice
+                    });
+                } else {
+                    bookingData.addons = bookingData.addons.filter(a => a.name !== addonName);
+                }
+                
+                // Calculate addons price
+                bookingData.addonsPrice = bookingData.addons.reduce((total, addon) => {
+                    const price = parseInt(addon.price.replace('R ', '').replace('/hr', ''));
+                    return total + (addon.name === 'laundry' ? price : price); // Simplified for demo
+                }, 0);
+            });
+        });
+
+        // Special instructions
+        document.getElementById('special-instructions').addEventListener('input', function() {
+            bookingData.specialInstructions = this.value;
+        });
+
+        // Step 2 to Step 1 (Back)
+        document.getElementById('back-to-service').addEventListener('click', function() {
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step1').classList.remove('hidden');
+            updateProgress(1);
+        });
+
+        // Step 2 to Step 3
+        document.getElementById('next-to-summary').addEventListener('click', function() {
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step3').classList.remove('hidden');
+            updateProgress(3);
+            updateSummary();
+        });
+
+        // Step 3 to Step 2 (Back)
+        document.getElementById('back-to-addons').addEventListener('click', function() {
+            document.getElementById('step3').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+            updateProgress(2);
+        });
+
+        // Update summary page
+        function updateSummary() {
+            // Service details
+            document.getElementById('summary-service-type').textContent = 
+                bookingData.serviceType === 'once-off' ? 'Once-Off Cleaning' : 'Recurring Plan';
+            
+            document.getElementById('summary-property-size').textContent = 
+                bookingData.propertySize === '1-bed' ? '1 Bedroom' :
+                bookingData.propertySize === '2-bed' ? '2 Bedrooms' :
+                bookingData.propertySize === '3-bed' ? '3 Bedrooms' : '4+ Bedrooms';
+            
+            if (bookingData.serviceType === 'recurring') {
+                document.getElementById('summary-frequency-row').classList.remove('hidden');
+                document.getElementById('summary-frequency').textContent = 
+                    bookingData.frequency === 'weekly' ? 'Weekly' :
+                    bookingData.frequency === 'bi-weekly' ? 'Bi-weekly' : 'Monthly';
+            } else {
+                document.getElementById('summary-frequency-row').classList.add('hidden');
+            }
+            
+            // Format date
+            const date = new Date(bookingData.date);
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('summary-date').textContent = date.toLocaleDateString('en-ZA', options);
+            
+            // Time slot
+            document.getElementById('summary-time').textContent = 
+                bookingData.timeSlot === '9am' ? '9:00 AM - 11:00 AM' :
+                bookingData.timeSlot === '11am' ? '11:00 AM - 1:00 PM' :
+                bookingData.timeSlot === '1pm' ? '1:00 PM - 3:00 PM' : '3:00 PM - 5:00 PM';
+            
+            // Customer details
+            document.getElementById('summary-name').textContent = bookingData.name;
+            document.getElementById('summary-phone').textContent = bookingData.phone;
+            document.getElementById('summary-email').textContent = bookingData.email;
+            document.getElementById('summary-address').textContent = bookingData.address;
+            
+            // Add-ons
+            const addonsContainer = document.getElementById('summary-addons');
+            if (bookingData.addons.length > 0) {
+                addonsContainer.innerHTML = '';
+                bookingData.addons.forEach(addon => {
+                    const div = document.createElement('div');
+                    div.className = 'flex justify-between';
+                    div.innerHTML = `
+                        <span>${addon.name.charAt(0).toUpperCase() + addon.name.slice(1)}</span>
+                        <span class="font-semibold">${addon.price}</span>
+                    `;
+                    addonsContainer.appendChild(div);
+                });
+            } else {
+                addonsContainer.innerHTML = '<div class="text-gray-600 italic">No add-ons selected</div>';
+            }
+            
+            // Special instructions
+            if (bookingData.specialInstructions) {
+                document.getElementById('summary-instructions').textContent = bookingData.specialInstructions;
+                document.getElementById('summary-instructions-section').classList.remove('hidden');
+            } else {
+                document.getElementById('summary-instructions-section').classList.add('hidden');
+            }
+            
+            // Price breakdown
+            const totalPrice = (bookingData.basePrice - bookingData.discount) + bookingData.addonsPrice;
+            bookingData.totalPrice = totalPrice;
+            
+            document.getElementById('summary-base-price').textContent = `R ${bookingData.basePrice}`;
+            document.getElementById('summary-addons-price').textContent = `R ${bookingData.addonsPrice}`;
+            
+            if (bookingData.discount > 0) {
+                document.getElementById('summary-discount-row').classList.remove('hidden');
+                document.getElementById('summary-discount').textContent = `-R ${bookingData.discount}`;
+            } else {
+                document.getElementById('summary-discount-row').classList.add('hidden');
+            }
+            
+            document.getElementById('summary-total').textContent = `R ${totalPrice}`;
+            
+            // Store in localStorage
+            localStorage.setItem('ngaoyiBookingData', JSON.stringify(bookingData));
+        }
+
+        // Terms agreement
+        document.getElementById('agree-terms').addEventListener('change', function() {
+            document.getElementById('proceed-payment').disabled = !this.checked;
+        });
+
+        // Proceed to payment
+        document.getElementById('proceed-payment').addEventListener('click', function() {
+            // Prepare payment data
+            const paymentData = {
+                amount: bookingData.totalPrice * 100, // Yoco expects amount in cents
+                currency: 'ZAR',
+                description: `Ngaoyi Cleaning - ${bookingData.serviceType === 'once-off' ? 'Once-Off' : 'Recurring'} Cleaning`,
+                bookingData: bookingData,
+                success_url: 'https://ngaoyicleaning.github.io/ngaoyicleaningwebsite/success.html',
+                cancel_url: 'https://ngaoyicleaning.github.io/ngaoyicleaningwebsite/booking.html',
+                metadata: {
+                    booking_id: 'NGA-' + Date.now(),
+                    customer_email: bookingData.email,
+                    service_type: bookingData.serviceType
+                }
+            };
+            
+            // Store in localStorage for success page
+            localStorage.setItem('ngaoyiPaymentData', JSON.stringify(paymentData));
+            
+            // For demo, we'll simulate Yoco payment
+            // In production, this would redirect to Yoco checkout
+            simulateYocoPayment(paymentData);
+        });
+
+        // Update progress indicators
+        function updateProgress(step = 1) {
+            const steps = document.querySelectorAll('.flex-col.items-center');
+            steps.forEach((stepEl, index) => {
+                const circle = stepEl.querySelector('.rounded-full');
+                const text = stepEl.querySelector('.text-sm');
+                
+                if (index + 1 < step) {
+                    circle.classList.remove('step-active', 'step-pending');
+                    circle.classList.add('step-completed');
+                    text.classList.remove('text-gray-500');
+                    text.classList.add('text-green-600');
+                } else if (index + 1 === step) {
+                    circle.classList.remove('step-completed', 'step-pending');
+                    circle.classList.add('step-active');
+                    text.classList.remove('text-gray-500', 'text-green-600');
+                    text.classList.add('text-blue-700');
+                } else {
+                    circle.classList.remove('step-active', 'step-completed');
+                    circle.classList.add('step-pending');
+                    text.classList.remove('text-blue-700', 'text-green-600');
+                    text.classList.add('text-gray-500');
+                }
+            });
+        }
+
+        // Simulate Yoco payment (for demo)
+        function simulateYocoPayment(paymentData) {
+            // Show loading
+            const btn = document.getElementById('proceed-payment');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+            btn.disabled = true;
+            
+            // Simulate API call delay
+            setTimeout(() => {
+                // Redirect to success page for demo
+                // In production, this would redirect to Yoco checkout
+                window.location.href = '/ngaoyicleaningwebsite/success.html';
+            }, 1500);
+        }
+    </script>
 </body>
 </html>
