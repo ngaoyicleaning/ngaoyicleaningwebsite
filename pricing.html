@@ -6,17 +6,13 @@
     <title>Cleaning Service Pricing | Ngaoyi Cleaning | Gauteng</title>
     <meta name="description" content="Transparent pricing for all our cleaning services in Gauteng. View detailed costs for recurring plans, one-off cleaning, deep cleaning, and emergency services.">
     
-    <!-- Structured Data for Pricing -->
+    <!-- Structured Data -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "PriceSpecification",
         "name": "Ngaoyi Cleaning Pricing",
         "description": "Pricing for professional cleaning services",
-        "eligibleRegion": {
-            "@type": "Place",
-            "name": "Gauteng"
-        },
         "price": "240",
         "priceCurrency": "ZAR",
         "minPrice": "240",
@@ -27,72 +23,58 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="/assets/css/styles.css" rel="stylesheet">
     
-    <!-- Tailwind Configuration -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'primary': '#003b6f',
-                        'primary-light': '#0056a3',
-                        'secondary': '#000000',
-                        'accent': '#00c6ff',
-                        'light-gray': '#e9ecef'
-                    },
-                    fontFamily: {
-                        'sans': ['Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif']
-                    }
-                }
-            }
+    <style>
+        .menu-hidden {
+            display: none;
         }
-    </script>
-    
-    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    </style>
 </head>
 <body class="font-sans text-gray-700 bg-white">
     <!-- Navigation -->
     <header class="sticky top-0 z-40 bg-white shadow-md">
         <nav class="container mx-auto px-4 py-3">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="flex items-center space-x-3 mb-4 md:mb-0">
-                    <div class="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-full overflow-hidden flex items-center justify-center">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-700 to-blue-400 rounded-full overflow-hidden flex items-center justify-center">
                         <img src="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png" 
                              alt="Ngaoyi Cleaning Logo" class="w-full h-full object-cover">
                     </div>
                     <div>
-                        <h1 class="text-2xl font-bold text-primary">Ngaoyi Cleaning</h1>
+                        <h1 class="text-2xl font-bold text-blue-700">Ngaoyi Cleaning</h1>
                         <p class="text-sm text-gray-600">Professional Cleaning Services</p>
                     </div>
                 </div>
                 
-                <button id="mobile-menu-toggle" class="md:hidden text-primary text-2xl" aria-label="Toggle menu">
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="/ngaoyicleaningwebsite/index.html" class="text-gray-700 hover:text-blue-700 font-medium">Home</a>
+                    <a href="/ngaoyicleaningwebsite/services.html" class="text-gray-700 hover:text-blue-700 font-medium">Services</a>
+                    <a href="/ngaoyicleaningwebsite/pricing.html" class="text-blue-700 font-medium">Pricing</a>
+                    <a href="/ngaoyicleaningwebsite/about.html" class="text-gray-700 hover:text-blue-700 font-medium">About</a>
+                    <a href="/ngaoyicleaningwebsite/booking.html" class="bg-gradient-to-r from-blue-700 to-blue-500 text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg transition-all">Book Now</a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-toggle" class="md:hidden text-blue-700 text-2xl">
                     <i class="fas fa-bars"></i>
                 </button>
-                
-                <div id="main-menu" class="hidden md:flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-6">
-                    <a href="/" class="text-gray-700 hover:text-primary font-medium transition-colors">Home</a>
-                    <a href="/services.html" class="text-gray-700 hover:text-primary font-medium transition-colors">Services</a>
-                    <a href="/pricing.html" class="text-primary font-medium">Pricing</a>
-                    <a href="/about.html" class="text-gray-700 hover:text-primary font-medium transition-colors">About</a>
-                    <a href="/index.html#contact" class="bg-gradient-to-r from-primary to-accent text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg">Book Now</a>
-                </div>
             </div>
             
-            <div id="mobile-menu-dropdown" class="hidden md:hidden mt-4 space-y-4">
-                <a href="/" class="block text-gray-700 font-medium">Home</a>
-                <a href="/services.html" class="block text-gray-700 font-medium">Services</a>
-                <a href="/pricing.html" class="block text-primary font-medium">Pricing</a>
-                <a href="/about.html" class="block text-gray-700 font-medium">About</a>
-                <a href="/index.html#contact" class="block bg-gradient-to-r from-primary to-accent text-white px-6 py-2 rounded-full font-semibold text-center">Book Now</a>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="md:hidden mt-4 space-y-4 hidden">
+                <a href="/ngaoyicleaningwebsite/index.html" class="block text-gray-700 font-medium hover:text-blue-700">Home</a>
+                <a href="/ngaoyicleaningwebsite/services.html" class="block text-gray-700 font-medium hover:text-blue-700">Services</a>
+                <a href="/ngaoyicleaningwebsite/pricing.html" class="block text-blue-700 font-medium">Pricing</a>
+                <a href="/ngaoyicleaningwebsite/about.html" class="block text-gray-700 font-medium hover:text-blue-700">About</a>
+                <a href="/ngaoyicleaningwebsite/booking.html" class="block bg-gradient-to-r from-blue-700 to-blue-500 text-white px-6 py-2 rounded-full font-semibold text-center">Book Now</a>
             </div>
         </nav>
     </header>
 
     <main class="py-8">
         <!-- Page Header -->
-        <section class="bg-gradient-to-r from-primary to-primary-light text-white py-12">
+        <section class="bg-gradient-to-r from-blue-700 to-blue-900 text-white py-12">
             <div class="container mx-auto px-4">
                 <h1 class="text-4xl font-bold text-center mb-4">Transparent Pricing</h1>
                 <p class="text-xl text-center opacity-90 max-w-3xl mx-auto">No hidden fees. Clear, upfront pricing for all our cleaning services.</p>
@@ -102,105 +84,79 @@
         <!-- Pricing Comparison -->
         <section class="py-16">
             <div class="container mx-auto px-4">
-                <h2 class="text-3xl font-bold text-primary mb-12 text-center">Service Comparison</h2>
+                <h2 class="text-3xl font-bold text-blue-700 mb-12 text-center">Service Comparison</h2>
                 
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-white rounded-xl shadow-lg overflow-hidden">
                         <thead>
-                            <tr class="bg-primary text-white">
+                            <tr class="bg-blue-700 text-white">
                                 <th class="py-4 px-6 text-left">Service Type</th>
                                 <th class="py-4 px-6 text-left">1-Bedroom</th>
                                 <th class="py-4 px-6 text-left">2-Bedroom</th>
                                 <th class="py-4 px-6 text-left">3-Bedroom</th>
                                 <th class="py-4 px-6 text-left">4-Bedroom</th>
-                                <th class="py-4 px-6 text-left">Best For</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
                             <!-- Weekly Recurring -->
                             <tr class="hover:bg-gray-50">
                                 <td class="py-4 px-6">
-                                    <div class="font-semibold text-primary">Weekly Plan</div>
+                                    <div class="font-semibold text-blue-700">Weekly Plan</div>
                                     <div class="text-sm text-gray-500">Save 15%</div>
                                 </td>
-                                <td class="py-4 px-6 font-bold text-primary">R 240</td>
-                                <td class="py-4 px-6 font-bold text-primary">R 320</td>
-                                <td class="py-4 px-6 font-bold text-primary">R 380</td>
-                                <td class="py-4 px-6 font-bold text-primary">R 440</td>
-                                <td class="py-4 px-6 text-gray-600">Busy households, offices</td>
+                                <td class="py-4 px-6 font-bold text-blue-700">R 240</td>
+                                <td class="py-4 px-6 font-bold text-blue-700">R 320</td>
+                                <td class="py-4 px-6 font-bold text-blue-700">R 380</td>
+                                <td class="py-4 px-6 font-bold text-blue-700">R 440</td>
                             </tr>
                             
                             <!-- Bi-Weekly Recurring -->
                             <tr class="hover:bg-gray-50 bg-blue-50">
                                 <td class="py-4 px-6">
-                                    <div class="font-semibold text-primary">Bi-Weekly Plan</div>
+                                    <div class="font-semibold text-blue-700">Bi-Weekly Plan</div>
                                     <div class="text-sm text-gray-500">Save 10%</div>
-                                    <span class="inline-block mt-1 bg-accent text-primary text-xs font-bold px-2 py-1 rounded">POPULAR</span>
                                 </td>
-                                <td class="py-4 px-6 font-bold text-primary">R 300</td>
-                                <td class="py-4 px-6 font-bold text-primary">R 400</td>
-                                <td class="py-4 px-6 font-bold text-primary">R 470</td>
-                                <td class="py-4 px-6 font-bold text-primary">R 540</td>
-                                <td class="py-4 px-6 text-gray-600">Most families, regular maintenance</td>
+                                <td class="py-4 px-6 font-bold text-blue-700">R 300</td>
+                                <td class="py-4 px-6 font-bold text-blue-700">R 400</td>
+                                <td class="py-4 px-6 font-bold text-blue-700">R 470</td>
+                                <td class="py-4 px-6 font-bold text-blue-700">R 540</td>
                             </tr>
                             
                             <!-- Monthly Recurring -->
                             <tr class="hover:bg-gray-50">
                                 <td class="py-4 px-6">
-                                    <div class="font-semibold text-primary">Monthly Plan</div>
+                                    <div class="font-semibold text-blue-700">Monthly Plan</div>
                                     <div class="text-sm text-gray-500">Save 5%</div>
                                 </td>
-                                <td class="py-4 px-6 font-bold text-primary">R 360</td>
-                                <td class="py-4 px-6 font-bold text-primary">R 480</td>
-                                <td class="py-4 px-6 font-bold text-primary">R 560</td>
-                                <td class="py-4 px-6 font-bold text-primary">R 640</td>
-                                <td class="py-4 px-6 text-gray-600">Periodic deep cleans</td>
+                                <td class="py-4 px-6 font-bold text-blue-700">R 360</td>
+                                <td class="py-4 px-6 font-bold text-blue-700">R 480</td>
+                                <td class="py-4 px-6 font-bold text-blue-700">R 560</td>
+                                <td class="py-4 px-6 font-bold text-blue-700">R 640</td>
                             </tr>
                             
-                            <!-- Once-Off Customer Supplies -->
+                            <!-- Once-Off -->
                             <tr class="hover:bg-gray-50">
                                 <td class="py-4 px-6">
-                                    <div class="font-semibold text-primary">Once-Off (You Supply)</div>
-                                    <div class="text-sm text-gray-500">You provide products</div>
+                                    <div class="font-semibold text-blue-700">Once-Off Cleaning</div>
                                 </td>
-                                <td class="py-4 px-6 font-bold text-primary">R 350</td>
-                                <td class="py-4 px-6 font-bold text-primary">R 450</td>
-                                <td class="py-4 px-6 font-bold text-primary">R 550</td>
-                                <td class="py-4 px-6 font-bold text-primary">R 650</td>
-                                <td class="py-4 px-6 text-gray-600">Events, move-in/out</td>
-                            </tr>
-                            
-                            <!-- Once-Off We Supply -->
-                            <tr class="hover:bg-gray-50">
-                                <td class="py-4 px-6">
-                                    <div class="font-semibold text-primary">Once-Off (We Supply)</div>
-                                    <div class="text-sm text-gray-500">+R150 for materials</div>
-                                </td>
-                                <td class="py-4 px-6 font-bold text-primary">R 500</td>
-                                <td class="py-4 px-6 font-bold text-primary">R 600</td>
-                                <td class="py-4 px-6 font-bold text-primary">R 700</td>
-                                <td class="py-4 px-6 font-bold text-primary">R 800</td>
-                                <td class="py-4 px-6 text-gray-600">Convenient option</td>
+                                <td class="py-4 px-6 font-bold text-blue-700">R 350</td>
+                                <td class="py-4 px-6 font-bold text-blue-700">R 450</td>
+                                <td class="py-4 px-6 font-bold text-blue-700">R 550</td>
+                                <td class="py-4 px-6 font-bold text-blue-700">R 650</td>
                             </tr>
                             
                             <!-- Deep Cleaning -->
                             <tr class="hover:bg-gray-50">
                                 <td class="py-4 px-6">
-                                    <div class="font-semibold text-primary">Deep Cleaning</div>
-                                    <div class="text-sm text-gray-500">Materials included</div>
+                                    <div class="font-semibold text-blue-700">Deep Cleaning</div>
                                 </td>
-                                <td class="py-4 px-6 font-bold text-primary">R 1200</td>
-                                <td class="py-4 px-6 font-bold text-primary">R 1750</td>
-                                <td class="py-4 px-6 font-bold text-primary">R 2300</td>
-                                <td class="py-4 px-6 font-bold text-primary">R 2850</td>
-                                <td class="py-4 px-6 text-gray-600">Annual cleans, property sales</td>
+                                <td class="py-4 px-6 font-bold text-blue-700">R 1200</td>
+                                <td class="py-4 px-6 font-bold text-blue-700">R 1750</td>
+                                <td class="py-4 px-6 font-bold text-blue-700">R 2300</td>
+                                <td class="py-4 px-6 font-bold text-blue-700">R 2850</td>
                             </tr>
                         </tbody>
                     </table>
-                </div>
-                
-                <div class="mt-8 text-center text-gray-600">
-                    <p>All prices are per cleaning session. Additional charges may apply for special requirements or difficult access.</p>
                 </div>
             </div>
         </section>
@@ -208,48 +164,44 @@
         <!-- Add-On Services -->
         <section class="py-16 bg-gray-50">
             <div class="container mx-auto px-4">
-                <h2 class="text-3xl font-bold text-primary mb-12 text-center">Add-On Services</h2>
+                <h2 class="text-3xl font-bold text-blue-700 mb-12 text-center">Add-On Services</h2>
                 
                 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div class="bg-white p-6 rounded-xl shadow border border-gray-100">
-                        <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center mb-4">
+                        <div class="w-12 h-12 bg-blue-700 rounded-full flex items-center justify-center mb-4">
                             <i class="fas fa-window-maximize text-white"></i>
                         </div>
-                        <h3 class="text-lg font-semibold text-primary mb-2">Window Cleaning</h3>
+                        <h3 class="text-lg font-semibold text-blue-700 mb-2">Window Cleaning</h3>
                         <p class="text-gray-600 mb-4">Interior and accessible exterior windows</p>
-                        <div class="text-primary font-bold text-xl">R 150</div>
+                        <div class="text-blue-700 font-bold text-xl">R 150</div>
                     </div>
                     
                     <div class="bg-white p-6 rounded-xl shadow border border-gray-100">
-                        <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center mb-4">
+                        <div class="w-12 h-12 bg-blue-700 rounded-full flex items-center justify-center mb-4">
                             <i class="fas fa-fire text-white"></i>
                         </div>
-                        <h3 class="text-lg font-semibold text-primary mb-2">Oven Cleaning</h3>
+                        <h3 class="text-lg font-semibold text-blue-700 mb-2">Oven Cleaning</h3>
                         <p class="text-gray-600 mb-4">Deep clean of oven interior and exterior</p>
-                        <div class="text-primary font-bold text-xl">R 180</div>
+                        <div class="text-blue-700 font-bold text-xl">R 180</div>
                     </div>
                     
                     <div class="bg-white p-6 rounded-xl shadow border border-gray-100">
-                        <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center mb-4">
+                        <div class="w-12 h-12 bg-blue-700 rounded-full flex items-center justify-center mb-4">
                             <i class="fas fa-snowflake text-white"></i>
                         </div>
-                        <h3 class="text-lg font-semibold text-primary mb-2">Fridge Cleaning</h3>
+                        <h3 class="text-lg font-semibold text-blue-700 mb-2">Fridge Cleaning</h3>
                         <p class="text-gray-600 mb-4">Interior deep clean and organization</p>
-                        <div class="text-primary font-bold text-xl">R 100</div>
+                        <div class="text-blue-700 font-bold text-xl">R 100</div>
                     </div>
                     
                     <div class="bg-white p-6 rounded-xl shadow border border-gray-100">
-                        <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center mb-4">
+                        <div class="w-12 h-12 bg-blue-700 rounded-full flex items-center justify-center mb-4">
                             <i class="fas fa-tshirt text-white"></i>
                         </div>
-                        <h3 class="text-lg font-semibold text-primary mb-2">Laundry Service</h3>
+                        <h3 class="text-lg font-semibold text-blue-700 mb-2">Laundry Service</h3>
                         <p class="text-gray-600 mb-4">Wash, dry, and fold laundry</p>
-                        <div class="text-primary font-bold text-xl">R 80/hr</div>
+                        <div class="text-blue-700 font-bold text-xl">R 80/hr</div>
                     </div>
-                </div>
-                
-                <div class="mt-8 text-center">
-                    <p class="text-gray-600">Add-on services can be booked with any main cleaning service.</p>
                 </div>
             </div>
         </section>
@@ -257,7 +209,7 @@
         <!-- Emergency Services Pricing -->
         <section class="py-16">
             <div class="container mx-auto px-4">
-                <h2 class="text-3xl font-bold text-primary mb-8 text-center">Emergency & Weekend Services</h2>
+                <h2 class="text-3xl font-bold text-blue-700 mb-8 text-center">Emergency & Weekend Services</h2>
                 
                 <div class="max-w-2xl mx-auto">
                     <div class="bg-red-50 border border-red-200 rounded-xl p-6 mb-8">
@@ -286,106 +238,20 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
-                        <h3 class="text-xl font-semibold text-primary mb-4">Example Emergency Pricing</h3>
-                        <div class="space-y-4">
-                            <div class="flex justify-between items-center border-b pb-3">
-                                <div>
-                                    <div class="font-medium">2-Bedroom Emergency</div>
-                                    <div class="text-sm text-gray-500">Standard: R400 + 50% surcharge</div>
-                                </div>
-                                <div class="text-right">
-                                    <div class="text-sm text-gray-500 line-through">R 400</div>
-                                    <div class="font-bold text-primary">R 600</div>
-                                </div>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <div>
-                                    <div class="font-medium">3-Bedroom Sunday Clean</div>
-                                    <div class="text-sm text-gray-500">Standard: R550 + 50% surcharge</div>
-                                </div>
-                                <div class="text-right">
-                                    <div class="text-sm text-gray-500 line-through">R 550</div>
-                                    <div class="font-bold text-primary">R 825</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Commercial Pricing -->
-        <section class="py-16 bg-gray-50">
-            <div class="container mx-auto px-4">
-                <h2 class="text-3xl font-bold text-primary mb-8 text-center">Commercial Cleaning</h2>
-                
-                <div class="max-w-3xl mx-auto">
-                    <div class="bg-white rounded-xl shadow-lg p-8">
-                        <div class="text-center mb-8">
-                            <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
-                                <i class="fas fa-building text-white text-2xl"></i>
-                            </div>
-                            <h3 class="text-2xl font-bold text-primary mb-2">Custom Quotes</h3>
-                            <p class="text-gray-600">Commercial cleaning requires customized pricing based on your specific needs.</p>
-                        </div>
-                        
-                        <div class="grid md:grid-cols-2 gap-6 mb-8">
-                            <div class="space-y-3">
-                                <h4 class="font-semibold text-primary">Factors Considered:</h4>
-                                <div class="flex items-center">
-                                    <i class="fas fa-ruler-combined text-accent mr-3"></i>
-                                    <span>Square footage</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <i class="fas fa-users text-accent mr-3"></i>
-                                    <span>Number of employees</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <i class="fas fa-clock text-accent mr-3"></i>
-                                    <span>Cleaning frequency</span>
-                                </div>
-                            </div>
-                            
-                            <div class="space-y-3">
-                                <h4 class="font-semibold text-primary">Service Types:</h4>
-                                <div class="flex items-center">
-                                    <i class="fas fa-check text-green-500 mr-3"></i>
-                                    <span>Office spaces</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <i class="fas fa-check text-green-500 mr-3"></i>
-                                    <span>Retail spaces</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <i class="fas fa-check text-green-500 mr-3"></i>
-                                    <span>Common areas</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="text-center">
-                            <a href="mailto:ngaoyicleaning@gmail.com?subject=Commercial Cleaning Quote" 
-                               class="inline-flex items-center bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-light transition-colors">
-                                <i class="fas fa-envelope mr-2"></i>Request Commercial Quote
-                            </a>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
 
         <!-- CTA Section -->
-        <section class="py-16 bg-gradient-to-r from-primary to-primary-light text-white">
+        <section class="py-16 bg-gradient-to-r from-blue-700 to-blue-900 text-white">
             <div class="container mx-auto px-4 text-center">
                 <h2 class="text-3xl font-bold mb-6">Ready to Get Started?</h2>
                 <p class="text-xl mb-8 opacity-90 max-w-2xl mx-auto">Book online now or contact us for a personalized quote.</p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="/index.html#contact" class="bg-white text-primary px-8 py-3 rounded-full font-semibold hover:shadow-xl transition-all duration-300">
+                    <a href="/ngaoyicleaningwebsite/booking.html" class="bg-white text-blue-700 px-8 py-3 rounded-full font-semibold hover:shadow-xl transition-all duration-300">
                         Book Online Now
                     </a>
-                    <a href="tel:+27707643709" class="bg-transparent border-2 border-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-primary transition-all duration-300">
+                    <a href="tel:+27707643709" class="bg-transparent border-2 border-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-700 transition-all duration-300">
                         <i class="fas fa-phone mr-2"></i>Call: 070 764 3709
                     </a>
                 </div>
@@ -398,24 +264,24 @@
         <div class="container mx-auto px-4">
             <div class="grid md:grid-cols-4 gap-8 mb-8">
                 <div>
-                    <h3 class="text-xl font-bold text-accent mb-4">Ngaoyi Cleaning</h3>
+                    <h3 class="text-xl font-bold text-blue-400 mb-4">Ngaoyi Cleaning</h3>
                     <p class="text-gray-400 mb-4">Transparent pricing for quality cleaning.</p>
                 </div>
                 
                 <div>
                     <h4 class="font-semibold text-white mb-4">Services</h4>
                     <ul class="space-y-2">
-                        <li><a href="/services.html#recurring" class="text-gray-400 hover:text-accent transition-colors">Recurring Plans</a></li>
-                        <li><a href="/services.html#once-off" class="text-gray-400 hover:text-accent transition-colors">Once-Off Cleaning</a></li>
-                        <li><a href="/services.html#deep" class="text-gray-400 hover:text-accent transition-colors">Deep Cleaning</a></li>
+                        <li><a href="/ngaoyicleaningwebsite/services.html#recurring" class="text-gray-400 hover:text-blue-400">Recurring Plans</a></li>
+                        <li><a href="/ngaoyicleaningwebsite/services.html#once-off" class="text-gray-400 hover:text-blue-400">Once-Off Cleaning</a></li>
+                        <li><a href="/ngaoyicleaningwebsite/services.html#deep" class="text-gray-400 hover:text-blue-400">Deep Cleaning</a></li>
                     </ul>
                 </div>
                 
                 <div>
                     <h4 class="font-semibold text-white mb-4">Contact</h4>
                     <ul class="space-y-2 text-gray-400">
-                        <li><i class="fas fa-phone mr-2 text-accent"></i>070 764 3709</li>
-                        <li><i class="fas fa-envelope mr-2 text-accent"></i>ngaoyicleaning@gmail.com</li>
+                        <li><i class="fas fa-phone mr-2 text-blue-400"></i>070 764 3709</li>
+                        <li><i class="fas fa-envelope mr-2 text-blue-400"></i>ngaoyicleaning@gmail.com</li>
                     </ul>
                 </div>
                 
@@ -430,12 +296,24 @@
             </div>
             
             <div class="border-t border-gray-800 pt-8 text-center text-gray-500">
-                <p>&copy; 2024 Ngaoyi Cleaning. <a href="/privacy.html" class="hover:text-accent">Privacy Policy</a></p>
+                <p>&copy; 2024 Ngaoyi Cleaning. <a href="/ngaoyicleaningwebsite/privacy.html" class="hover:text-blue-400">Privacy Policy</a></p>
             </div>
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <script src="/assets/js/site.js"></script>
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = this.querySelector('i');
+            
+            menu.classList.toggle('hidden');
+            if (menu.classList.contains('hidden')) {
+                icon.classList.replace('fa-times', 'fa-bars');
+            } else {
+                icon.classList.replace('fa-bars', 'fa-times');
+            }
+        });
+    </script>
 </body>
 </html>
