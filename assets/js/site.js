@@ -1,15 +1,14 @@
 // Ngaoyi Cleaning - Main JavaScript
 document.addEventListener('DOMContentLoaded', function() {
-    // Mobile menu toggle
+    // Mobile menu toggle for all pages
     const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-    const mobileMenuDropdown = document.getElementById('mobile-menu-dropdown');
-    const mainMenu = document.getElementById('main-menu');
+    const mobileMenu = document.getElementById('mobile-menu');
     
-    if (mobileMenuToggle && mobileMenuDropdown) {
+    if (mobileMenuToggle && mobileMenu) {
         mobileMenuToggle.addEventListener('click', function() {
             const isExpanded = this.getAttribute('aria-expanded') === 'true';
             this.setAttribute('aria-expanded', !isExpanded);
-            mobileMenuDropdown.classList.toggle('hidden');
+            mobileMenu.classList.toggle('hidden');
             
             // Toggle icon
             const icon = this.querySelector('i');
@@ -19,446 +18,53 @@ document.addEventListener('DOMContentLoaded', function() {
                 icon.classList.replace('fa-times', 'fa-bars');
             }
         });
-    }
-    
-    // Close mobile menu when clicking outside
-    document.addEventListener('click', function(event) {
-        if (mobileMenuDropdown && !mobileMenuDropdown.classList.contains('hidden')) {
-            if (!mobileMenuToggle.contains(event.target) && !mobileMenuDropdown.contains(event.target)) {
-                mobileMenuDropdown.classList.add('hidden');
-                mobileMenuToggle.setAttribute('aria-expanded', 'false');
-                const icon = mobileMenuToggle.querySelector('i');
-                if (icon.classList.contains('fa-times')) {
-                    icon.classList.replace('fa-times', 'fa-bars');
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!mobileMenu.classList.contains('hidden')) {
+                if (!mobileMenuToggle.contains(event.target) && !mobileMenu.contains(event.target)) {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenuToggle.setAttribute('aria-expanded', 'false');
+                    const icon = mobileMenuToggle.querySelector('i');
+                    if (icon.classList.contains('fa-times')) {
+                        icon.classList.replace('fa-times', 'fa-bars');
+                    }
                 }
-            }
-        }
-    });
-    
-    // Form submission handling
-    const bookingForm = document.getElementById('booking-form');
-    if (bookingForm) {
-        // Replace with your Google Apps Script web app URL
-        // GAS_ENDPOINT_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE"
-        const GAS_ENDPOINT_URL = window.GAS_ENDPOINT_URL || "GAS_ENDPOINT_URL";
-        
-        // Yoco public key hint (replace with your actual public key)
-        // YOCO_PUBLIC_HINT = "YOUR_YOCO_PUBLIC_KEY_HERE"
-        const YOCO_PUBLIC_HINT = "YOCO_PUBLIC_HINT";
-        
-        let bookingData = null;
-        let paymentId = null;
-        
-        bookingForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            // Form validation
-            if (!validateForm()) {
-                return;
-            }
-            
-            // Show loading state
-            const submitBtn = document.getElementById('submit-btn');
-            const submitText = document.getElementById('submit-text');
-            const submitLoading = document.getElementById('submit-loading');
-            
-            submitText.classList.add('hidden');
-            submitLoading.classList.remove('hidden');
-            submitBtn.disabled = true;
-            
-            // Hide previous messages
-            document.getElementById('form-success').classList.add('hidden');
-            document.getElementById('form-error').classList.add('hidden');
-            document.getElementById('payment-section').classList.add('hidden');
-            
-            // Prepare form data
-            const formData = {
-                timestamp: new Date().toISOString(),
-                fullName: document.getElementById('full-name').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                address: document.getElementById('address').value,
-                serviceType: document.getElementById('service-type').value,
-                propertySize: document.getElementById('property-size').value,
-                preferredDate: document.getElementById('preferred-date').value || 'Not specified',
-                message: document.getElementById('message').value || 'No additional details',
-                source: 'website-booking-form'
-            };
-            
-            try {
-                // First, submit booking data to Google Apps Script
-                console.log('Submitting booking data to:', GAS_ENDPOINT_URL);
-                
-                // Note: Using no-cors mode for Google Apps Script web app
-                // In production, you should use proper CORS headers
-                const response = await fetch(GAS_ENDPOINT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors', // Google Apps Script web apps require no-cors
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        action: 'submit_booking',
-                        data: formData
-                    })
-                });
-                
-                // Since we're using no-cors, we can't read the response
-                // But we assume it was successful
-                
-                // Store booking data for payment
-                bookingData = formData;
-                
-                // Show success message
-                document.getElementById('form-success').classList.remove('hidden');
-                
-                // Show payment section
-                document.getElementById('payment-section').classList.remove('hidden');
-                
-                // Reset form loading state
-                submitText.classList.remove('hidden');
-                submitLoading.classList.add('hidden');
-                submitBtn.disabled = false;
-                
-                // Scroll to payment section
-                document.getElementById('payment-section').scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center'
-                });
-                
-                // Track conversion
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'booking_submitted', {
-                        'event_category': 'booking',
-                        'event_label': formData.serviceType
-                    });
-                }
-                
-            } catch (error) {
-                console.error('Error submitting booking:', error);
-                
-                // Show error message
-                document.getElementById('error-message').textContent = 
-                    'There was an error submitting your booking. Please try again or contact us at 070 764 3709.';
-                document.getElementById('form-error').classList.remove('hidden');
-                
-                // Reset form loading state
-                submitText.classList.remove('hidden');
-                submitLoading.classList.add('hidden');
-                submitBtn.disabled = false;
             }
         });
-        
-        // Payment button handler
-        const paymentButton = document.getElementById('payment-button');
-        if (paymentButton) {
-            paymentButton.addEventListener('click', async function() {
-                if (!bookingData) {
-                    alert('Please submit the booking form first.');
-                    return;
-                }
-                
-                // Show loading state
-                const originalText = this.innerHTML;
-                this.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
-                this.disabled = true;
-                
-                try {
-                    // Call Google Apps Script to create Yoco payment
-                    console.log('Creating Yoco payment for booking:', bookingData);
-                    
-                    // Note: This would typically be handled by your backend/Google Apps Script
-                    // The script should create a Yoco payment link and return it
-                    const paymentResponse = await fetch(GAS_ENDPOINT_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            action: 'create_payment',
-                            bookingData: bookingData,
-                            amount: calculatePaymentAmount(bookingData),
-                            currency: 'ZAR'
-                        })
-                    });
-                    
-                    // In a real implementation, you would:
-                    // 1. Get the payment link from the response
-                    // 2. Redirect to the Yoco payment page
-                    // 3. Handle the callback to confirm booking
-                    
-                    // For demo purposes, we'll simulate a successful payment
-                    simulatePaymentSuccess();
-                    
-                } catch (error) {
-                    console.error('Error creating payment:', error);
-                    
-                    // Show error message
-                    document.getElementById('error-message').textContent = 
-                        'Error processing payment. Please contact us at 070 764 3709 to complete your booking.';
-                    document.getElementById('form-error').classList.remove('hidden');
-                    
-                    // Reset button
-                    this.innerHTML = originalText;
-                    this.disabled = false;
-                }
-            });
-        }
-        
-        // Form validation function
-        function validateForm() {
-            const requiredFields = [
-                'full-name',
-                'email',
-                'phone',
-                'address',
-                'service-type',
-                'property-size',
-                'privacy-agree'
-            ];
-            
-            let isValid = true;
-            
-            requiredFields.forEach(fieldId => {
-                const field = document.getElementById(fieldId);
-                if (!field) return;
-                
-                let fieldIsValid = true;
-                
-                if (field.type === 'checkbox') {
-                    fieldIsValid = field.checked;
-                } else {
-                    fieldIsValid = field.value.trim() !== '';
-                    
-                    // Email validation
-                    if (fieldId === 'email' && field.value.trim() !== '') {
-                        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                        fieldIsValid = emailRegex.test(field.value);
-                    }
-                    
-                    // Phone validation (South African)
-                    if (fieldId === 'phone' && field.value.trim() !== '') {
-                        const phoneRegex = /^(\+27|0)[1-9][0-9]{8}$/;
-                        fieldIsValid = phoneRegex.test(field.value.replace(/\s/g, ''));
-                    }
-                }
-                
-                if (!fieldIsValid) {
-                    isValid = false;
-                    field.classList.add('border-red-500');
-                    
-                    // Add error message
-                    let errorElement = document.getElementById(`${fieldId}-error`);
-                    if (!errorElement) {
-                        errorElement = document.createElement('p');
-                        errorElement.id = `${fieldId}-error`;
-                        errorElement.className = 'text-red-500 text-sm mt-1';
-                        field.parentNode.appendChild(errorElement);
-                    }
-                    
-                    if (fieldId === 'email') {
-                        errorElement.textContent = 'Please enter a valid email address.';
-                    } else if (fieldId === 'phone') {
-                        errorElement.textContent = 'Please enter a valid South African phone number.';
-                    } else if (fieldId === 'privacy-agree') {
-                        errorElement.textContent = 'You must agree to the privacy policy.';
-                    } else {
-                        errorElement.textContent = 'This field is required.';
-                    }
-                } else {
-                    field.classList.remove('border-red-500');
-                    
-                    // Remove error message
-                    const errorElement = document.getElementById(`${fieldId}-error`);
-                    if (errorElement) {
-                        errorElement.remove();
-                    }
-                }
-            });
-            
-            return isValid;
-        }
-        
-        // Calculate payment amount based on service type and property size
-        function calculatePaymentAmount(bookingData) {
-            // This is a simplified calculation
-            // In production, you would have more complex logic
-            const basePrices = {
-                'recurring': {
-                    '1-bed': 240,
-                    '2-bed': 320,
-                    '3-bed': 380,
-                    '4-bed': 440
-                },
-                'once-off': {
-                    '1-bed': 350,
-                    '2-bed': 450,
-                    '3-bed': 550,
-                    '4-bed': 650
-                },
-                'deep': {
-                    '1-bed': 1200,
-                    '2-bed': 1750,
-                    '3-bed': 2300,
-                    '4-bed': 2850
-                }
-            };
-            
-            const serviceType = bookingData.serviceType;
-            const propertySize = bookingData.propertySize;
-            
-            if (basePrices[serviceType] && basePrices[serviceType][propertySize]) {
-                return basePrices[serviceType][propertySize];
-            }
-            
-            // Default fallback amount
-            return 500;
-        }
-        
-        // Simulate payment success (for demo purposes)
-        function simulatePaymentSuccess() {
-            // Show success message
-            document.getElementById('form-success').textContent = 
-                '🎉 Payment successful! Your booking is confirmed. We will contact you within 2 hours with cleaner details.';
-            document.getElementById('form-success').classList.remove('hidden');
-            
-            // Hide payment section
-            document.getElementById('payment-section').classList.add('hidden');
-            
-            // Reset form
-            bookingForm.reset();
-            bookingData = null;
-            
-            // Reset date field
-            const dateField = document.getElementById('preferred-date');
-            if (dateField) {
-                const today = new Date().toISOString().split('T')[0];
-                dateField.min = today;
-            }
-            
-            // Track payment conversion
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'payment_completed', {
-                    'event_category': 'booking',
-                    'event_label': 'yoco_payment'
-                });
-            }
-            
-            // Scroll to success message
-            document.getElementById('form-success').scrollIntoView({
-                behavior: 'smooth',
-                block: 'center'
-            });
-        }
-        
-        // Real-time form validation
-        const formInputs = bookingForm.querySelectorAll('input, select, textarea');
-        formInputs.forEach(input => {
-            input.addEventListener('blur', function() {
-                if (this.id) {
-                    validateField(this.id);
-                }
-            });
-            
-            input.addEventListener('input', function() {
-                // Remove error styling as user types
-                if (this.classList.contains('border-red-500')) {
-                    this.classList.remove('border-red-500');
-                    
-                    // Remove error message
-                    const errorElement = document.getElementById(`${this.id}-error`);
-                    if (errorElement) {
-                        errorElement.remove();
-                    }
-                }
-            });
-        });
-        
-        function validateField(fieldId) {
-            const field = document.getElementById(fieldId);
-            if (!field) return;
-            
-            // Remove existing error
-            field.classList.remove('border-red-500');
-            const errorElement = document.getElementById(`${fieldId}-error`);
-            if (errorElement) {
-                errorElement.remove();
-            }
-            
-            // Skip validation for empty optional fields
-            if (!field.required && field.value.trim() === '') {
-                return;
-            }
-            
-            let isValid = true;
-            
-            if (field.type === 'checkbox') {
-                isValid = field.checked;
-            } else {
-                isValid = field.value.trim() !== '';
-                
-                // Email validation
-                if (fieldId === 'email' && field.value.trim() !== '') {
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    isValid = emailRegex.test(field.value);
-                }
-                
-                // Phone validation
-                if (fieldId === 'phone' && field.value.trim() !== '') {
-                    const phoneRegex = /^(\+27|0)[1-9][0-9]{8}$/;
-                    isValid = phoneRegex.test(field.value.replace(/\s/g, ''));
-                }
-            }
-            
-            if (!isValid) {
-                field.classList.add('border-red-500');
-                
-                // Create error message
-                const errorElement = document.createElement('p');
-                errorElement.id = `${fieldId}-error`;
-                errorElement.className = 'text-red-500 text-sm mt-1';
-                
-                if (fieldId === 'email') {
-                    errorElement.textContent = 'Please enter a valid email address.';
-                } else if (fieldId === 'phone') {
-                    errorElement.textContent = 'Please enter a valid South African phone number.';
-                } else if (fieldId === 'privacy-agree') {
-                    errorElement.textContent = 'You must agree to the privacy policy.';
-                } else {
-                    errorElement.textContent = 'This field is required.';
-                }
-                
-                field.parentNode.appendChild(errorElement);
-            }
-        }
     }
     
-    // Service pricing calculator (if needed)
-    const serviceTypeSelect = document.getElementById('service-type');
-    const propertySizeSelect = document.getElementById('property-size');
-    
-    if (serviceTypeSelect && propertySizeSelect) {
-        function updatePriceEstimate() {
-            const serviceType = serviceTypeSelect.value;
-            const propertySize = propertySizeSelect.value;
-            
-            // You could add dynamic price calculation here
-            // This is just a placeholder
-            if (serviceType && propertySize) {
-                console.log(`Selected: ${serviceType} for ${propertySize}`);
-            }
-        }
-        
-        serviceTypeSelect.addEventListener('change', updatePriceEstimate);
-        propertySizeSelect.addEventListener('change', updatePriceEstimate);
+    // Form validation helper
+    function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
     }
     
-    // Set minimum date for date inputs
+    function validatePhone(phone) {
+        const re = /^(\+27|0)[1-9][0-9]{8}$/;
+        return re.test(phone.replace(/\s/g, ''));
+    }
+    
+    // Initialize date pickers
     const dateInputs = document.querySelectorAll('input[type="date"]');
     dateInputs.forEach(input => {
         const today = new Date().toISOString().split('T')[0];
         input.min = today;
+        
+        // Set default to tomorrow
+        if (!input.value) {
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            input.value = tomorrow.toISOString().split('T')[0];
+        }
+    });
+    
+    // Initialize time slots
+    const timeSlotSelects = document.querySelectorAll('select[id*="time-slot"]');
+    timeSlotSelects.forEach(select => {
+        if (!select.value) {
+            select.value = '9am'; // Default to 9am slot
+        }
     });
     
     // WhatsApp click tracking
@@ -500,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Back to top button (optional)
+    // Back to top button
     const backToTopButton = document.createElement('button');
     backToTopButton.innerHTML = '<i class="fas fa-arrow-up"></i>';
     backToTopButton.className = 'fixed bottom-6 left-6 w-12 h-12 bg-primary text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 z-50 hidden';
@@ -524,40 +130,442 @@ document.addEventListener('DOMContentLoaded', function() {
             backToTopButton.classList.add('hidden');
         }
     });
-});
-
-// Service Worker Registration (optional - for PWA)
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/sw.js').then(function(registration) {
-            console.log('ServiceWorker registration successful with scope: ', registration.scope);
-        }, function(err) {
-            console.log('ServiceWorker registration failed: ', err);
+    
+    // Booking data management
+    function saveBookingData(key, data) {
+        localStorage.setItem(key, JSON.stringify(data));
+    }
+    
+    function getBookingData(key) {
+        const data = localStorage.getItem(key);
+        return data ? JSON.parse(data) : null;
+    }
+    
+    function clearBookingData() {
+        localStorage.removeItem('bookingData');
+        localStorage.removeItem('bookingAddons');
+        localStorage.removeItem('bookingSubtotal');
+    }
+    
+    // Initialize Yoco SDK if available
+    if (typeof YocoSDK !== 'undefined') {
+        // Replace with your actual Yoco public key
+        // YOCO_PUBLIC_KEY = "YOUR_YOCO_PUBLIC_KEY_HERE"
+        const yocoPublicKey = "YOCO_PUBLIC_KEY";
+        
+        const yoco = new YocoSDK({
+            publicKey: yocoPublicKey
+        });
+        
+        // You can use yoco for inline card payments if needed
+        window.yoco = yoco;
+    }
+    
+    // Service pricing calculator (global)
+    window.calculateServicePrice = function(serviceType, propertySize, isEmergency = false) {
+        const pricing = {
+            'weekly': { '1-bed': 240, '2-bed': 320, '3-bed': 380, '4-bed': 440, '5+bed': 500, 'office': 600 },
+            'biweekly': { '1-bed': 300, '2-bed': 400, '3-bed': 470, '4-bed': 540, '5+bed': 610, 'office': 700 },
+            'monthly': { '1-bed': 360, '2-bed': 480, '3-bed': 560, '4-bed': 640, '5+bed': 720, 'office': 800 },
+            'once-off': { '1-bed': 350, '2-bed': 450, '3-bed': 550, '4-bed': 650, '5+bed': 750, 'office': 850 },
+            'deep': { '1-bed': 1200, '2-bed': 1750, '3-bed': 2300, '4-bed': 2850, '5+bed': 3400, 'office': 4000 },
+            'emergency': { '1-bed': 525, '2-bed': 675, '3-bed': 825, '4-bed': 975, '5+bed': 1125, 'office': 1275 },
+            'commercial': { '1-bed': 500, '2-bed': 600, '3-bed': 700, '4-bed': 800, '5+bed': 900, 'office': 1000 }
+        };
+        
+        let basePrice = 0;
+        if (serviceType && propertySize && pricing[serviceType] && pricing[serviceType][propertySize]) {
+            basePrice = pricing[serviceType][propertySize];
+        }
+        
+        if (isEmergency && serviceType === 'emergency') {
+            basePrice = Math.round(basePrice * 1.5); // 50% emergency surcharge
+        }
+        
+        return basePrice;
+    };
+    
+    // Format currency
+    window.formatCurrency = function(amount) {
+        return 'R ' + amount.toLocaleString('en-ZA');
+    };
+    
+    // Format date
+    window.formatDate = function(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-ZA', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    };
+    
+    // Format time slot
+    window.formatTimeSlot = function(slot) {
+        const slots = {
+            '9am': '9:00 AM - 11:00 AM',
+            '11am': '11:00 AM - 1:00 PM',
+            '1pm': '1:00 PM - 3:00 PM'
+        };
+        return slots[slot] || slot;
+    };
+    
+    // Service type mapping
+    window.getServiceTypeName = function(type) {
+        const types = {
+            'weekly': 'Weekly Recurring',
+            'biweekly': 'Bi-weekly Recurring',
+            'monthly': 'Monthly Recurring',
+            'once-off': 'Once-Off Cleaning',
+            'deep': 'Deep Cleaning',
+            'emergency': 'Emergency Service',
+            'commercial': 'Commercial Cleaning'
+        };
+        return types[type] || type;
+    };
+    
+    // Property size mapping
+    window.getPropertySizeName = function(size) {
+        const sizes = {
+            '1-bed': '1-Bedroom',
+            '2-bed': '2-Bedroom',
+            '3-bed': '3-Bedroom',
+            '4-bed': '4-Bedroom',
+            '5+bed': '5+ Bedroom',
+            'office': 'Office/Commercial'
+        };
+        return sizes[size] || size;
+    };
+    
+    // Add-on names and prices
+    window.addonPrices = {
+        'windows': { name: 'Window Cleaning', price: 150 },
+        'oven': { name: 'Oven Cleaning', price: 180 },
+        'fridge': { name: 'Fridge Cleaning', price: 100 },
+        'laundry': { name: 'Laundry Service', price: 80 },
+        'carpet': { name: 'Carpet Cleaning', price: 200 },
+        'blinds': { name: 'Blind Cleaning', price: 120 }
+    };
+    
+    // Initialize tooltips
+    const tooltips = document.querySelectorAll('[data-tooltip]');
+    tooltips.forEach(element => {
+        element.addEventListener('mouseenter', function() {
+            const tooltipText = this.getAttribute('data-tooltip');
+            const tooltip = document.createElement('div');
+            tooltip.className = 'absolute bg-gray-900 text-white text-xs rounded py-1 px-2 bottom-full mb-2 left-1/2 transform -translate-x-1/2 z-50 whitespace-nowrap';
+            tooltip.textContent = tooltipText;
+            this.appendChild(tooltip);
+        });
+        
+        element.addEventListener('mouseleave', function() {
+            const tooltip = this.querySelector('.absolute');
+            if (tooltip) {
+                tooltip.remove();
+            }
         });
     });
-}
-
-// Offline detection
-window.addEventListener('online', function() {
-    console.log('You are now online');
-});
-
-window.addEventListener('offline', function() {
-    console.log('You are now offline');
-});
-
-// Page load performance tracking
-window.addEventListener('load', function() {
-    if (typeof gtag !== 'undefined') {
-        // Measure page load time
-        const navTiming = performance.getEntriesByType('navigation')[0];
-        if (navTiming) {
-            const loadTime = navTiming.loadEventEnd - navTiming.loadEventStart;
-            gtag('event', 'timing_complete', {
-                'name': 'page_load',
-                'value': Math.round(loadTime),
-                'event_category': 'Performance'
+    
+    // Initialize accordions
+    const accordions = document.querySelectorAll('[data-accordion]');
+    accordions.forEach(accordion => {
+        const header = accordion.querySelector('[data-accordion-header]');
+        const content = accordion.querySelector('[data-accordion-content]');
+        
+        if (header && content) {
+            header.addEventListener('click', function() {
+                const isExpanded = this.getAttribute('aria-expanded') === 'true';
+                this.setAttribute('aria-expanded', !isExpanded);
+                content.classList.toggle('hidden');
+                
+                // Toggle icon
+                const icon = this.querySelector('i');
+                if (icon) {
+                    if (isExpanded) {
+                        icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                    } else {
+                        icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                    }
+                }
             });
+        }
+    });
+    
+    // Initialize modals
+    const modalTriggers = document.querySelectorAll('[data-modal-target]');
+    modalTriggers.forEach(trigger => {
+        trigger.addEventListener('click', function() {
+            const modalId = this.getAttribute('data-modal-target');
+            const modal = document.getElementById(modalId);
+            
+            if (modal) {
+                modal.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+            }
+        });
+    });
+    
+    const modalCloses = document.querySelectorAll('[data-modal-close]');
+    modalCloses.forEach(close => {
+        close.addEventListener('click', function() {
+            const modal = this.closest('.modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+            }
+        });
+    });
+    
+    // Close modal on outside click
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('modal')) {
+            event.target.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+    });
+    
+    // Initialize counters
+    const counters = document.querySelectorAll('[data-counter]');
+    counters.forEach(counter => {
+        const minusBtn = counter.querySelector('[data-counter-minus]');
+        const plusBtn = counter.querySelector('[data-counter-plus]');
+        const valueEl = counter.querySelector('[data-counter-value]');
+        
+        if (minusBtn && plusBtn && valueEl) {
+            let value = parseInt(valueEl.textContent) || 0;
+            const min = parseInt(counter.getAttribute('data-counter-min')) || 0;
+            const max = parseInt(counter.getAttribute('data-counter-max')) || 999;
+            
+            minusBtn.addEventListener('click', function() {
+                if (value > min) {
+                    value--;
+                    valueEl.textContent = value;
+                    updateCounter(counter, value);
+                }
+            });
+            
+            plusBtn.addEventListener('click', function() {
+                if (value < max) {
+                    value++;
+                    valueEl.textContent = value;
+                    updateCounter(counter, value);
+                }
+            });
+        }
+    });
+    
+    function updateCounter(counter, value) {
+        const onChange = counter.getAttribute('data-counter-onchange');
+        if (onChange && typeof window[onChange] === 'function') {
+            window[onChange](value);
+        }
+    }
+    
+    // Initialize tabs
+    const tabContainers = document.querySelectorAll('[data-tabs]');
+    tabContainers.forEach(container => {
+        const tabs = container.querySelectorAll('[data-tab]');
+        const tabPanes = container.querySelectorAll('[data-tab-pane]');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                
+                // Update active tab
+                tabs.forEach(t => {
+                    t.classList.remove('active');
+                    t.classList.remove('text-primary');
+                    t.classList.add('text-gray-600');
+                });
+                this.classList.add('active', 'text-primary');
+                this.classList.remove('text-gray-600');
+                
+                // Show active tab pane
+                tabPanes.forEach(pane => {
+                    pane.classList.add('hidden');
+                    if (pane.getAttribute('data-tab-pane') === tabId) {
+                        pane.classList.remove('hidden');
+                    }
+                });
+            });
+        });
+    });
+    
+    // Page load animations
+    const animateOnScroll = function() {
+        const elements = document.querySelectorAll('[data-animate]');
+        
+        elements.forEach(element => {
+            const elementTop = element.getBoundingClientRect().top;
+            const elementVisible = 150;
+            
+            if (elementTop < window.innerHeight - elementVisible) {
+                const animation = element.getAttribute('data-animate');
+                element.classList.add(animation);
+            }
+        });
+    };
+    
+    window.addEventListener('scroll', animateOnScroll);
+    animateOnScroll(); // Initial check
+    
+    // Initialize lazy loading for images
+    if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.classList.remove('lazy');
+                    observer.unobserve(img);
+                }
+            });
+        });
+        
+        document.querySelectorAll('img.lazy').forEach(img => {
+            imageObserver.observe(img);
+        });
+    }
+    
+    // Service Worker Registration (optional - for PWA)
+    if ('serviceWorker' in navigator && window.location.hostname !== 'localhost') {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/sw.js').then(function(registration) {
+                console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            }, function(err) {
+                console.log('ServiceWorker registration failed: ', err);
+            });
+        });
+    }
+    
+    // Offline detection
+    window.addEventListener('online', function() {
+        console.log('You are now online');
+        showNotification('You are back online!', 'success');
+    });
+    
+    window.addEventListener('offline', function() {
+        console.log('You are now offline');
+        showNotification('You are offline. Some features may not work.', 'warning');
+    });
+    
+    function showNotification(message, type) {
+        const notification = document.createElement('div');
+        notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 transform transition-transform duration-300 ${
+            type === 'success' ? 'bg-green-500 text-white' : 'bg-yellow-500 text-white'
+        }`;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.classList.add('-translate-y-full');
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        }, 3000);
+    }
+    
+    // Page load performance tracking
+    window.addEventListener('load', function() {
+        if (typeof gtag !== 'undefined') {
+            // Measure page load time
+            const navTiming = performance.getEntriesByType('navigation')[0];
+            if (navTiming) {
+                const loadTime = navTiming.loadEventEnd - navTiming.loadEventStart;
+                gtag('event', 'timing_complete', {
+                    'name': 'page_load',
+                    'value': Math.round(loadTime),
+                    'event_category': 'Performance'
+                });
+            }
+        }
+    });
+    
+    // Booking abandonment tracking
+    let bookingStartTime = new Date();
+    
+    // Track when user starts booking
+    if (window.location.pathname.includes('/booking.html')) {
+        localStorage.setItem('bookingStarted', bookingStartTime.toISOString());
+        
+        // Track page changes
+        window.addEventListener('beforeunload', function() {
+            const timeSpent = new Date() - bookingStartTime;
+            if (timeSpent > 10000) { // Only track if spent more than 10 seconds
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'booking_abandoned', {
+                        'event_category': 'booking',
+                        'event_label': 'service_selection',
+                        'value': Math.round(timeSpent / 1000) // Time in seconds
+                    });
+                }
+            }
+        });
+    }
+    
+    // Track booking completion
+    if (window.location.pathname.includes('/summary.html')) {
+        const bookingStarted = localStorage.getItem('bookingStarted');
+        if (bookingStarted) {
+            const completionTime = new Date() - new Date(bookingStarted);
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'booking_completed', {
+                    'event_category': 'booking',
+                    'event_label': 'checkout',
+                    'value': Math.round(completionTime / 1000) // Time in seconds
+                });
+            }
+            localStorage.removeItem('bookingStarted');
         }
     }
 });
+
+// Google Apps Script integration helper
+window.submitToGoogleAppsScript = async function(data, endpoint) {
+    try {
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            mode: 'no-cors', // Required for Google Apps Script web apps
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+        
+        // With no-cors, we can't read the response, but we assume success
+        return { success: true };
+    } catch (error) {
+        console.error('Error submitting to Google Apps Script:', error);
+        return { success: false, error: error.message };
+    }
+};
+
+// Yoco payment helper
+window.processYocoPayment = async function(amount, currency = 'ZAR') {
+    if (!window.yoco) {
+        throw new Error('Yoco SDK not loaded');
+    }
+    
+    try {
+        const result = await window.yoco.createToken({
+            amountInCents: amount * 100,
+            currency: currency,
+            name: document.getElementById('full-name')?.value || 'Customer',
+            description: 'Ngaoyi Cleaning Service',
+            successCallback: function(data) {
+                console.log('Yoco token created:', data);
+                return data;
+            },
+            errorCallback: function(error) {
+                console.error('Yoco error:', error);
+                throw error;
+            }
+        });
+        
+        return result;
+    } catch (error) {
+        console.error('Yoco payment error:', error);
+        throw error;
+    }
+};
