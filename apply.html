@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful | Ngaoyi Cleaning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="font-sans bg-gray-50 min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-white rounded-xl shadow-lg p-8 text-center">
+        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fas fa-check text-green-600 text-3xl"></i>
+        </div>
+        
+        <h1 class="text-2xl font-bold text-gray-800 mb-4">Payment Successful!</h1>
+        
+        <div id="loading" class="mb-6">
+            <p class="text-gray-600 mb-4">Completing your booking...</p>
+            <div class="w-full bg-gray-200 rounded-full h-2">
+                <div class="bg-blue-600 h-2 rounded-full animate-pulse"></div>
+            </div>
+        </div>
+        
+        <div id="success" class="hidden">
+            <p class="text-gray-600 mb-6">
+                Thank you for your payment! Your booking has been confirmed and emails have been sent.
+            </p>
+            
+            <div class="bg-gray-50 p-4 rounded-lg mb-6 text-left">
+                <p class="font-semibold mb-2">Booking Details:</p>
+                <p id="booking-ref" class="text-blue-600 font-bold"></p>
+                <p id="booking-details" class="text-sm text-gray-600"></p>
+            </div>
+            
+            <div class="space-y-3">
+                <div class="flex items-start">
+                    <i class="fas fa-envelope text-blue-500 mt-1 mr-3"></i>
+                    <div class="text-left">
+                        <p class="font-medium">Check your email</p>
+                        <p class="text-sm text-gray-600">We've sent a confirmation email with all details</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <i class="fas fa-phone text-blue-500 mt-1 mr-3"></i>
+                    <div class="text-left">
+                        <p class="font-medium">Expect a call</p>
+                        <p class="text-sm text-gray-600">Our consultant will contact you within 30 minutes</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <i class="fas fa-user text-blue-500 mt-1 mr-3"></i>
+                    <div class="text-left">
+                        <p class="font-medium">Cleaner assignment</p>
+                        <p class="text-sm text-gray-600">You'll receive cleaner details in the confirmation email</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 pt-6 border-t">
+                <p class="text-sm text-gray-500 mb-4">
+                    Need immediate assistance? Call us at <a href="tel:0707643709" class="text-blue-600">070 764 3709</a>
+                </p>
+                <a href="/" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                    Return to Homepage
+                </a>
+            </div>
+        </div>
+        
+        <div id="error" class="hidden">
+            <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-exclamation-triangle text-red-600 text-3xl"></i>
+            </div>
+            <p class="text-gray-600 mb-4" id="error-message"></p>
+            <a href="/summary.html" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                Try Again
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const bookingRef = urlParams.get('ref');
+            const checkoutId = urlParams.get('checkoutId');
+            
+            // Get booking data from localStorage
+            const bookingData = JSON.parse(localStorage.getItem('bookingData') || '{}');
+            const addonsData = JSON.parse(localStorage.getItem('bookingAddons') || '{}');
+            const totalAmount = parseFloat(localStorage.getItem('bookingSubtotal') || '0');
+            
+            if (!bookingRef || !checkoutId || !bookingData.fullName) {
+                showError('Invalid booking information. Please contact support.');
+                return;
+            }
+            
+            // Save booking to backend
+            saveBooking(bookingRef, checkoutId, bookingData, addonsData, totalAmount);
+        });
+        
+        async function saveBooking(bookingRef, checkoutId, bookingData, addonsData, totalAmount) {
+            try {
+                const paymentData = {
+                    checkoutId: checkoutId,
+                    paymentId: 'PY-' + Date.now(),
+                    status: 'paid'
+                };
+                
+                const bookingPayload = {
+                    bookingRef: bookingRef,
+                    customer: {
+                        name: bookingData.fullName,
+                        email: bookingData.email,
+                        phone: bookingData.phone
+                    },
+                    address: bookingData.address,
+                    cleaningDate: bookingData.cleaningDate,
+                    timeSlot: bookingData.timeSlot,
+                    serviceType: bookingData.serviceType,
+                    propertySize: bookingData.propertySize,
+                    materialOption: bookingData.materialsOption,
+                    instructions: bookingData.instructions,
+                    totalAmount: totalAmount,
+                    discountCode: localStorage.getItem('discountCode') || '',
+                    discountPercent: parseFloat(localStorage.getItem('discountPercent') || '0'),
+                    addons: addonsData
+                };
+                
+                const response = await fetch('GAS_ENDPOINT_URL', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'save_booking',
+                        bookingData: bookingPayload,
+                        paymentData: paymentData
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Show success message
+                    document.getElementById('loading').classList.add('hidden');
+                    document.getElementById('success').classList.remove('hidden');
+                    
+                    // Display booking details
+                    document.getElementById('booking-ref').textContent = `Reference: ${bookingRef}`;
+                    document.getElementById('booking-details').textContent = 
+                        `${bookingData.serviceType} for ${bookingData.propertySize} on ${new Date(bookingData.cleaningDate).toLocaleDateString('en-ZA', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
+                    
+                    // Clear localStorage
+                    localStorage.removeItem('bookingData');
+                    localStorage.removeItem('bookingAddons');
+                    localStorage.removeItem('bookingSubtotal');
+                    localStorage.removeItem('discountCode');
+                    localStorage.removeItem('discountPercent');
+                    
+                } else {
+                    showError(result.error?.message || 'Failed to save booking. Please contact support.');
+                }
+                
+            } catch (error) {
+                console.error('Error saving booking:', error);
+                showError('Network error. Please contact us at 070 764 3709 to confirm your booking.');
+            }
+        }
+        
+        function showError(message) {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('error').classList.remove('hidden');
+            document.getElementById('error-message').textContent = message;
+        }
+    </script>
+</body>
+</html>
