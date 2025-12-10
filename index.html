@@ -6,6 +6,18 @@
     <title>Ngaoyi Cleaning | Professional Cleaning Services in Gauteng</title>
     <meta name="description" content="Book trusted cleaners instantly in Gauteng. Flexible schedules, recurring plans, and emergency services available. Quality cleaning for homes, offices, and events.">
     
+    <!-- Open Graph / Social Meta Tags -->
+    <meta property="og:title" content="Ngaoyi Cleaning | Professional Cleaning Services in Gauteng">
+    <meta property="og:description" content="Book trusted cleaners instantly in Gauteng. Quality cleaning for homes, offices, and events.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png">
+    <meta property="og:url" content="https://ngaoyicleaning.co.za">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Ngaoyi Cleaning | Professional Cleaning Services">
+    <meta name="twitter:description" content="Book trusted cleaners instantly in Gauteng">
+    
     <!-- Structured Data -->
     <script type="application/ld+json">
     {
@@ -26,216 +38,374 @@
             "Su 09:00-14:00"
         ],
         "priceRange": "R240 - R2300",
-        "url": "https://ngaoyicleaning.co.za"
+        "url": "https://ngaoyicleaning.co.za",
+        "sameAs": [
+            "https://www.facebook.com/ngaoyicleaning",
+            "https://www.instagram.com/ngaoyicleaning"
+        ],
+        "areaServed": {
+            "@type": "Place",
+            "name": "Gauteng Province"
+        }
     }
+    </script>
+    
+    <!-- Google Analytics (replace GA_MEASUREMENT_ID with your ID) -->
+    <!-- GA_MEASUREMENT_ID = "G-5V9NJTNT1N" -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
     </script>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        /* Custom styles */
-        .menu-hidden {
-            display: none;
+    <link href="/assets/css/styles.css" rel="stylesheet">
+    
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#003b6f',
+                        'primary-light': '#0056a3',
+                        'secondary': '#000000',
+                        'accent': '#00c6ff',
+                        'light-gray': '#e9ecef'
+                    },
+                    fontFamily: {
+                        'sans': ['Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif']
+                    }
+                }
+            }
         }
-        .menu-visible {
-            display: block;
-        }
-    </style>
+    </script>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
 </head>
 <body class="font-sans text-gray-700 bg-white">
-    <!-- Skip link for accessibility -->
-    <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 bg-blue-700 text-white p-2 z-50">Skip to main content</a>
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary text-white p-2 z-50">Skip to main content</a>
 
     <!-- Navigation -->
     <header class="sticky top-0 z-40 bg-white shadow-md">
-        <nav class="container mx-auto px-4 py-3">
+        <nav class="container mx-auto px-4 py-3" aria-label="Main navigation">
             <div class="flex justify-between items-center">
                 <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 bg-gradient-to-br from-blue-700 to-blue-400 rounded-full overflow-hidden flex items-center justify-center">
+                    <div class="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-full overflow-hidden flex items-center justify-center">
                         <img src="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png" 
                              alt="Ngaoyi Cleaning Logo" class="w-full h-full object-cover">
                     </div>
                     <div>
-                        <h1 class="text-2xl font-bold text-blue-700">Ngaoyi Cleaning</h1>
+                        <h1 class="text-2xl font-bold text-primary">Ngaoyi Cleaning</h1>
                         <p class="text-sm text-gray-600">Professional Cleaning Services</p>
                     </div>
                 </div>
                 
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-6">
-                    <a href="/ngaoyicleaningwebsite/index.html" class="text-gray-700 hover:text-blue-700 font-medium">Home</a>
-                    <a href="/ngaoyicleaningwebsite/services.html" class="text-gray-700 hover:text-blue-700 font-medium">Services</a>
-                    <a href="/ngaoyicleaningwebsite/pricing.html" class="text-gray-700 hover:text-blue-700 font-medium">Pricing</a>
-                    <a href="/ngaoyicleaningwebsite/about.html" class="text-gray-700 hover:text-blue-700 font-medium">About</a>
-                    <a href="/ngaoyicleaningwebsite/booking.html" class="bg-gradient-to-r from-blue-700 to-blue-500 text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg transition-all">Book Now</a>
+                    <a href="/" class="text-primary hover:text-accent font-medium transition-colors duration-200">Home</a>
+                    <a href="/services.html" class="text-gray-700 hover:text-primary font-medium transition-colors duration-200">Services</a>
+                    <a href="/pricing.html" class="text-gray-700 hover:text-primary font-medium transition-colors duration-200">Pricing</a>
+                    <a href="/about.html" class="text-gray-700 hover:text-primary font-medium transition-colors duration-200">About</a>
+                    <a href="/booking.html" class="bg-gradient-to-r from-primary to-accent text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg transition-all duration-200">Book Now</a>
                 </div>
                 
                 <!-- Mobile Menu Button -->
-                <button id="mobile-menu-toggle" class="md:hidden text-blue-700 text-2xl">
+                <button id="mobile-menu-toggle" class="md:hidden text-primary text-2xl" aria-label="Toggle menu" aria-expanded="false">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
             
             <!-- Mobile Menu -->
-            <div id="mobile-menu" class="md:hidden mt-4 space-y-4 hidden">
-                <a href="/ngaoyicleaningwebsite/index.html" class="block text-gray-700 font-medium hover:text-blue-700">Home</a>
-                <a href="/ngaoyicleaningwebsite/services.html" class="block text-gray-700 font-medium hover:text-blue-700">Services</a>
-                <a href="/ngaoyicleaningwebsite/pricing.html" class="block text-gray-700 font-medium hover:text-blue-700">Pricing</a>
-                <a href="/ngaoyicleaningwebsite/about.html" class="block text-gray-700 font-medium hover:text-blue-700">About</a>
-                <a href="/ngaoyicleaningwebsite/booking.html" class="block bg-gradient-to-r from-blue-700 to-blue-500 text-white px-6 py-2 rounded-full font-semibold text-center">Book Now</a>
+            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-4">
+                <a href="/" class="block text-primary font-medium hover:text-accent transition-colors duration-200">Home</a>
+                <a href="/services.html" class="block text-gray-700 font-medium hover:text-primary transition-colors duration-200">Services</a>
+                <a href="/pricing.html" class="block text-gray-700 font-medium hover:text-primary transition-colors duration-200">Pricing</a>
+                <a href="/about.html" class="block text-gray-700 font-medium hover:text-primary transition-colors duration-200">About</a>
+                <a href="/booking.html" class="block bg-gradient-to-r from-primary to-accent text-white px-6 py-2 rounded-full font-semibold text-center hover:shadow-lg transition-all duration-200">Book Now</a>
             </div>
         </nav>
     </header>
 
     <main id="main-content">
         <!-- Hero Section -->
-        <section class="relative bg-gradient-to-r from-blue-700 to-blue-900 text-white py-16 md:py-24">
+        <section class="relative bg-gradient-to-r from-primary to-primary-light text-white py-16 md:py-24">
             <div class="container mx-auto px-4">
                 <div class="max-w-3xl mx-auto text-center">
                     <h2 class="text-4xl md:text-5xl font-bold mb-6">Book Trusted Cleaners Instantly</h2>
                     <p class="text-xl mb-8 opacity-90">Flexible, reliable cleaning services for homes, offices, and events across Gauteng</p>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                        <a href="/ngaoyicleaningwebsite/booking.html" class="bg-white text-blue-700 px-8 py-3 rounded-full font-semibold hover:shadow-xl transition-all duration-300">Book Now Online</a>
-                        <a href="/ngaoyicleaningwebsite/pricing.html" class="bg-transparent border-2 border-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-700 transition-all duration-300">View Pricing</a>
+                        <a href="/booking.html" class="bg-white text-primary px-8 py-3 rounded-full font-semibold hover:shadow-xl transition-all duration-300">Book Now Online</a>
+                        <a href="/pricing.html" class="bg-transparent border-2 border-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-primary transition-all duration-300">View Pricing</a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Areas We Serve -->
-        <section class="py-16 bg-gray-50">
+        <!-- Coverage Areas -->
+        <section class="py-12 bg-gray-50">
             <div class="container mx-auto px-4">
-                <h2 class="text-3xl font-bold text-center text-blue-700 mb-12">Areas We Serve in Gauteng</h2>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-                    <div class="bg-white p-4 rounded-lg text-center font-medium text-blue-700 hover:bg-blue-700 hover:text-white transition-colors shadow">
+                <h2 class="text-2xl font-bold text-center text-primary mb-8">Areas We Serve in Gauteng</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-white p-4 rounded-lg text-center font-medium text-primary hover:bg-primary hover:text-white transition-colors cursor-default shadow-sm">
                         Johannesburg
                     </div>
-                    <div class="bg-white p-4 rounded-lg text-center font-medium text-blue-700 hover:bg-blue-700 hover:text-white transition-colors shadow">
+                    <div class="bg-white p-4 rounded-lg text-center font-medium text-primary hover:bg-primary hover:text-white transition-colors cursor-default shadow-sm">
                         Pretoria
                     </div>
-                    <div class="bg-white p-4 rounded-lg text-center font-medium text-blue-700 hover:bg-blue-700 hover:text-white transition-colors shadow">
+                    <div class="bg-white p-4 rounded-lg text-center font-medium text-primary hover:bg-primary hover:text-white transition-colors cursor-default shadow-sm">
                         Sandton
                     </div>
-                    <div class="bg-white p-4 rounded-lg text-center font-medium text-blue-700 hover:bg-blue-700 hover:text-white transition-colors shadow">
+                    <div class="bg-white p-4 rounded-lg text-center font-medium text-primary hover:bg-primary hover:text-white transition-colors cursor-default shadow-sm">
                         Midrand
                     </div>
-                    <div class="bg-white p-4 rounded-lg text-center font-medium text-blue-700 hover:bg-blue-700 hover:text-white transition-colors shadow">
+                    <div class="bg-white p-4 rounded-lg text-center font-medium text-primary hover:bg-primary hover:text-white transition-colors cursor-default shadow-sm">
                         Centurion
                     </div>
-                    <div class="bg-white p-4 rounded-lg text-center font-medium text-blue-700 hover:bg-blue-700 hover:text-white transition-colors shadow">
+                    <div class="bg-white p-4 rounded-lg text-center font-medium text-primary hover:bg-primary hover:text-white transition-colors cursor-default shadow-sm">
                         Fourways
                     </div>
-                    <div class="bg-white p-4 rounded-lg text-center font-medium text-blue-700 hover:bg-blue-700 hover:text-white transition-colors shadow">
+                    <div class="bg-white p-4 rounded-lg text-center font-medium text-primary hover:bg-primary hover:text-white transition-colors cursor-default shadow-sm">
                         Randburg
                     </div>
-                    <div class="bg-white p-4 rounded-lg text-center font-medium text-blue-700 hover:bg-blue-700 hover:text-white transition-colors shadow">
+                    <div class="bg-white p-4 rounded-lg text-center font-medium text-primary hover:bg-primary hover:text-white transition-colors cursor-default shadow-sm">
                         Roodepoort
                     </div>
                 </div>
-                <p class="text-center text-gray-600 mt-8">And surrounding suburbs! Contact us if your area is not listed.</p>
+                <p class="text-center text-gray-600 mt-6">And surrounding suburbs across Gauteng!</p>
             </div>
         </section>
 
         <!-- Services Preview -->
-        <section class="py-16">
+        <section class="py-16 bg-white">
             <div class="container mx-auto px-4">
-                <h2 class="text-3xl font-bold text-center text-blue-700 mb-12">Our Cleaning Services</h2>
+                <h2 class="text-3xl font-bold text-center text-primary mb-12">Our Cleaning Services</h2>
                 <div class="grid md:grid-cols-3 gap-8">
-                    <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+                    <!-- Service 1 -->
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow duration-300">
                         <div class="p-6">
-                            <div class="w-16 h-16 bg-gradient-to-br from-blue-700 to-blue-400 rounded-full flex items-center justify-center mb-4">
+                            <div class="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center mb-4">
                                 <i class="fas fa-calendar-check text-white text-2xl"></i>
                             </div>
-                            <h3 class="text-xl font-bold text-blue-700 mb-3">Recurring Plans</h3>
+                            <h3 class="text-xl font-bold text-primary mb-3">Recurring Plans</h3>
                             <p class="text-gray-600 mb-4">Weekly, bi-weekly, or monthly cleaning schedules for consistent cleanliness.</p>
-                            <div class="text-blue-700 font-bold text-lg mb-4">From R240/session</div>
-                            <a href="/ngaoyicleaningwebsite/services.html#recurring" class="text-blue-500 font-semibold hover:text-blue-700">Learn more →</a>
+                            <div class="text-primary font-bold text-lg mb-4">From R240/session</div>
+                            <a href="/services.html#recurring" class="text-accent font-semibold hover:text-primary inline-flex items-center">
+                                Learn more <i class="fas fa-arrow-right ml-2"></i>
+                            </a>
                         </div>
                     </div>
                     
-                    <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+                    <!-- Service 2 -->
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow duration-300">
                         <div class="p-6">
-                            <div class="w-16 h-16 bg-gradient-to-br from-blue-700 to-blue-400 rounded-full flex items-center justify-center mb-4">
+                            <div class="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center mb-4">
                                 <i class="fas fa-broom text-white text-2xl"></i>
                             </div>
-                            <h3 class="text-xl font-bold text-blue-700 mb-3">Once-Off Cleaning</h3>
-                            <p class="text-gray-600 mb-4">Perfect for special events, move-in/move-out, or spring cleaning.</p>
-                            <div class="text-blue-700 font-bold text-lg mb-4">From R350</div>
-                            <a href="/ngaoyicleaningwebsite/services.html#once-off" class="text-blue-500 font-semibold hover:text-blue-700">Learn more →</a>
+                            <h3 class="text-xl font-bold text-primary mb-3">Once-Off Cleaning</h3>
+                            <p class="text-gray-600 mb-4">Perfect for special events, move-in/move-out, or deep cleans.</p>
+                            <div class="text-primary font-bold text-lg mb-4">From R350</div>
+                            <a href="/services.html#once-off" class="text-accent font-semibold hover:text-primary inline-flex items-center">
+                                Learn more <i class="fas fa-arrow-right ml-2"></i>
+                            </a>
                         </div>
                     </div>
                     
-                    <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+                    <!-- Service 3 -->
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow duration-300">
                         <div class="p-6">
-                            <div class="w-16 h-16 bg-gradient-to-br from-blue-700 to-blue-400 rounded-full flex items-center justify-center mb-4">
+                            <div class="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center mb-4">
                                 <i class="fas fa-clock text-white text-2xl"></i>
                             </div>
-                            <h3 class="text-xl font-bold text-blue-700 mb-3">Emergency Services</h3>
+                            <h3 class="text-xl font-bold text-primary mb-3">Emergency Services</h3>
                             <p class="text-gray-600 mb-4">Quick-response cleaning for urgent situations with weekend availability.</p>
-                            <div class="text-blue-700 font-bold text-lg mb-4">Same-day Service</div>
-                            <a href="/ngaoyicleaningwebsite/services.html#emergency" class="text-blue-500 font-semibold hover:text-blue-700">Learn more →</a>
+                            <div class="text-primary font-bold text-lg mb-4">Same-day Service</div>
+                            <a href="/services.html#emergency" class="text-accent font-semibold hover:text-primary inline-flex items-center">
+                                Learn more <i class="fas fa-arrow-right ml-2"></i>
+                            </a>
                         </div>
                     </div>
+                </div>
+                
+                <div class="text-center mt-10">
+                    <a href="/services.html" class="inline-flex items-center bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-light transition-colors">
+                        View all services <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
                 </div>
             </div>
         </section>
 
         <!-- Booking CTA Section -->
-        <section class="py-16 bg-gradient-to-r from-blue-700 to-blue-600 text-white">
-            <div class="container mx-auto px-4 text-center">
-                <h2 class="text-3xl font-bold mb-6">Ready to Experience Spotless Cleaning?</h2>
-                <p class="text-xl mb-8 opacity-90 max-w-2xl mx-auto">Book online in minutes and get matched with your perfect cleaner</p>
-                
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 max-w-4xl mx-auto">
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-user-shield text-white text-2xl"></i>
+        <section class="py-16 bg-gradient-to-r from-primary to-primary-light text-white">
+            <div class="container mx-auto px-4">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h2 class="text-3xl font-bold mb-6">Ready to Experience Spotless Cleaning?</h2>
+                    <p class="text-xl mb-8 opacity-90">Book online in minutes and get matched with your perfect cleaner</p>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10">
+                        <div class="flex flex-col items-center">
+                            <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-3">
+                                <i class="fas fa-user-shield text-2xl"></i>
+                            </div>
+                            <span class="font-semibold">Vetted Cleaners</span>
                         </div>
-                        <h3 class="font-semibold">Vetted Cleaners</h3>
+                        <div class="flex flex-col items-center">
+                            <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-3">
+                                <i class="fas fa-credit-card text-2xl"></i>
+                            </div>
+                            <span class="font-semibold">Secure Payment</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-3">
+                                <i class="fas fa-calendar-check text-2xl"></i>
+                            </div>
+                            <span class="font-semibold">Flexible Scheduling</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-3">
+                                <i class="fas fa-star text-2xl"></i>
+                            </div>
+                            <span class="font-semibold">Quality Guaranteed</span>
+                        </div>
                     </div>
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-credit-card text-white text-2xl"></i>
+                    
+                    <a href="/booking.html" class="inline-flex items-center bg-white text-primary px-8 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all duration-300">
+                        <i class="fas fa-arrow-right mr-3"></i> Start Booking Now
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Choose Us -->
+        <section class="py-16 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-3xl font-bold text-center text-primary mb-12">Why Choose Ngaoyi Cleaning?</h2>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0">
+                                <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                                    <i class="fas fa-user-shield text-white"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-primary mb-2">Vetted & Trained Cleaners</h3>
+                                <p class="text-gray-600">All cleaners undergo background checks and professional training.</p>
+                            </div>
                         </div>
-                        <h3 class="font-semibold">Secure Payment</h3>
-                    </div>
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-calendar-check text-white text-2xl"></i>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0">
+                                <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                                    <i class="fas fa-shield-alt text-white"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-primary mb-2">Fully Insured</h3>
+                                <p class="text-gray-600">Complete peace of mind with fully insured cleaning services.</p>
+                            </div>
                         </div>
-                        <h3 class="font-semibold">Flexible Scheduling</h3>
-                    </div>
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-star text-white text-2xl"></i>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0">
+                                <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                                    <i class="fas fa-star text-white"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-primary mb-2">5-Star Service</h3>
+                                <p class="text-gray-600">Consistent quality with positive reviews and satisfaction guarantee.</p>
+                            </div>
                         </div>
-                        <h3 class="font-semibold">Quality Guaranteed</h3>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0">
+                                <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                                    <i class="fas fa-leaf text-white"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-primary mb-2">Eco-Friendly Products</h3>
+                                <p class="text-gray-600">Safe, environmentally friendly cleaning products for your family and pets.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                
-                <a href="/ngaoyicleaningwebsite/booking.html" class="inline-block bg-white text-blue-700 px-8 py-3 rounded-full font-semibold hover:shadow-xl transition-all duration-300 text-lg">
-                    Start Booking Now
-                </a>
             </div>
         </section>
 
         <!-- Cleaner Recruitment -->
-        <section class="py-16 bg-gray-100">
-            <div class="container mx-auto px-4 text-center">
-                <h2 class="text-3xl font-bold text-blue-700 mb-6">Want to Join Our Team?</h2>
-                <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">Flexible schedules, fair pay, and reliable work for professional cleaners</p>
-                
-                <div class="flex flex-wrap justify-center gap-4 mb-8">
-                    <div class="bg-white px-4 py-2 rounded-full font-semibold text-blue-700">Flexible Hours</div>
-                    <div class="bg-white px-4 py-2 rounded-full font-semibold text-blue-700">Competitive Pay</div>
-                    <div class="bg-white px-4 py-2 rounded-full font-semibold text-blue-700">Ongoing Training</div>
-                    <div class="bg-white px-4 py-2 rounded-full font-semibold text-blue-700">Supportive Team</div>
+        <section class="py-16 bg-gradient-to-r from-accent to-blue-300">
+            <div class="container mx-auto px-4">
+                <div class="max-w-3xl mx-auto text-center">
+                    <h2 class="text-3xl font-bold text-primary mb-6">Want to Join Our Team?</h2>
+                    <p class="text-xl text-primary mb-8">Flexible Schedules, Fair Pay, Reliable Work</p>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                        <div class="bg-white bg-opacity-90 text-primary p-4 rounded-lg font-semibold">Flexible Hours</div>
+                        <div class="bg-white bg-opacity-90 text-primary p-4 rounded-lg font-semibold">Competitive Pay</div>
+                        <div class="bg-white bg-opacity-90 text-primary p-4 rounded-lg font-semibold">Ongoing Training</div>
+                        <div class="bg-white bg-opacity-90 text-primary p-4 rounded-lg font-semibold">Supportive Team</div>
+                    </div>
+                    
+                    <a href="mailto:ngaoyicleaning@gmail.com?subject=Cleaner Application" class="inline-flex items-center bg-primary text-white px-8 py-3 rounded-full font-semibold hover:bg-primary-light transition-colors">
+                        <i class="fas fa-user-plus mr-2"></i> Apply Now
+                    </a>
                 </div>
-                
-                <a href="https://forms.gle/YOUR_APPLICATION_FORM" class="inline-block bg-blue-700 text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-800 transition-colors">
-                    Apply Now as a Cleaner
-                </a>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="py-16 bg-white">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center text-primary mb-12">What Our Clients Say</h2>
+                <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                        <div class="flex items-center mb-4">
+                            <div class="text-yellow-400 mr-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 italic mb-4">"Ngaoyi Cleaning transformed my apartment before move-in. The attention to detail was impressive, and they were very professional. Highly recommended!"</p>
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-semibold mr-3">TS</div>
+                            <div>
+                                <p class="font-semibold text-primary">Thandi S.</p>
+                                <p class="text-sm text-gray-500">Johannesburg</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                        <div class="flex items-center mb-4">
+                            <div class="text-yellow-400 mr-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 italic mb-4">"The weekly cleaning plan has been a lifesaver for our busy family. Consistent quality and reliable service. Great value for money!"</p>
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-semibold mr-3">MJ</div>
+                            <div>
+                                <p class="font-semibold text-primary">Michael J.</p>
+                                <p class="text-sm text-gray-500">Cape Town</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
@@ -245,46 +415,66 @@
         <div class="container mx-auto px-4">
             <div class="grid md:grid-cols-4 gap-8 mb-8">
                 <div>
-                    <h3 class="text-xl font-bold text-blue-400 mb-4">Ngaoyi Cleaning</h3>
-                    <p class="text-gray-400 mb-4">Professional cleaning services across Gauteng.</p>
+                    <h3 class="text-xl font-bold text-accent mb-4">Ngaoyi Cleaning</h3>
+                    <p class="text-gray-400 mb-4">Professional cleaning services available across Gauteng. Vetted Cleaner Teams, Flexible Scheduling, Recurring Plans Available.</p>
                     <div class="flex space-x-4">
-                        <a href="https://facebook.com" class="text-gray-400 hover:text-blue-400"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://instagram.com" class="text-gray-400 hover:text-blue-400"><i class="fab fa-instagram"></i></a>
-                        <a href="https://wa.me/27707643709" class="text-gray-400 hover:text-blue-400"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://facebook.com/ngaoyicleaning" aria-label="Facebook" class="text-gray-400 hover:text-accent transition-colors">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://instagram.com/ngaoyicleaning" aria-label="Instagram" class="text-gray-400 hover:text-accent transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://wa.me/27707643709" aria-label="WhatsApp" class="text-gray-400 hover:text-accent transition-colors">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
                     </div>
                 </div>
                 
                 <div>
                     <h4 class="font-semibold text-white mb-4">Quick Links</h4>
                     <ul class="space-y-2">
-                        <li><a href="/ngaoyicleaningwebsite/index.html" class="text-gray-400 hover:text-blue-400">Home</a></li>
-                        <li><a href="/ngaoyicleaningwebsite/services.html" class="text-gray-400 hover:text-blue-400">Services</a></li>
-                        <li><a href="/ngaoyicleaningwebsite/pricing.html" class="text-gray-400 hover:text-blue-400">Pricing</a></li>
-                        <li><a href="/ngaoyicleaningwebsite/about.html" class="text-gray-400 hover:text-blue-400">About</a></li>
+                        <li><a href="/" class="text-gray-400 hover:text-accent transition-colors">Home</a></li>
+                        <li><a href="/services.html" class="text-gray-400 hover:text-accent transition-colors">Services</a></li>
+                        <li><a href="/pricing.html" class="text-gray-400 hover:text-accent transition-colors">Pricing</a></li>
+                        <li><a href="/about.html" class="text-gray-400 hover:text-accent transition-colors">About Us</a></li>
                     </ul>
                 </div>
                 
                 <div>
-                    <h4 class="font-semibold text-white mb-4">Legal</h4>
+                    <h4 class="font-semibold text-white mb-4">Our Services</h4>
                     <ul class="space-y-2">
-                        <li><a href="/ngaoyicleaningwebsite/privacy.html" class="text-gray-400 hover:text-blue-400">Privacy Policy</a></li>
-                        <li><a href="/ngaoyicleaningwebsite/terms.html" class="text-gray-400 hover:text-blue-400">Terms & Conditions</a></li>
-                        <li><a href="/ngaoyicleaningwebsite/refund.html" class="text-gray-400 hover:text-blue-400">Refund Policy</a></li>
+                        <li><a href="/services.html#recurring" class="text-gray-400 hover:text-accent transition-colors">Recurring Plans</a></li>
+                        <li><a href="/services.html#once-off" class="text-gray-400 hover:text-accent transition-colors">Once-Off Cleaning</a></li>
+                        <li><a href="/services.html#deep" class="text-gray-400 hover:text-accent transition-colors">Deep Cleaning</a></li>
+                        <li><a href="/services.html#emergency" class="text-gray-400 hover:text-accent transition-colors">Emergency Services</a></li>
                     </ul>
                 </div>
                 
                 <div>
-                    <h4 class="font-semibold text-white mb-4">Contact</h4>
+                    <h4 class="font-semibold text-white mb-4">Contact Info</h4>
                     <ul class="space-y-2 text-gray-400">
-                        <li><i class="fas fa-phone mr-2 text-blue-400"></i>070 764 3709</li>
-                        <li><i class="fas fa-envelope mr-2 text-blue-400"></i>ngaoyicleaning@gmail.com</li>
-                        <li><i class="fas fa-map-marker-alt mr-2 text-blue-400"></i>Gauteng Service Area</li>
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mr-2 mt-1 text-accent"></i>
+                            <span>Gauteng Service Area</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone mr-2 mt-1 text-accent"></i>
+                            <a href="tel:+27707643709" class="hover:text-accent">070 764 3709 (WhatsApp)</a>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mr-2 mt-1 text-accent"></i>
+                            <a href="mailto:ngaoyicleaning@gmail.com" class="hover:text-accent">ngaoyicleaning@gmail.com</a>
+                        </li>
                     </ul>
+                    <div class="mt-4 space-y-2">
+                        <a href="/booking.html" class="inline-block w-full bg-primary text-white text-center py-2 rounded-lg font-semibold hover:bg-primary-light transition-colors">Book Online</a>
+                        <a href="/terms.html" class="text-gray-400 hover:text-accent text-sm">Terms & Conditions</a>
+                    </div>
                 </div>
             </div>
             
             <div class="border-t border-gray-800 pt-8 text-center text-gray-500">
-                <p>&copy; 2024 Ngaoyi Cleaning. All rights reserved.</p>
+                <p>&copy; 2024 Ngaoyi Cleaning. All rights reserved. | <a href="/privacy.html" class="hover:text-accent">Privacy Policy</a> | <a href="/terms.html" class="hover:text-accent">Terms & Conditions</a></p>
             </div>
         </div>
     </footer>
@@ -292,23 +482,12 @@
     <!-- WhatsApp Float -->
     <a href="https://wa.me/27707643709" 
        class="fixed bottom-6 right-6 w-14 h-14 bg-green-500 text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 z-50"
-       aria-label="Contact us on WhatsApp">
+       aria-label="Contact us on WhatsApp"
+       target="_blank">
         <i class="fab fa-whatsapp text-2xl"></i>
     </a>
 
-    <script>
-        // Mobile menu toggle
-        document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
-            const menu = document.getElementById('mobile-menu');
-            const icon = this.querySelector('i');
-            
-            menu.classList.toggle('hidden');
-            if (menu.classList.contains('hidden')) {
-                icon.classList.replace('fa-times', 'fa-bars');
-            } else {
-                icon.classList.replace('fa-bars', 'fa-times');
-            }
-        });
-    </script>
+    <!-- Scripts -->
+    <script src="/assets/js/site.js"></script>
 </body>
 </html>
