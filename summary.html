@@ -438,50 +438,43 @@
                             subtotal: subtotal,
                             discount: discountAmount,
                             total: totalAmount,
-                            addons: addonsData
+                            addons: addonsData,
+                            materialOption: bookingData.materialsOption === 'we-supply' ? 'We Supply (+R150)' : 'Customer Supplies',
+                            recurringFrequency: bookingData.serviceType.includes('weekly') ? 'Weekly' : 
+                                             bookingData.serviceType.includes('biweekly') ? 'Bi-weekly' :
+                                             bookingData.serviceType.includes('monthly') ? 'Monthly' : 'Once-Off',
+                            emergencyType: bookingData.serviceType === 'emergency' ? 'Emergency Service' : 'None'
                         }
                     };
 
-                    // In production, you would:
-                    // 1. Send paymentData to your Google Apps Script
-                    // 2. Get back a Yoco checkout URL or payment token
-                    // 3. Redirect to Yoco checkout
+                    console.log('Payment data being sent:', paymentData);
 
-                    // For demo purposes, we'll simulate the process
-                    // Replace this with your actual Google Apps Script endpoint
-                    const GAS_ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbyQNOHU-vULUFDyPzt2HXpEajtNXDGTdQrdVeTEPuV0coxchsjIz5pwMjwAzLCYb0xg/exec"; // Replace with your actual endpoint
-
-                    console.log('Sending payment data to:', GAS_ENDPOINT_URL);
-                    console.log('Payment data:', paymentData);
-
-                    // Simulate API call (remove in production)
-                    await new Promise(resolve => setTimeout(resolve, 2000));
-
-                    // In production, you would do:
-                    // const response = await fetch(GAS_ENDPOINT_URL, {
-                    //     method: 'POST',
-                    //     headers: {
-                    //         'Content-Type': 'application/json',
-                    //     },
-                    //     body: JSON.stringify(paymentData)
-                    // });
-                    // const result = await response.json();
-                    // if (result.checkoutUrl) {
-                    //     window.location.href = result.checkoutUrl;
-                    // }
-
-                    // For demo - show success message
-                    alert('Payment processed successfully! In production, this would redirect to Yoco checkout.');
-
-                    // Save booking to localStorage for confirmation
-                    localStorage.setItem('lastBooking', JSON.stringify({
-                        ...paymentData,
-                        timestamp: new Date().toISOString(),
-                        bookingId: 'BOOK-' + Math.random().toString(36).substr(2, 9).toUpperCase()
-                    }));
-
-                    // Redirect to thank you page (you can create this)
-                    window.location.href = '/thank-you.html';
+                    // IMPORTANT: For Google Apps Script web apps deployed as "Anyone, even anonymous"
+                    // we need to use a different approach for CORS
+                    const GAS_ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbyQNOHU-vULUFDyPzt2HXpEajtNXDGTdQrdVeTEPuV0coxchsjIz5pwMjwAzLCYb0xg/exec";
+                    
+                    // Create a form submission instead of fetch for better CORS compatibility
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = GAS_ENDPOINT_URL;
+                    
+                    // Create hidden input fields
+                    const actionInput = document.createElement('input');
+                    actionInput.type = 'hidden';
+                    actionInput.name = 'action';
+                    actionInput.value = 'create_checkout';
+                    
+                    const bookingDataInput = document.createElement('input');
+                    bookingDataInput.type = 'hidden';
+                    bookingDataInput.name = 'bookingData';
+                    bookingDataInput.value = JSON.stringify(paymentData);
+                    
+                    form.appendChild(actionInput);
+                    form.appendChild(bookingDataInput);
+                    
+                    // Add form to document and submit
+                    document.body.appendChild(form);
+                    form.submit();
 
                 } catch (error) {
                     console.error('Payment error:', error);
@@ -493,6 +486,37 @@
                     payButton.disabled = false;
                 }
             });
+
+            // Alternative: Using fetch with proper error handling
+            async function processPaymentWithFetch(paymentData) {
+                const GAS_ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbyQNOHU-vULUFDyPzt2HXpEajtNXDGTdQrdVeTEPuV0coxchsjIz5pwMjwAzLCYb0xg/exec";
+                
+                try {
+                    // For GAS web apps, we need to use mode: 'no-cors' or handle it differently
+                    const response = await fetch(GAS_ENDPOINT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors', // Important for GAS CORS issues
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: new URLSearchParams({
+                            action: 'create_checkout',
+                            bookingData: JSON.stringify(paymentData)
+                        })
+                    });
+
+                    // Note: With 'no-cors', we can't read the response
+                    // The GAS script should handle the redirect directly
+                    console.log('Request sent to GAS');
+                    
+                    // Since we can't read response with no-cors, 
+                    // we'll assume it redirects. If not, we need to check the GAS script.
+                    
+                } catch (error) {
+                    console.error('Fetch error:', error);
+                    throw error;
+                }
+            }
 
             // Helper function
             function formatPropertySize(size) {
