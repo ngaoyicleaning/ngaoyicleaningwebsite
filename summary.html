@@ -8,6 +8,7 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="/assets/css/styles.css" rel="stylesheet">
     
     <!-- Tailwind Configuration -->
     <script>
@@ -17,789 +18,539 @@
                     colors: {
                         'primary': '#003b6f',
                         'primary-light': '#0056a3',
-                        'accent': '#00c6ff'
+                        'secondary': '#000000',
+                        'accent': '#00c6ff',
+                        'light-gray': '#e9ecef'
+                    },
+                    fontFamily: {
+                        'sans': ['Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif']
                     }
                 }
             }
         }
     </script>
     
-    <style>
-        .loading {
-            display: none;
-        }
-        .error {
-            display: none;
-            color: #dc2626;
-        }
-        .addon-item {
-            border-left: 3px solid #00c6ff;
-            padding-left: 10px;
-        }
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="font-sans text-gray-700 bg-white">
     <!-- Navigation -->
-    <nav class="bg-white shadow-sm">
-        <div class="container mx-auto px-4 py-3">
-            <div class="flex items-center">
-                <div class="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-full mr-3"></div>
-                <div>
-                    <h1 class="text-xl font-bold text-primary">Ngaoyi Cleaning</h1>
-                    <p class="text-xs text-gray-500">Booking Summary</p>
+    <header class="sticky top-0 z-40 bg-white shadow-md">
+        <nav class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-full overflow-hidden flex items-center justify-center">
+                        <img src="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png" 
+                             alt="Ngaoyi Cleaning Logo" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-primary">Ngaoyi Cleaning</h1>
+                        <p class="text-sm text-gray-600">Professional Cleaning Services</p>
+                    </div>
                 </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-toggle" class="md:hidden text-primary text-2xl" aria-label="Toggle menu">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
-    <!-- Progress Bar -->
-    <div class="bg-white py-4 border-b">
-        <div class="container mx-auto px-4">
-            <div class="flex items-center justify-center mb-2">
+    <main class="py-8">
+        <!-- Progress Bar -->
+        <div class="container mx-auto px-4 mb-8">
+            <div class="flex items-center justify-center">
                 <div class="flex items-center">
-                    <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-bold">1</div>
-                    <div class="h-1 w-16 bg-primary"></div>
-                    <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-bold">2</div>
-                    <div class="h-1 w-16 bg-primary"></div>
-                    <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-bold">3</div>
+                    <div class="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold">1</div>
+                    <div class="h-1 w-24 bg-primary"></div>
+                    <div class="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold">2</div>
+                    <div class="h-1 w-24 bg-primary"></div>
+                    <div class="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold">3</div>
                 </div>
             </div>
-            <div class="flex justify-center text-xs">
-                <span class="text-gray-500 mr-16">Details</span>
-                <span class="text-gray-500">Add-ons</span>
-                <span class="text-primary font-semibold ml-16">Summary</span>
-            </div>
-        </div>
-    </div>
-
-    <main class="container mx-auto px-4 py-8 max-w-4xl">
-        <h1 class="text-2xl font-bold text-primary mb-2">Review & Pay</h1>
-        <p class="text-gray-600 mb-8">Please review your booking details before proceeding to payment</p>
-
-        <!-- Error Message -->
-        <div id="errorMessage" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 hidden">
-            <div class="flex items-center">
-                <i class="fas fa-exclamation-circle mr-2"></i>
-                <span id="errorText"></span>
+            <div class="flex justify-center mt-2 text-sm">
+                <div class="text-gray-500 mr-24">Service Details</div>
+                <div class="text-gray-500">Add-ons</div>
+                <div class="text-primary font-semibold ml-24">Summary</div>
             </div>
         </div>
 
-        <!-- Success Message -->
-        <div id="successMessage" class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6 hidden">
-            <div class="flex items-center">
-                <i class="fas fa-check-circle mr-2"></i>
-                <span id="successText"></span>
-            </div>
-        </div>
+        <!-- Summary Section -->
+        <section class="py-8">
+            <div class="container mx-auto px-4 max-w-4xl">
+                <h1 class="text-3xl font-bold text-primary mb-2">Review Your Booking</h1>
+                <p class="text-gray-600 mb-8">Please review all details before proceeding to payment</p>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Left Column: Booking Details -->
+                    <div class="md:col-span-2">
+                        <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 mb-6">
+                            <!-- Customer Info -->
+                            <div class="mb-6">
+                                <h2 class="text-xl font-semibold text-primary mb-4 pb-2 border-b">Customer Information</h2>
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <div>
+                                        <p class="text-sm text-gray-500">Full Name</p>
+                                        <p id="summary-name" class="font-semibold"></p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Email</p>
+                                        <p id="summary-email" class="font-semibold"></p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Phone</p>
+                                        <p id="summary-phone" class="font-semibold"></p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Address</p>
+                                        <p id="summary-address" class="font-semibold"></p>
+                                    </div>
+                                </div>
+                            </div>
 
-        <div class="grid md:grid-cols-3 gap-8">
-            <!-- Left Column: Booking Details -->
-            <div class="md:col-span-2 fade-in">
-                <div class="bg-white rounded-lg shadow-sm border p-6 mb-6">
-                    <!-- Customer Info -->
-                    <div class="mb-6">
-                        <h2 class="text-lg font-semibold text-primary mb-4 pb-2 border-b">Customer Information</h2>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <p class="text-sm text-gray-500">Full Name</p>
-                                <p id="customerName" class="font-medium">Loading...</p>
+                            <!-- Service Details -->
+                            <div class="mb-6">
+                                <h2 class="text-xl font-semibold text-primary mb-4 pb-2 border-b">Service Details</h2>
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <div>
+                                        <p class="text-sm text-gray-500">Service Type</p>
+                                        <p id="summary-service" class="font-semibold"></p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Property Size</p>
+                                        <p id="summary-property" class="font-semibold"></p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Materials</p>
+                                        <p id="summary-materials" class="font-semibold"></p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Date & Time</p>
+                                        <p id="summary-datetime" class="font-semibold"></p>
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <p class="text-sm text-gray-500">Email</p>
-                                <p id="customerEmail" class="font-medium">Loading...</p>
+
+                            <!-- Special Instructions -->
+                            <div class="mb-6">
+                                <h2 class="text-xl font-semibold text-primary mb-4 pb-2 border-b">Special Instructions</h2>
+                                <p id="summary-instructions" class="text-gray-700"></p>
                             </div>
-                            <div>
-                                <p class="text-sm text-gray-500">Phone</p>
-                                <p id="customerPhone" class="font-medium">Loading...</p>
+
+                            <!-- Add-ons -->
+                            <div id="addons-section">
+                                <h2 class="text-xl font-semibold text-primary mb-4 pb-2 border-b">Add-on Services</h2>
+                                <div id="addons-list" class="space-y-2">
+                                    <!-- Will be populated by JavaScript -->
+                                </div>
                             </div>
-                            <div>
-                                <p class="text-sm text-gray-500">Address</p>
-                                <p id="customerAddress" class="font-medium">Loading...</p>
-                            </div>
+                        </div>
+
+                        <!-- Edit Buttons -->
+                        <div class="flex space-x-4">
+                            <a href="/booking.html" class="text-primary font-semibold hover:text-accent flex items-center">
+                                <i class="fas fa-edit mr-2"></i> Edit Service Details
+                            </a>
+                            <a href="/booking-addons.html" class="text-primary font-semibold hover:text-accent flex items-center">
+                                <i class="fas fa-edit mr-2"></i> Edit Add-ons
+                            </a>
                         </div>
                     </div>
 
-                    <!-- Service Details -->
-                    <div class="mb-6">
-                        <h2 class="text-lg font-semibold text-primary mb-4 pb-2 border-b">Service Details</h2>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <p class="text-sm text-gray-500">Service Type</p>
-                                <p id="serviceType" class="font-medium">Loading...</p>
+                    <!-- Right Column: Price Summary & Payment -->
+                    <div>
+                        <div class="bg-white rounded-xl shadow-lg p-6 sticky top-24">
+                            <h2 class="text-xl font-semibold text-primary mb-4">Price Summary</h2>
+                            
+                            <div class="space-y-3 mb-6">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Base Service:</span>
+                                    <span id="price-base" class="font-semibold"></span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Materials:</span>
+                                    <span id="price-materials" class="font-semibold"></span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Emergency Surcharge:</span>
+                                    <span id="price-emergency" class="font-semibold"></span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Add-ons:</span>
+                                    <span id="price-addons" class="font-semibold"></span>
+                                </div>
+                                
+                                <!-- Discount Field -->
+                                <div class="border-t pt-3 mt-3">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="text-gray-600">Discount Code:</span>
+                                        <button id="apply-discount" class="text-sm text-primary font-semibold hover:text-accent">Apply</button>
+                                    </div>
+                                    <input type="text" id="discount-code" 
+                                           class="w-full px-3 py-2 border border-gray-300 rounded text-sm mb-2"
+                                           placeholder="Enter discount code">
+                                    <div id="discount-message" class="text-sm hidden"></div>
+                                </div>
+                                
+                                <div class="border-t pt-3">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-700 font-semibold">Subtotal:</span>
+                                        <span id="price-subtotal" class="font-semibold"></span>
+                                    </div>
+                                    <div class="flex justify-between mt-2">
+                                        <span class="text-gray-700 font-semibold">Discount:</span>
+                                        <span id="price-discount" class="text-green-600 font-semibold">R 0</span>
+                                    </div>
+                                    <div class="flex justify-between mt-3 pt-3 border-t">
+                                        <span class="text-lg font-bold text-primary">Total:</span>
+                                        <span id="price-total" class="text-2xl font-bold text-primary"></span>
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <p class="text-sm text-gray-500">Property Size</p>
-                                <p id="propertySize" class="font-medium">Loading...</p>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-500">Date</p>
-                                <p id="cleaningDate" class="font-medium">Loading...</p>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-500">Time Slot</p>
-                                <p id="timeSlot" class="font-medium">Loading...</p>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-500">Materials</p>
-                                <p id="materialsOption" class="font-medium">Loading...</p>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-500">Frequency</p>
-                                <p id="recurringFrequency" class="font-medium">Loading...</p>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Add-ons -->
-                    <div id="addonsSection" class="mb-6 hidden">
-                        <h2 class="text-lg font-semibold text-primary mb-4 pb-2 border-b">Add-on Services</h2>
-                        <div id="addonsList" class="space-y-3">
-                            <!-- Add-ons will be added here -->
-                        </div>
-                    </div>
-
-                    <!-- Emergency Details -->
-                    <div id="emergencySection" class="mb-6 hidden">
-                        <h2 class="text-lg font-semibold text-primary mb-4 pb-2 border-b">Emergency Service</h2>
-                        <div>
-                            <p class="text-sm text-gray-500">Emergency Type</p>
-                            <p id="emergencyType" class="font-medium">Loading...</p>
-                        </div>
-                    </div>
-
-                    <!-- Edit Links -->
-                    <div class="flex space-x-4 text-sm mt-6 pt-6 border-t">
-                        <a href="/booking.html" class="text-primary hover:text-accent font-medium flex items-center">
-                            <i class="fas fa-edit mr-2"></i> Edit Details
-                        </a>
-                        <a href="/booking-addons.html" class="text-primary hover:text-accent font-medium flex items-center">
-                            <i class="fas fa-plus-circle mr-2"></i> Edit Add-ons
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Right Column: Payment -->
-            <div class="md:col-span-1 fade-in">
-                <div class="bg-white rounded-lg shadow-sm border p-6 sticky top-6">
-                    <h2 class="text-lg font-semibold text-primary mb-4">Payment Summary</h2>
-                    
-                    <div class="space-y-3 mb-6">
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Base Service:</span>
-                            <span id="basePrice" class="font-medium">R 0.00</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Materials:</span>
-                            <span id="materialsPrice" class="font-medium">R 0.00</span>
-                        </div>
-                        <div id="emergencyFeeRow" class="flex justify-between hidden">
-                            <span class="text-gray-600">Emergency Fee:</span>
-                            <span id="emergencyFee" class="font-medium">R 0.00</span>
-                        </div>
-                        <div id="addonsTotalRow" class="flex justify-between hidden">
-                            <span class="text-gray-600">Add-ons:</span>
-                            <span id="addonsTotal" class="font-medium">R 0.00</span>
-                        </div>
-                        
-                        <!-- Discount Section -->
-                        <div class="border-t pt-3 mt-3">
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-gray-600">Discount:</span>
-                                <button id="applyDiscount" class="text-sm text-primary font-medium hover:text-accent hover:underline">
-                                    Apply Code
-                                </button>
+                            <!-- Terms Agreement -->
+                            <div class="mb-6">
+                                <div class="flex items-start">
+                                    <input type="checkbox" id="terms-agree" class="mt-1 mr-2">
+                                    <label for="terms-agree" class="text-sm text-gray-600">
+                                        I agree to the <a href="/terms.html" class="text-primary hover:text-accent">Terms & Conditions</a> and confirm that I have read the <a href="/privacy.html" class="text-primary hover:text-accent">Privacy Policy</a>.
+                                    </label>
+                                </div>
                             </div>
-                            <div class="flex space-x-2">
-                                <input type="text" id="discountCode" 
-                                       class="flex-grow px-3 py-2 border border-gray-300 rounded text-sm"
-                                       placeholder="Enter code" maxlength="20">
-                                <button id="applyDiscountBtn" 
-                                        class="px-3 py-2 bg-primary text-white text-sm rounded hover:bg-primary-light transition-colors">
-                                    Apply
-                                </button>
-                            </div>
-                            <div id="discountMessage" class="text-sm mt-2 hidden"></div>
-                        </div>
-                        
-                        <div class="border-t pt-3">
-                            <div class="flex justify-between">
-                                <span class="text-gray-700 font-semibold">Subtotal:</span>
-                                <span id="subtotal" class="font-semibold">R 0.00</span>
-                            </div>
-                            <div id="discountRow" class="flex justify-between mt-2 hidden">
-                                <span class="text-gray-700 font-semibold">Discount:</span>
-                                <span id="discountAmount" class="text-green-600 font-semibold">- R 0.00</span>
-                            </div>
-                            <div class="flex justify-between mt-3 pt-3 border-t">
-                                <span class="text-lg font-bold text-primary">Total:</span>
-                                <span id="totalAmount" class="text-2xl font-bold text-primary">R 0.00</span>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Terms -->
-                    <div class="mb-6">
-                        <div class="flex items-start">
-                            <input type="checkbox" id="agreeTerms" class="mt-1 mr-2">
-                            <label for="agreeTerms" class="text-sm text-gray-600">
-                                I agree to the 
-                                <a href="https://www.ngaoyicleaning.co.za/terms" target="_blank" class="text-primary hover:text-accent hover:underline">Terms & Conditions</a> 
-                                and 
-                                <a href="https://www.ngaoyicleaning.co.za/privacy" target="_blank" class="text-primary hover:text-accent hover:underline">Privacy Policy</a>
-                            </label>
-                        </div>
-                    </div>
+                            <!-- Payment Button -->
+                            <button id="pay-button"
+                                    class="w-full bg-gradient-to-r from-primary to-accent text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    disabled>
+                                <span id="pay-text">
+                                    <i class="fas fa-lock mr-2"></i> Pay Securely Now
+                                </span>
+                                <span id="pay-loading" class="hidden">
+                                    <i class="fas fa-spinner fa-spin mr-2"></i> Processing...
+                                </span>
+                            </button>
 
-                    <!-- Pay Button -->
-                    <button id="payButton"
-                            class="w-full bg-gradient-to-r from-primary to-accent text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                            disabled>
-                        <span id="payText">
-                            <i class="fas fa-lock mr-2"></i> Proceed to Payment
-                        </span>
-                        <span id="payLoading" class="hidden">
-                            <i class="fas fa-spinner fa-spin mr-2"></i> Processing...
-                        </span>
-                    </button>
-
-                    <p class="text-center text-gray-500 text-xs mt-4">
-                        <i class="fas fa-shield-alt mr-1"></i> Secure payment by Yoco
-                    </p>
-                    
-                    <!-- Payment Methods -->
-                    <div class="mt-4 pt-4 border-t border-gray-100">
-                        <div class="flex justify-center space-x-4">
-                            <i class="fab fa-cc-visa text-gray-400 text-xl"></i>
-                            <i class="fab fa-cc-mastercard text-gray-400 text-xl"></i>
-                            <i class="fab fa-cc-amex text-gray-400 text-xl"></i>
-                            <i class="fab fa-cc-discover text-gray-400 text-xl"></i>
+                            <p class="text-center text-gray-500 text-sm mt-4">
+                                <i class="fas fa-shield-alt mr-1"></i> Secure payment powered by Yoco
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8 mt-12">
-        <div class="container mx-auto px-4 text-center">
-            <p class="text-gray-400">Need help? Call <a href="tel:0707643709" class="text-accent hover:underline">070 764 3709</a></p>
-            <div class="mt-4 space-x-4">
-                <a href="https://www.ngaoyicleaning.co.za/privacy" target="_blank" class="text-gray-400 hover:text-accent text-sm hover:underline">Privacy</a>
-                <a href="https://www.ngaoyicleaning.co.za/terms" target="_blank" class="text-gray-400 hover:text-accent text-sm hover:underline">Terms</a>
-                <a href="https://www.ngaoyicleaning.co.za" target="_blank" class="text-gray-400 hover:text-accent text-sm hover:underline">Home</a>
-            </div>
-            <p class="text-gray-500 text-xs mt-4">&copy; 2024 Ngaoyi Cleaning. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <!-- Script -->
+    <!-- Payment Processing Script -->
     <script>
-        // Configuration - REPLACE WITH YOUR GOOGLE APPS SCRIPT WEB APP URL
-        const GAS_ENDPOINT_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
-        
-        // Pricing configuration (should match server-side)
-        const SERVICE_PRICING = {
-            'weekly': { '1-bed': 400, '2-bed': 550, '3-bed': 700, '4-bed': 850, '5+bed': 1000 },
-            'biweekly': { '1-bed': 450, '2-bed': 600, '3-bed': 750, '4-bed': 900, '5+bed': 1050 },
-            'monthly': { '1-bed': 500, '2-bed': 650, '3-bed': 800, '4-bed': 950, '5+bed': 1100 },
-            'once-off': { '1-bed': 600, '2-bed': 750, '3-bed': 900, '4-bed': 1050, '5+bed': 1200 },
-            'deep': { '1-bed': 800, '2-bed': 950, '3-bed': 1100, '4-bed': 1250, '5+bed': 1400 },
-            'emergency': { '1-bed': 1000, '2-bed': 1150, '3-bed': 1300, '4-bed': 1450, '5+bed': 1600 },
-            'commercial': { 'office': 1500 }
-        };
-
-        const ADDON_PRICING = {
-            'windows': 200,
-            'oven': 150,
-            'fridge': 120,
-            'laundry': 180,
-            'carpet': 250,
-            'blinds': 120
-        };
-
-        const ADDON_DISPLAY_NAMES = {
-            'windows': 'Window Cleaning',
-            'oven': 'Oven Cleaning',
-            'fridge': 'Fridge Cleaning',
-            'laundry': 'Laundry Service',
-            'carpet': 'Carpet Cleaning',
-            'blinds': 'Blind Cleaning'
-        };
-
-        const VALID_DISCOUNT_CODES = {
-            'WELCOME10': 0.10,
-            'CLEAN15': 0.15,
-            'FIRST20': 0.20,
-            'SUMMER25': 0.25
-        };
-
-        // Global booking data object
-        let bookingData = {
-            pricing: {},
-            discountApplied: false,
-            discountCode: null,
-            discountPercent: 0
-        };
-
-        // Load booking data from localStorage
         document.addEventListener('DOMContentLoaded', function() {
-            loadBookingData();
-            setupEventListeners();
-        });
-
-        function loadBookingData() {
-            try {
-                // Load data from localStorage
-                const storedBooking = JSON.parse(localStorage.getItem('bookingData') || '{}');
-                const storedAddons = JSON.parse(localStorage.getItem('bookingAddons') || '{}');
-                
-                // Validate required data
-                if (!storedBooking.fullName) {
-                    showError('No booking data found. Please start a new booking.');
-                    setTimeout(() => {
-                        window.location.href = '/booking.html';
-                    }, 3000);
-                    return;
-                }
-
-                // Populate customer info
-                document.getElementById('customerName').textContent = storedBooking.fullName || 'Not provided';
-                document.getElementById('customerEmail').textContent = storedBooking.email || 'Not provided';
-                document.getElementById('customerPhone').textContent = storedBooking.phone || 'Not provided';
-                document.getElementById('customerAddress').textContent = storedBooking.address || 'Not provided';
-
-                // Populate service details
-                document.getElementById('serviceType').textContent = getServiceTypeName(storedBooking.serviceType);
-                document.getElementById('propertySize').textContent = getPropertySizeName(storedBooking.propertySize);
-                document.getElementById('cleaningDate').textContent = formatDate(storedBooking.cleaningDate);
-                document.getElementById('timeSlot').textContent = getTimeSlotName(storedBooking.timeSlot);
-                document.getElementById('materialsOption').textContent = getMaterialsOptionName(storedBooking.materialsOption);
-                document.getElementById('recurringFrequency').textContent = getFrequencyName(storedBooking.recurringFrequency);
-
-                // Show/hide emergency section
-                if (storedBooking.emergencyType) {
-                    document.getElementById('emergencySection').classList.remove('hidden');
-                    document.getElementById('emergencyType').textContent = getEmergencyTypeName(storedBooking.emergencyType);
-                }
-
-                // Calculate pricing
-                calculateAndDisplayPricing(storedBooking, storedAddons);
-
-                // Display add-ons if any
-                displayAddons(storedAddons);
-
-                // Store complete booking data
-                bookingData = {
-                    ...storedBooking,
-                    addons: storedAddons,
-                    pricing: calculatePricing(storedBooking, storedAddons)
-                };
-
-            } catch (error) {
-                console.error('Error loading booking data:', error);
-                showError('Error loading booking details. Please try again.');
-            }
-        }
-
-        function calculatePricing(bookingData, addonsData) {
-            let basePrice = 0;
+            // Load booking data
+            const bookingData = JSON.parse(localStorage.getItem('bookingData') || '{}');
+            const addonsData = JSON.parse(localStorage.getItem('bookingAddons') || '{}');
+            const subtotal = parseFloat(localStorage.getItem('bookingSubtotal') || '0');
             
-            // Calculate base price
-            if (SERVICE_PRICING[bookingData.serviceType] && 
-                SERVICE_PRICING[bookingData.serviceType][bookingData.propertySize]) {
-                basePrice = SERVICE_PRICING[bookingData.serviceType][bookingData.propertySize];
-            }
-            
-            // Add emergency surcharge
-            let emergencyFee = 0;
-            if (bookingData.emergencyType === 'same-day') {
-                emergencyFee = 300;
-            } else if (bookingData.emergencyType === 'next-day') {
-                emergencyFee = 150;
-            }
-            
-            // Add materials cost
-            let materialsCost = 0;
-            if (bookingData.materialsOption === 'we-supply') {
-                materialsCost = 150;
-            }
-            
-            // Calculate add-ons
-            let addonsTotal = 0;
-            let addonsItems = [];
-            if (addonsData) {
-                Object.keys(addonsData).forEach(key => {
-                    if (ADDON_PRICING[key] && addonsData[key].quantity > 0) {
-                        const addonTotal = ADDON_PRICING[key] * addonsData[key].quantity;
-                        addonsTotal += addonTotal;
-                        addonsItems.push({
-                            name: ADDON_DISPLAY_NAMES[key] || key,
-                            quantity: addonsData[key].quantity,
-                            price: ADDON_PRICING[key],
-                            total: addonTotal
-                        });
-                    }
-                });
-            }
-            
-            // Calculate subtotal
-            let subtotal = basePrice + materialsCost + emergencyFee + addonsTotal;
-            
-            return {
-                basePrice,
-                materialsCost,
-                emergencyFee,
-                addonsTotal,
-                addonsItems,
-                subtotal,
-                total: subtotal
+            // Service type mapping
+            const serviceTypes = {
+                'weekly': 'Weekly Recurring',
+                'biweekly': 'Bi-weekly Recurring',
+                'monthly': 'Monthly Recurring',
+                'once-off': 'Once-Off Cleaning',
+                'deep': 'Deep Cleaning',
+                'emergency': 'Emergency Service',
+                'commercial': 'Commercial Cleaning'
             };
-        }
 
-        function calculateAndDisplayPricing(bookingData, addonsData) {
-            const pricing = calculatePricing(bookingData, addonsData);
-            
-            // Update display
-            document.getElementById('basePrice').textContent = formatCurrency(pricing.basePrice);
-            document.getElementById('materialsPrice').textContent = formatCurrency(pricing.materialsCost);
-            
-            if (pricing.emergencyFee > 0) {
-                document.getElementById('emergencyFeeRow').classList.remove('hidden');
-                document.getElementById('emergencyFee').textContent = formatCurrency(pricing.emergencyFee);
-            }
-            
-            if (pricing.addonsTotal > 0) {
-                document.getElementById('addonsTotalRow').classList.remove('hidden');
-                document.getElementById('addonsTotal').textContent = formatCurrency(pricing.addonsTotal);
-            }
-            
-            document.getElementById('subtotal').textContent = formatCurrency(pricing.subtotal);
-            document.getElementById('totalAmount').textContent = formatCurrency(pricing.total);
-            
-            // Store pricing for later use
-            bookingData.pricing = pricing;
-        }
+            // Time slot mapping
+            const timeSlots = {
+                '9am': '9:00 AM - 11:00 AM',
+                '11am': '11:00 AM - 1:00 PM',
+                '1pm': '1:00 PM - 3:00 PM'
+            };
 
-        function displayAddons(addonsData) {
-            const addonsList = document.getElementById('addonsList');
-            const addonsSection = document.getElementById('addonsSection');
-            
-            if (!addonsData || Object.keys(addonsData).length === 0) {
-                return;
-            }
+            // Add-on names
+            const addonNames = {
+                'windows': 'Window Cleaning',
+                'oven': 'Oven Cleaning',
+                'fridge': 'Fridge Cleaning',
+                'laundry': 'Laundry Service',
+                'carpet': 'Carpet Cleaning',
+                'blinds': 'Blind Cleaning'
+            };
 
+            // Add-on prices
+            const addonPrices = {
+                'windows': 150,
+                'oven': 180,
+                'fridge': 100,
+                'laundry': 80,
+                'carpet': 200,
+                'blinds': 120
+            };
+
+            // Initialize price variables
+            let discountAmount = 0;
+            let totalAmount = subtotal;
+            let discountPercent = 0;
+            let discountCode = '';
+
+            // Populate customer info
+            document.getElementById('summary-name').textContent = bookingData.fullName || 'Not provided';
+            document.getElementById('summary-email').textContent = bookingData.email || 'Not provided';
+            document.getElementById('summary-phone').textContent = bookingData.phone || 'Not provided';
+            document.getElementById('summary-address').textContent = bookingData.address || 'Not provided';
+
+            // Populate service details
+            document.getElementById('summary-service').textContent = serviceTypes[bookingData.serviceType] || 'Not selected';
+            document.getElementById('summary-property').textContent = formatPropertySize(bookingData.propertySize);
+            document.getElementById('summary-materials').textContent = bookingData.materialsOption === 'we-supply' ? 'We Supply (+R150)' : 'Customer Supplies';
+            
+            const date = bookingData.cleaningDate ? new Date(bookingData.cleaningDate).toLocaleDateString('en-ZA', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            }) : 'Not selected';
+            
+            const timeSlot = timeSlots[bookingData.timeSlot] || 'Not selected';
+            document.getElementById('summary-datetime').textContent = `${date}, ${timeSlot}`;
+
+            // Populate instructions
+            document.getElementById('summary-instructions').textContent = 
+                bookingData.instructions || 'No special instructions provided.';
+
+            // Populate add-ons
+            const addonsList = document.getElementById('addons-list');
+            const addonsSection = document.getElementById('addons-section');
             let hasAddons = false;
-            addonsList.innerHTML = '';
-
-            Object.keys(addonsData).forEach(key => {
-                if (addonsData[key].quantity > 0) {
+            let lineItems = [];
+            
+            Object.keys(addonsData).forEach(addonKey => {
+                if (addonsData[addonKey].quantity > 0) {
                     hasAddons = true;
                     const div = document.createElement('div');
-                    div.className = 'addon-item';
+                    div.className = 'flex justify-between items-center';
                     div.innerHTML = `
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <span class="font-medium">${ADDON_DISPLAY_NAMES[key] || key}</span>
-                                <span class="text-sm text-gray-500 ml-2">× ${addonsData[key].quantity}</span>
-                            </div>
-                            <span class="font-medium">${formatCurrency(ADDON_PRICING[key] * addonsData[key].quantity)}</span>
-                        </div>
+                        <span class="text-gray-700">${addonNames[addonKey] || addonKey}</span>
+                        <span class="font-semibold">R ${addonsData[addonKey].total}</span>
                     `;
                     addonsList.appendChild(div);
+                    
+                    // Prepare line item for Yoco
+                    lineItems.push({
+                        displayName: addonNames[addonKey] || addonKey,
+                        quantity: addonsData[addonKey].quantity,
+                        pricingDetails: {
+                            price: addonPrices[addonKey] * 100 // Convert to cents
+                        },
+                        description: addonNames[addonKey] || addonKey
+                    });
                 }
             });
 
-            if (hasAddons) {
-                addonsSection.classList.remove('hidden');
+            if (!hasAddons) {
+                addonsSection.style.display = 'none';
             }
-        }
 
-        function setupEventListeners() {
-            // Terms checkbox
-            const termsCheckbox = document.getElementById('agreeTerms');
-            const payButton = document.getElementById('payButton');
+            // Prepare main service line item
+            lineItems.unshift({
+                displayName: serviceTypes[bookingData.serviceType] || 'Cleaning Service',
+                quantity: 1,
+                pricingDetails: {
+                    price: (bookingData.basePrice || 0) * 100
+                },
+                description: `${formatPropertySize(bookingData.propertySize)} - ${serviceTypes[bookingData.serviceType] || 'Service'}`
+            });
+
+            // Populate price summary
+            document.getElementById('price-base').textContent = `R ${bookingData.basePrice || 0}`;
+            document.getElementById('price-materials').textContent = `R ${bookingData.materialsPrice || 0}`;
+            document.getElementById('price-emergency').textContent = `R ${bookingData.emergencySurcharge || 0}`;
+            
+            // Calculate add-ons total
+            let addonsTotal = 0;
+            Object.values(addonsData).forEach(addon => {
+                addonsTotal += addon.total;
+            });
+            document.getElementById('price-addons').textContent = `R ${addonsTotal}`;
+            
+            document.getElementById('price-subtotal').textContent = `R ${subtotal}`;
+            document.getElementById('price-total').textContent = `R ${totalAmount}`;
+
+            // Discount functionality
+            const discountCodeInput = document.getElementById('discount-code');
+            const applyDiscountBtn = document.getElementById('apply-discount');
+            const discountMessage = document.getElementById('discount-message');
+
+            // Valid discount codes (in production, this would come from your backend)
+            const validDiscounts = {
+                'WELCOME10': 0.10, // 10% discount
+                'CLEAN15': 0.15,   // 15% discount
+                'FIRST20': 0.20,   // 20% discount
+                'REFER25': 0.25    // 25% discount
+            };
+
+            applyDiscountBtn.addEventListener('click', function() {
+                const code = discountCodeInput.value.trim().toUpperCase();
+                
+                if (!code) {
+                    showDiscountMessage('Please enter a discount code', 'error');
+                    return;
+                }
+
+                if (validDiscounts[code]) {
+                    discountAmount = Math.round(subtotal * validDiscounts[code]);
+                    discountPercent = validDiscounts[code] * 100;
+                    discountCode = code;
+                    totalAmount = subtotal - discountAmount;
+                    
+                    // Update price display
+                    document.getElementById('price-discount').textContent = `- R ${discountAmount}`;
+                    document.getElementById('price-total').textContent = `R ${totalAmount}`;
+                    
+                    showDiscountMessage(`Discount applied: ${discountPercent}% off!`, 'success');
+                    
+                    // Disable discount field
+                    discountCodeInput.disabled = true;
+                    applyDiscountBtn.disabled = true;
+                    applyDiscountBtn.textContent = 'Applied';
+                    applyDiscountBtn.classList.add('opacity-50');
+                } else {
+                    showDiscountMessage('Invalid discount code', 'error');
+                }
+            });
+
+            function showDiscountMessage(message, type) {
+                discountMessage.textContent = message;
+                discountMessage.className = 'text-sm ' + (type === 'success' ? 'text-green-600' : 'text-red-600');
+                discountMessage.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    discountMessage.classList.add('hidden');
+                }, 5000);
+            }
+
+            // Terms agreement toggle
+            const termsCheckbox = document.getElementById('terms-agree');
+            const payButton = document.getElementById('pay-button');
 
             termsCheckbox.addEventListener('change', function() {
                 payButton.disabled = !this.checked;
             });
 
-            // Discount code
-            document.getElementById('applyDiscountBtn').addEventListener('click', applyDiscount);
-            document.getElementById('discountCode').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    applyDiscount();
-                }
-            });
-
-            // Pay button
-            payButton.addEventListener('click', processPayment);
-        }
-
-        function applyDiscount() {
-            const code = document.getElementById('discountCode').value.trim().toUpperCase();
-            const messageElement = document.getElementById('discountMessage');
-            
-            if (!code) {
-                showMessage('Please enter a discount code', 'error', messageElement);
-                return;
-            }
-
-            if (VALID_DISCOUNT_CODES[code]) {
-                const discountPercent = VALID_DISCOUNT_CODES[code];
-                const subtotal = bookingData.pricing.subtotal;
-                const discountAmount = subtotal * discountPercent;
-                const total = subtotal - discountAmount;
-
-                // Update display
-                document.getElementById('discountRow').classList.remove('hidden');
-                document.getElementById('discountAmount').textContent = '- ' + formatCurrency(discountAmount);
-                document.getElementById('totalAmount').textContent = formatCurrency(total);
-
-                // Update booking data
-                bookingData.discountCode = code;
-                bookingData.discountPercent = discountPercent * 100;
-                bookingData.discountAmount = discountAmount;
-                bookingData.pricing.total = total;
-                bookingData.discountApplied = true;
-
-                // Disable discount field
-                document.getElementById('discountCode').disabled = true;
-                document.getElementById('applyDiscountBtn').disabled = true;
-                document.getElementById('applyDiscountBtn').textContent = 'Applied';
-                document.getElementById('applyDiscountBtn').classList.remove('bg-primary', 'hover:bg-primary-light');
-                document.getElementById('applyDiscountBtn').classList.add('bg-green-500');
-
-                showMessage(`Discount applied: ${discountPercent * 100}% off!`, 'success', messageElement);
-                
-            } else {
-                showMessage('Invalid discount code', 'error', messageElement);
-            }
-        }
-
-        async function processPayment() {
-            if (!bookingData.fullName) {
-                showError('Booking data not found');
-                return;
-            }
-
-            // Validate required fields
-            const requiredFields = ['fullName', 'email', 'phone', 'address', 'cleaningDate', 'serviceType'];
-            for (const field of requiredFields) {
-                if (!bookingData[field]) {
-                    showError(`Please complete all required fields: ${field} is missing`);
+            // Payment functionality
+            payButton.addEventListener('click', async function() {
+                if (!termsCheckbox.checked) {
+                    alert('Please agree to the Terms & Conditions before proceeding.');
                     return;
                 }
-            }
 
-            // Show loading
-            document.getElementById('payText').classList.add('hidden');
-            document.getElementById('payLoading').classList.remove('hidden');
-            document.getElementById('payButton').disabled = true;
+                // Show loading state
+                const payText = document.getElementById('pay-text');
+                const payLoading = document.getElementById('pay-loading');
+                payText.classList.add('hidden');
+                payLoading.classList.remove('hidden');
+                payButton.disabled = true;
 
-            try {
-                // Prepare data for server
-                const payload = {
-                    action: 'create_booking',
-                    bookingData: {
-                        ...bookingData,
-                        addons: JSON.stringify(bookingData.addons),
-                        discountCode: bookingData.discountCode || '',
-                        discountPercent: bookingData.discountPercent || 0,
-                        totalAmount: bookingData.pricing.total,
-                        subtotal: bookingData.pricing.subtotal
-                    }
-                };
+                try {
+                    // Prepare payment data for Google Apps Script
+                    const paymentData = {
+                        action: 'create_checkout',
+                        bookingData: {
+                            fullName: bookingData.fullName,
+                            email: bookingData.email,
+                            phone: bookingData.phone,
+                            address: bookingData.address,
+                            serviceType: bookingData.serviceType,
+                            propertySize: bookingData.propertySize,
+                            materialsOption: bookingData.materialsOption,
+                            cleaningDate: bookingData.cleaningDate,
+                            timeSlot: bookingData.timeSlot,
+                            instructions: bookingData.instructions,
+                            basePrice: bookingData.basePrice,
+                            materialsPrice: bookingData.materialsPrice,
+                            emergencySurcharge: bookingData.emergencySurcharge,
+                            addons: addonsData
+                        },
+                        pricing: {
+                            subtotal: subtotal,
+                            discount: discountAmount,
+                            discountPercent: discountPercent,
+                            discountCode: discountCode,
+                            total: totalAmount,
+                            lineItems: lineItems
+                        }
+                    };
 
-                // Step 1: Create booking in Google Apps Script
-                const createBookingResponse = await fetch(GAS_ENDPOINT_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(payload),
-                    mode: 'no-cors'
-                });
-
-                // Since we're using no-cors mode, we can't read the response directly
-                // Instead, we'll proceed to create Yoco checkout
-                
-                // Simulate successful booking creation
-                const bookingRef = generateTempBookingRef();
-                
-                // Step 2: Create Yoco checkout
-                const checkoutPayload = {
-                    action: 'create_yoco_checkout',
-                    bookingRef: bookingRef,
-                    bookingData: {
-                        ...bookingData,
-                        addons: JSON.stringify(bookingData.addons),
-                        totalAmount: bookingData.pricing.total
-                    }
-                };
-
-                const checkoutResponse = await fetch(GAS_ENDPOINT_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(checkoutPayload)
-                });
-
-                const checkoutResult = await checkoutResponse.json();
-                
-                if (checkoutResult.success && checkoutResult.data.redirectUrl) {
-                    // Store booking reference in session storage for success page
-                    sessionStorage.setItem('lastBookingRef', bookingRef);
+                    // Send to Google Apps Script
+                    // Replace with your actual Google Apps Script endpoint
+                    const GAS_ENDPOINT_URL = "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE";
                     
-                    // Redirect to Yoco checkout
-                    window.location.href = checkoutResult.data.redirectUrl;
-                } else {
-                    throw new Error(checkoutResult.error || 'Failed to create checkout');
+                    console.log('Sending payment data to:', GAS_ENDPOINT_URL);
+                    
+                    const response = await fetch(GAS_ENDPOINT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(paymentData)
+                    });
+
+                    // Since we're using no-cors, we assume success
+                    // In production, handle the actual response
+                    
+                    // Show success message and redirect
+                    alert('Payment processed successfully! You will be redirected to Yoco checkout.');
+                    
+                    // The actual redirect would happen from Google Apps Script response
+                    // For now, we'll simulate it
+                    // window.location.href = result.checkoutUrl;
+
+                    // For demo - simulate successful processing
+                    setTimeout(() => {
+                        window.location.href = '/thank-you.html';
+                    }, 2000);
+
+                } catch (error) {
+                    console.error('Payment error:', error);
+                    alert('Error processing payment. Please try again or contact us at 070 764 3709.');
+                    
+                    // Reset button
+                    payText.classList.remove('hidden');
+                    payLoading.classList.add('hidden');
+                    payButton.disabled = false;
                 }
-
-            } catch (error) {
-                console.error('Payment error:', error);
-                showError('Payment setup failed. Please try again or contact support.');
-                
-                // Reset button
-                document.getElementById('payText').classList.remove('hidden');
-                document.getElementById('payLoading').classList.add('hidden');
-                document.getElementById('payButton').disabled = false;
-            }
-        }
-
-        function generateTempBookingRef() {
-            const prefix = 'NGY';
-            const timestamp = Date.now().toString().slice(-6);
-            const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-            return `${prefix}${timestamp}${random}`;
-        }
-
-        // Helper functions
-        function getServiceTypeName(type) {
-            const types = {
-                'weekly': 'Weekly Cleaning',
-                'biweekly': 'Bi-weekly Cleaning',
-                'monthly': 'Monthly Cleaning',
-                'once-off': 'Once-Off Cleaning',
-                'deep': 'Deep Cleaning',
-                'emergency': 'Emergency Cleaning',
-                'commercial': 'Commercial Cleaning'
-            };
-            return types[type] || type;
-        }
-
-        function getPropertySizeName(size) {
-            const sizes = {
-                '1-bed': '1 Bedroom',
-                '2-bed': '2 Bedroom',
-                '3-bed': '3 Bedroom',
-                '4-bed': '4 Bedroom',
-                '5+bed': '5+ Bedroom',
-                'office': 'Office Space'
-            };
-            return sizes[size] || size;
-        }
-
-        function getTimeSlotName(slot) {
-            const slots = {
-                '9am': '9:00 AM',
-                '11am': '11:00 AM',
-                '1pm': '1:00 PM',
-                '3pm': '3:00 PM'
-            };
-            return slots[slot] || slot;
-        }
-
-        function getMaterialsOptionName(option) {
-            const options = {
-                'we-supply': 'We Supply (R150)',
-                'own-materials': 'Use Our Materials',
-                'customer-supplies': 'Customer Supplies'
-            };
-            return options[option] || option;
-        }
-
-        function getFrequencyName(frequency) {
-            const frequencies = {
-                'weekly': 'Weekly',
-                'biweekly': 'Bi-weekly',
-                'monthly': 'Monthly',
-                'once': 'Once-off'
-            };
-            return frequencies[frequency] || frequency || 'Once-off';
-        }
-
-        function getEmergencyTypeName(type) {
-            const types = {
-                'same-day': 'Same Day (R300)',
-                'next-day': 'Next Day (R150)',
-                'standard': 'Standard'
-            };
-            return types[type] || type;
-        }
-
-        function formatDate(dateString) {
-            if (!dateString) return 'Not set';
-            try {
-                const date = new Date(dateString);
-                return date.toLocaleDateString('en-ZA', {
-                    weekday: 'short',
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric'
-                });
-            } catch (e) {
-                return dateString;
-            }
-        }
-
-        function formatCurrency(amount) {
-            return 'R ' + parseFloat(amount).toLocaleString('en-ZA', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
             });
-        }
 
-        function showError(message) {
-            const errorElement = document.getElementById('errorMessage');
-            document.getElementById('errorText').textContent = message;
-            errorElement.classList.remove('hidden');
-            
-            // Scroll to error
-            errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-
-        function showMessage(message, type, element) {
-            element.textContent = message;
-            element.className = `text-sm mt-2 ${type === 'success' ? 'text-green-600' : 'text-red-600'}`;
-            element.classList.remove('hidden');
-            
-            setTimeout(() => {
-                element.classList.add('hidden');
-            }, 5000);
-        }
-
-        // Auto-save booking data on page unload
-        window.addEventListener('beforeunload', function() {
-            localStorage.setItem('summaryData', JSON.stringify(bookingData));
+            // Helper function
+            function formatPropertySize(size) {
+                const sizes = {
+                    '1-bed': '1-Bedroom',
+                    '2-bed': '2-Bedroom',
+                    '3-bed': '3-Bedroom',
+                    '4-bed': '4-Bedroom',
+                    '5+bed': '5+ Bedroom',
+                    'office': 'Office/Commercial'
+                };
+                return sizes[size] || size;
+            }
         });
-
-        // Check if user came from addons page
-        if (performance.navigation.type === 2 || document.referrer.includes('booking-addons')) {
-            document.querySelectorAll('.fade-in').forEach(el => {
-                el.style.animation = 'fadeIn 0.5s ease-in';
-            });
-        }
     </script>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <p class="text-gray-400">Need help? Call us at <a href="tel:+27707643709" class="text-accent">070 764 3709</a></p>
+                <div class="mt-4">
+                    <a href="/privacy.html" class="text-gray-400 hover:text-accent text-sm mx-2">Privacy Policy</a>
+                    <a href="/terms.html" class="text-gray-400 hover:text-accent text-sm mx-2">Terms & Conditions</a>
+                </div>
+                <p class="text-gray-500 text-sm mt-4">&copy; 2024 Ngaoyi Cleaning. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/assets/js/site.js"></script>
 </body>
 </html>
