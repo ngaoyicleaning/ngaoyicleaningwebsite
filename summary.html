@@ -9,6 +9,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
+    <!-- Yoco Inline Script -->
+    <script src="https://js.yoco.com/sdk/v1/yoco-sdk-web.js"></script>
+    
     <!-- Tailwind Configuration -->
     <script>
         tailwind.config = {
@@ -79,11 +82,55 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+        
+        /* Yoco modal styles */
+        .yoco-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .yoco-modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .yoco-modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
     </style>
 </head>
 <body class="font-sans text-gray-700 bg-white">
     <!-- Notification Container -->
     <div id="notification-container" class="notification"></div>
+    
+    <!-- Yoco Modal -->
+    <div id="yoco-modal" class="yoco-modal">
+        <div class="yoco-modal-content">
+            <button id="yoco-modal-close" class="yoco-modal-close">&times;</button>
+            <div id="yoco-checkout-container"></div>
+        </div>
+    </div>
     
     <!-- Navigation -->
     <header class="sticky top-0 z-40 bg-white shadow-md">
@@ -282,6 +329,23 @@
                                 </div>
                             </div>
 
+                            <!-- Payment Methods -->
+                            <div class="mb-6">
+                                <h3 class="font-semibold mb-3">Payment Method</h3>
+                                <div class="space-y-2">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="payment-method" value="yoco-redirect" checked class="mr-2">
+                                        <span class="flex items-center">
+                                            <i class="fas fa-credit-card mr-2 text-primary"></i>
+                                            Card Payment (Yoco)
+                                        </span>
+                                    </label>
+                                    <div class="ml-6 text-sm text-gray-600">
+                                        <i class="fas fa-lock mr-1"></i> Secure payment via Yoco
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- Terms Agreement -->
                             <div class="mb-6">
                                 <div class="flex items-start">
@@ -294,7 +358,7 @@
 
                             <!-- Payment Button -->
                             <button id="pay-button"
-                                    class="w-full bg-gradient-to-r from-primary to-accent text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    class="w-full bg-gradient-to-r from-primary to-accent text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed pulse"
                                     disabled>
                                 <span id="pay-text">
                                     <i class="fas fa-lock mr-2"></i> Pay Securely Now
@@ -333,8 +397,22 @@
 
     <!-- Payment Processing Script -->
     <script>
-        // Configuration - UPDATE THIS WITH YOUR GOOGLE APPS SCRIPT URL
-        const GAS_ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbxIevaA5kYMf1w9UuO66um3ZyjidyqWOfgi9jhu-9rPnEjMQxnNYMS5kZstM0tm0nrpEA/exec";
+        // Configuration - UPDATE THESE VALUES
+        const CONFIG = {
+            // Google Apps Script URL (UPDATE THIS)
+            GAS_ENDPOINT_URL: "https://script.google.com/macros/s/AKfycby1o8P3g1pl0d9x5NBV0NGFleuBTHJnWH4lhqzKjemps50wDpU45QdtZaCzKlaOEtV1Hw/exec",
+            
+            // Yoco Configuration (UPDATE WITH YOUR PUBLIC KEY)
+            YOCO_PUBLIC_KEY: "pk_live_6d6373c9oWD3O3l181a4", // Change to your Yoco Public Key
+            
+            // Website URLs
+            WEBSITE_URL: "https://www.ngaoyicleaning.co.za",
+            
+            // Payment Settings
+            PAYMENT_METHOD: "yoco-redirect", // Options: "yoco-redirect", "yoco-modal"
+            CHECKOUT_TIMEOUT: 1800000, // 30 minutes in milliseconds
+            RETRY_ATTEMPTS: 3
+        };
         
         // Global variables
         let bookingData = {};
@@ -351,14 +429,53 @@
         };
         let discountCode = '';
         let appliedDiscount = null;
+        let bookingReference = '';
+        let checkoutUrl = '';
+        let yocoCheckout = null;
+        
+        // Initialize Yoco SDK
+        let yocoSDK = null;
         
         document.addEventListener('DOMContentLoaded', function() {
             // Load booking data
             loadBookingData();
             
+            // Initialize Yoco SDK
+            initializeYocoSDK();
+            
             // Initialize event listeners
             initializeEventListeners();
         });
+        
+        function initializeYocoSDK() {
+            try {
+                if (typeof Yoco !== 'undefined') {
+                    yocoSDK = new Yoco({
+                        publicKey: CONFIG.YOCO_PUBLIC_KEY,
+                        locale: 'en',
+                        environment: CONFIG.YOCO_PUBLIC_KEY.includes('test') ? 'test' : 'live'
+                    });
+                    
+                    console.log('Yoco SDK initialized successfully');
+                    
+                    // Listen for Yoco SDK ready event
+                    yocoSDK.on('ready', function() {
+                        console.log('Yoco SDK is ready');
+                    });
+                    
+                    // Listen for Yoco SDK errors
+                    yocoSDK.on('error', function(error) {
+                        console.error('Yoco SDK error:', error);
+                        showNotification('Payment gateway error. Please try again.', 'error');
+                    });
+                    
+                } else {
+                    console.error('Yoco SDK not loaded');
+                }
+            } catch (error) {
+                console.error('Failed to initialize Yoco SDK:', error);
+            }
+        }
         
         function loadBookingData() {
             try {
@@ -563,7 +680,7 @@
                         div.className = 'flex justify-between items-center';
                         div.innerHTML = `
                             <span class="text-gray-700">${addonName} ${unitText}</span>
-                            <span class="font-semibold">R ${addonTotal}</span>
+                            <span class="font-semibold">R ${addonTotal.toFixed(2)}</span>
                         `;
                         addonsList.appendChild(div);
                     }
@@ -631,7 +748,7 @@
                 
                 try {
                     // Call Google Apps Script to validate discount
-                    const response = await fetch(GAS_ENDPOINT_URL, {
+                    const response = await fetch(CONFIG.GAS_ENDPOINT_URL, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -734,6 +851,21 @@
                 payButton.disabled = !this.checked;
             });
             
+            // Yoco modal close button
+            document.getElementById('yoco-modal-close').addEventListener('click', function() {
+                document.getElementById('yoco-modal').style.display = 'none';
+                // Reset payment button
+                resetPaymentButton();
+            });
+            
+            // Close modal when clicking outside
+            document.getElementById('yoco-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.style.display = 'none';
+                    resetPaymentButton();
+                }
+            });
+            
             // Payment functionality
             payButton.addEventListener('click', async function() {
                 if (!termsCheckbox.checked) {
@@ -761,22 +893,24 @@
                 
                 try {
                     // Prepare booking data for Google Apps Script
-                    // IMPORTANT: Field names must match what the Google Apps Script expects
                     const paymentData = {
                         action: 'create_checkout',
                         bookingData: {
                             customerName: bookingData.fullName,
+                            fullName: bookingData.fullName,
                             email: bookingData.email,
                             phone: bookingData.phone,
                             address: bookingData.address,
                             serviceDate: bookingData.cleaningDate,
+                            cleaningDate: bookingData.cleaningDate,
                             timeSlot: bookingData.timeSlot,
                             serviceType: bookingData.serviceType,
                             propertySize: bookingData.propertySize,
                             materialsOption: bookingData.materialsOption,
                             isEmergency: bookingData.isEmergency || false,
                             recurringFrequency: bookingData.recurringFrequency || '',
-                            specialInstructions: bookingData.instructions || ''
+                            specialInstructions: bookingData.instructions || '',
+                            instructions: bookingData.instructions || ''
                         },
                         addonsData: addonsData || {},
                         discountCode: discountCode || ''
@@ -785,7 +919,7 @@
                     console.log('Sending payment data to GAS:', paymentData);
                     
                     // Send to Google Apps Script
-                    const response = await fetch(GAS_ENDPOINT_URL, {
+                    const response = await fetch(CONFIG.GAS_ENDPOINT_URL, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -797,22 +931,34 @@
                     console.log('Response from GAS:', data);
                     
                     if (data.success && data.checkoutUrl) {
-                        showNotification('Redirecting to secure payment...', 'success');
+                        bookingReference = data.bookingRef;
+                        checkoutUrl = data.checkoutUrl;
                         
-                        // Clear booking data from localStorage (keep discount for now)
-                        localStorage.removeItem('bookingData');
-                        localStorage.removeItem('bookingAddons');
-                        localStorage.removeItem('appliedDiscount');
+                        // Store booking reference for success page
+                        localStorage.setItem('lastBookingRef', bookingReference);
+                        localStorage.setItem('lastBookingAmount', pricing.totalAmount);
                         
-                        // Store booking reference in sessionStorage
-                        if (data.bookingRef) {
-                            sessionStorage.setItem('lastBookingRef', data.bookingRef);
+                        // Check if we should use Yoco modal or redirect
+                        const paymentMethod = document.querySelector('input[name="payment-method"]:checked').value;
+                        
+                        if (paymentMethod === 'yoco-redirect') {
+                            // Use Yoco redirect (standard method)
+                            showNotification('Redirecting to secure payment...', 'success');
+                            
+                            // Clear booking data from localStorage (keep discount for now)
+                            localStorage.removeItem('bookingData');
+                            localStorage.removeItem('bookingAddons');
+                            localStorage.removeItem('appliedDiscount');
+                            
+                            // Redirect to Yoco checkout
+                            setTimeout(() => {
+                                window.location.href = checkoutUrl;
+                            }, 1500);
+                            
+                        } else {
+                            // Use Yoco modal (alternative method)
+                            showYocoModal(checkoutUrl);
                         }
-                        
-                        // Redirect to Yoco checkout
-                        setTimeout(() => {
-                            window.location.href = data.checkoutUrl;
-                        }, 1500);
                         
                     } else {
                         throw new Error(data.error || 'Payment processing failed');
@@ -832,11 +978,84 @@
                     showInlineMessage(errorMessage, 'error');
                     
                     // Reset button
-                    payText.classList.remove('hidden');
-                    payLoading.classList.add('hidden');
-                    payButton.disabled = false;
+                    resetPaymentButton();
                 }
             });
+        }
+        
+        function showYocoModal(checkoutUrl) {
+            try {
+                // Create iframe for Yoco checkout
+                const container = document.getElementById('yoco-checkout-container');
+                container.innerHTML = `
+                    <iframe 
+                        src="${checkoutUrl}" 
+                        style="width: 100%; height: 500px; border: none; border-radius: 8px;"
+                        allow="payment; camera"
+                        title="Yoco Payment Checkout"
+                    ></iframe>
+                    <p class="text-sm text-gray-600 mt-4 text-center">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        You will be redirected to complete payment
+                    </p>
+                `;
+                
+                // Show modal
+                document.getElementById('yoco-modal').style.display = 'flex';
+                
+                // Listen for messages from iframe (if Yoco sends success/failure messages)
+                window.addEventListener('message', function(event) {
+                    console.log('Received message from iframe:', event);
+                    
+                    // Check if message is from Yoco (you'll need to verify the origin)
+                    if (event.origin.includes('yoco.com')) {
+                        if (event.data === 'payment_success') {
+                            handlePaymentSuccess();
+                        } else if (event.data === 'payment_failed') {
+                            handlePaymentFailure();
+                        }
+                    }
+                });
+                
+            } catch (error) {
+                console.error('Error showing Yoco modal:', error);
+                showNotification('Error loading payment. Please use redirect method.', 'error');
+                resetPaymentButton();
+            }
+        }
+        
+        function handlePaymentSuccess() {
+            // Clear booking data
+            localStorage.removeItem('bookingData');
+            localStorage.removeItem('bookingAddons');
+            localStorage.removeItem('appliedDiscount');
+            
+            // Show success message
+            showNotification('Payment successful! Redirecting to confirmation...', 'success');
+            
+            // Close modal
+            document.getElementById('yoco-modal').style.display = 'none';
+            
+            // Redirect to success page
+            setTimeout(() => {
+                window.location.href = `${CONFIG.WEBSITE_URL}/booking-success.html?ref=${bookingReference}`;
+            }, 2000);
+        }
+        
+        function handlePaymentFailure() {
+            showNotification('Payment failed. Please try again.', 'error');
+            document.getElementById('yoco-modal').style.display = 'none';
+            resetPaymentButton();
+        }
+        
+        function resetPaymentButton() {
+            const payText = document.getElementById('pay-text');
+            const payLoading = document.getElementById('pay-loading');
+            const payButton = document.getElementById('pay-button');
+            
+            payText.classList.remove('hidden');
+            payLoading.classList.add('hidden');
+            payButton.disabled = false;
         }
         
         function updatePriceDisplay() {
@@ -923,8 +1142,33 @@
             console.log('Addons Data:', addonsData);
             console.log('Pricing:', pricing);
             console.log('Discount:', appliedDiscount);
+            console.log('Config:', CONFIG);
             
             showNotification('Debug info logged to console', 'info');
+        };
+        
+        // Test connection to GAS
+        window.testConnection = async function() {
+            try {
+                const response = await fetch(CONFIG.GAS_ENDPOINT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'test_connection'
+                    })
+                });
+                
+                const data = await response.json();
+                console.log('Connection test result:', data);
+                showNotification(`Connection test: ${data.overall}`, data.overall === 'connected' ? 'success' : 'error');
+                
+                return data;
+            } catch (error) {
+                console.error('Connection test failed:', error);
+                showNotification('Connection test failed: ' + error.message, 'error');
+            }
         };
     </script>
 </body>
