@@ -31,6 +31,13 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+        
+        /* Ensure loading state is visible */
+        #pay-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 </head>
 <body class="font-sans text-gray-700 bg-white">
@@ -49,6 +56,11 @@
                         <h1 class="text-2xl font-bold text-blue-900">Ngaoyi Cleaning</h1>
                         <p class="text-sm text-gray-600">Professional Cleaning Services</p>
                     </div>
+                </div>
+                <div>
+                    <button onclick="testConnection()" class="text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded">
+                        Test Connection
+                    </button>
                 </div>
             </div>
         </nav>
@@ -106,6 +118,10 @@
                                         <p class="text-sm text-gray-500">Date & Time</p>
                                         <p id="summary-datetime" class="font-semibold">Loading...</p>
                                     </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Materials</p>
+                                        <p id="summary-materials" class="font-semibold">Loading...</p>
+                                    </div>
                                 </div>
                             </div>
 
@@ -134,7 +150,9 @@
                                 <div class="border-t pt-3 mt-3">
                                     <div class="flex justify-between items-center mb-2">
                                         <span class="text-gray-600">Discount Code:</span>
-                                        <button id="apply-discount" class="text-sm text-blue-900 font-semibold hover:text-blue-700">Apply</button>
+                                        <button id="apply-discount" class="text-sm text-blue-900 font-semibold hover:text-blue-700">
+                                            Apply
+                                        </button>
                                     </div>
                                     <div class="flex">
                                         <input type="text" id="discount-code" 
@@ -176,7 +194,7 @@
                                 <span id="pay-text">
                                     <i class="fas fa-lock mr-2"></i> Pay Securely Now
                                 </span>
-                                <span id="pay-loading" class="hidden">
+                                <span id="pay-loading" class="hidden items-center justify-center">
                                     <span class="spinner mr-2"></span> Processing...
                                 </span>
                             </button>
@@ -203,10 +221,11 @@
         // CONFIGURATION - UPDATE THESE VALUES
         const CONFIG = {
             // IMPORTANT: Update this with your Google Apps Script URL
-            GAS_ENDPOINT_URL: "https://script.google.com/macros/s/AKfycbwvBoRraQfbTzQ35iiz5PwI-uZcADIGKs77fSUN-kvv70SM9pcxnA6BPspjzBzNxDs6ag/exec",
+            // Your URL: https://script.google.com/macros/s/AKfycbwvBoRraQfbTzQ35iiz5PwI-uZcADIGKs77fSUN-kvv70SM9pcxnA6BPspjzBzNxDs6ag/exec
+            GAS_ENDPOINT_URL: "https://script.google.com/macros/s/AKfycbz84BUtq3FyVklsykpnbvMt39fPVEzkADkruvhOPjp6TsCW65PtskT189BvCxMzVdrOcA/exec",
             
-            // Yoco Public Key (optional for frontend - used for card tokenization if needed)
-            YOCO_PUBLIC_KEY: "pk_live_6d6373c9oWD3O3l181a4" // Update with your Yoco Public Key
+            // Yoco Public Key (for reference - backend handles payment)
+            YOCO_PUBLIC_KEY: "pk_live_6d6373c9oWD3O3l181a4"
         };
         
         // Global variables
@@ -215,9 +234,11 @@
         let pricing = {
             subtotal: 0,
             discountAmount: 0,
+            discountPercent: 0,
             totalAmount: 0
         };
         let discountCode = '';
+        let discountDetails = null;
         
         document.addEventListener('DOMContentLoaded', function() {
             loadBookingData();
@@ -226,11 +247,39 @@
         
         function loadBookingData() {
             try {
+                // Try to get from localStorage
                 bookingData = JSON.parse(localStorage.getItem('bookingData') || '{}');
                 addonsData = JSON.parse(localStorage.getItem('bookingAddons') || '{}');
                 
                 console.log('Booking Data:', bookingData);
                 console.log('Addons Data:', addonsData);
+                
+                // If no data in localStorage, check URL parameters (for testing)
+                if (!bookingData.fullName) {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    if (urlParams.has('test')) {
+                        // Load test data
+                        bookingData = {
+                            fullName: "Test Customer",
+                            email: "test@example.com",
+                            phone: "071 123 4567",
+                            address: "123 Test Street, Pretoria",
+                            cleaningDate: "2024-12-25",
+                            timeSlot: "9am",
+                            serviceType: "once-off",
+                            propertySize: "2-bed",
+                            materialsOption: "we-supply",
+                            isEmergency: false,
+                            instructions: "Test booking",
+                            basePrice: 450
+                        };
+                        addonsData = {
+                            windows: { quantity: 1, total: 150 },
+                            laundry: { quantity: 2, total: 160 }
+                        };
+                        console.log('Using test data');
+                    }
+                }
                 
                 // Validate data
                 if (!bookingData.fullName || !bookingData.email) {
@@ -272,6 +321,13 @@
             const propertySize = bookingData.propertySize || '';
             document.getElementById('summary-property').textContent = formatPropertySize(propertySize);
             
+            // Materials option
+            const materialsOption = bookingData.materialsOption || '';
+            const materialText = materialsOption === 'we-supply' ? 'We Supply (R150)' : 
+                                 materialsOption === 'customer-supplies' ? 'Customer Supplies' : 
+                                 'Not specified';
+            document.getElementById('summary-materials').textContent = materialText;
+            
             // Date and time
             let dateStr = 'Not selected';
             if (bookingData.cleaningDate) {
@@ -296,20 +352,110 @@
         }
         
         function calculateAndDisplayPricing() {
-            // Calculate subtotal from bookingData
-            pricing.subtotal = parseFloat(bookingData.basePrice) || 0;
+            // First, try to get price from backend API
+            getServicePriceFromAPI();
+        }
+        
+        async function getServicePriceFromAPI() {
+            try {
+                // Build request for service price calculation
+                const priceRequest = {
+                    action: 'get_service_price',
+                    serviceType: bookingData.serviceType,
+                    propertySize: bookingData.propertySize,
+                    isEmergency: bookingData.isEmergency === true,
+                    materialsOption: bookingData.materialsOption
+                };
+                
+                console.log('Fetching service price:', priceRequest);
+                
+                const response = await fetch(CONFIG.GAS_ENDPOINT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(priceRequest)
+                });
+                
+                const data = await response.json();
+                console.log('Price response:', data);
+                
+                if (data.success) {
+                    // Use the price from backend
+                    pricing.subtotal = data.totalPrice || 0;
+                    
+                    // Store base price for calculations
+                    bookingData.basePrice = data.basePrice || 0;
+                    
+                    // Add add-ons
+                    addAddonsToPricing();
+                    
+                    // Initialize total
+                    pricing.totalAmount = pricing.subtotal;
+                    
+                    // Update display
+                    updatePriceDisplay();
+                    displayPriceBreakdown();
+                    
+                } else {
+                    // Fallback to frontend calculation
+                    console.warn('Using fallback pricing:', data.error);
+                    calculatePricingFallback();
+                }
+                
+            } catch (error) {
+                console.error('Error fetching price:', error);
+                // Fallback to frontend calculation
+                calculatePricingFallback();
+            }
+        }
+        
+        function calculatePricingFallback() {
+            // Fallback pricing calculation
+            const basePrices = {
+                'weekly': { '1-bed': 240, '2-bed': 320, '3-bed': 380, '4-bed': 440 },
+                'biweekly': { '1-bed': 300, '2-bed': 400, '3-bed': 470, '4-bed': 540 },
+                'monthly': { '1-bed': 360, '2-bed': 480, '3-bed': 560, '4-bed': 640 },
+                'once-off': { '1-bed': 350, '2-bed': 450, '3-bed': 550, '4-bed': 650 },
+                'deep-cleaning': { '1-bed': 1200, '2-bed': 1750, '3-bed': 2300, '4-bed': 2850 }
+            };
             
-            // Add materials if applicable
-            if (bookingData.materialsOption === 'we-supply') {
-                pricing.subtotal += 150; // R150 for materials
+            const serviceType = bookingData.serviceType || 'once-off';
+            const propertySize = bookingData.propertySize || '2-bed';
+            
+            // Get base price
+            let basePrice = 0;
+            if (basePrices[serviceType] && basePrices[serviceType][propertySize]) {
+                basePrice = basePrices[serviceType][propertySize];
+            } else {
+                basePrice = 450; // Default fallback
+            }
+            
+            bookingData.basePrice = basePrice;
+            pricing.subtotal = basePrice;
+            
+            // Add materials
+            if (bookingData.materialsOption === 'we-supply' && serviceType === 'once-off') {
+                pricing.subtotal += 150;
             }
             
             // Add emergency surcharge
             if (bookingData.isEmergency === true) {
-                pricing.subtotal += (parseFloat(bookingData.basePrice) || 0) * 0.5;
+                pricing.subtotal += basePrice * 0.5;
             }
             
             // Add add-ons
+            addAddonsToPricing();
+            
+            // Initialize total
+            pricing.totalAmount = pricing.subtotal;
+            
+            // Update display
+            updatePriceDisplay();
+            displayPriceBreakdown();
+        }
+        
+        function addAddonsToPricing() {
             if (addonsData && typeof addonsData === 'object') {
                 Object.values(addonsData).forEach(addon => {
                     if (addon && addon.total) {
@@ -317,12 +463,6 @@
                     }
                 });
             }
-            
-            // Update display
-            updatePriceDisplay();
-            
-            // Display price breakdown
-            displayPriceBreakdown();
         }
         
         function displayPriceBreakdown() {
@@ -331,18 +471,18 @@
             
             // Base price
             if (bookingData.basePrice) {
-                addPriceLine('Base Service', bookingData.basePrice);
+                addPriceLine(getServiceDisplayName(), bookingData.basePrice);
             }
             
             // Materials
-            if (bookingData.materialsOption === 'we-supply') {
-                addPriceLine('Cleaning Materials', 150);
+            if (bookingData.materialsOption === 'we-supply' && bookingData.serviceType === 'once-off') {
+                addPriceLine('Cleaning Materials Supply', 150);
             }
             
             // Emergency surcharge
             if (bookingData.isEmergency === true) {
-                const surcharge = (parseFloat(bookingData.basePrice) || 0) * 0.5;
-                addPriceLine('Emergency Surcharge (50%)', surcharge);
+                const surcharge = (bookingData.basePrice || 0) * 0.5;
+                addPriceLine('Emergency Service Surcharge (50%)', surcharge);
             }
             
             // Add-ons
@@ -351,13 +491,28 @@
                     if (value && value.total > 0) {
                         const addonNames = {
                             'window': 'Window Cleaning',
+                            'windows': 'Window Cleaning',
                             'oven': 'Oven Cleaning',
                             'fridge': 'Fridge Cleaning',
                             'laundry': 'Laundry Service',
                             'carpet': 'Carpet Cleaning',
-                            'blind': 'Blind Cleaning'
+                            'blind': 'Blind Cleaning',
+                            'blinds': 'Blind Cleaning'
                         };
-                        addPriceLine(addonNames[key] || key, value.total);
+                        let label = addonNames[key] || key;
+                        
+                        // Add quantity if applicable
+                        if (value.quantity && value.quantity > 1) {
+                            if (key === 'laundry') {
+                                label += ` (${value.quantity} hour${value.quantity > 1 ? 's' : ''})`;
+                            } else if (key === 'carpet') {
+                                label += ` (${value.quantity} room${value.quantity > 1 ? 's' : ''})`;
+                            } else {
+                                label += ` (${value.quantity})`;
+                            }
+                        }
+                        
+                        addPriceLine(label, value.total);
                     }
                 });
             }
@@ -373,15 +528,47 @@
             }
         }
         
+        function getServiceDisplayName() {
+            const serviceType = bookingData.serviceType || '';
+            const propertySize = bookingData.propertySize || '';
+            
+            const serviceNames = {
+                'weekly': 'Weekly Recurring Cleaning',
+                'biweekly': 'Bi-weekly Recurring Cleaning',
+                'monthly': 'Monthly Recurring Cleaning',
+                'once-off': 'Once-Off Cleaning',
+                'deep-cleaning': 'Deep Cleaning'
+            };
+            
+            const sizeNames = {
+                '1-bed': '1-Bedroom Home',
+                '2-bed': '2-Bedroom Home',
+                '3-bed': '3-Bedroom Home',
+                '4-bed': '4-Bedroom Home'
+            };
+            
+            const serviceName = serviceNames[serviceType] || serviceType;
+            const sizeName = sizeNames[propertySize] || propertySize;
+            
+            return `${serviceName} - ${sizeName}`;
+        }
+        
         function initializeEventListeners() {
             // Discount functionality
             const applyDiscountBtn = document.getElementById('apply-discount');
             const removeDiscountBtn = document.getElementById('remove-discount');
-            const discountMessage = document.getElementById('discount-message');
+            const discountInput = document.getElementById('discount-code');
+            
+            // Apply discount when Enter is pressed
+            discountInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    applyDiscountBtn.click();
+                }
+            });
             
             applyDiscountBtn.addEventListener('click', async function() {
-                const codeInput = document.getElementById('discount-code');
-                const code = codeInput.value.trim().toUpperCase();
+                const code = discountInput.value.trim().toUpperCase();
                 
                 if (!code) {
                     showDiscountMessage('Please enter a discount code', 'error');
@@ -390,25 +577,10 @@
                 
                 // Show loading
                 applyDiscountBtn.disabled = true;
-                applyDiscountBtn.textContent = 'Applying...';
+                applyDiscountBtn.innerHTML = '<span class="spinner mr-1" style="width: 12px; height: 12px;"></span> Applying...';
                 
                 try {
-                    // Test connection first
-                    const testResponse = await fetch(CONFIG.GAS_ENDPOINT_URL, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            action: 'test_connection'
-                        })
-                    });
-                    
-                    if (!testResponse.ok) {
-                        throw new Error('Cannot connect to server');
-                    }
-                    
-                    // Validate discount
+                    // Validate discount with backend
                     const response = await fetch(CONFIG.GAS_ENDPOINT_URL, {
                         method: 'POST',
                         headers: {
@@ -422,30 +594,33 @@
                     });
                     
                     const data = await response.json();
+                    console.log('Discount validation:', data);
                     
                     if (data.success) {
                         // Apply discount
                         discountCode = code;
+                        discountDetails = data;
                         pricing.discountAmount = data.discountAmount;
+                        pricing.discountPercent = data.discountPercent;
                         pricing.totalAmount = pricing.subtotal - pricing.discountAmount;
                         
                         // Update UI
                         removeDiscountBtn.classList.remove('hidden');
-                        applyDiscountBtn.textContent = 'Applied';
+                        applyDiscountBtn.innerHTML = 'Applied ✓';
                         applyDiscountBtn.disabled = true;
-                        codeInput.disabled = true;
+                        discountInput.disabled = true;
                         
                         // Update price display
                         updatePriceDisplay();
                         
-                        showDiscountMessage(`Discount applied! ${data.discountPercent}% off`, 'success');
-                        showNotification(`Discount applied! ${data.discountPercent}% off`, 'success');
+                        showDiscountMessage(`Discount applied! ${data.discountPercent}% off - R${data.discountAmount.toFixed(2)} saved`, 'success');
+                        showNotification(`Discount applied! ${data.discountPercent}% off - R${data.discountAmount.toFixed(2)} saved`, 'success');
                         
                     } else {
                         showDiscountMessage(data.error || 'Invalid discount code', 'error');
                         showNotification(data.error || 'Invalid discount code', 'error');
                         applyDiscountBtn.disabled = false;
-                        applyDiscountBtn.textContent = 'Apply';
+                        applyDiscountBtn.innerHTML = 'Apply';
                     }
                     
                 } catch (error) {
@@ -453,20 +628,22 @@
                     showDiscountMessage('Server connection failed. Please try again.', 'error');
                     showNotification('Server connection failed. Please try again.', 'error');
                     applyDiscountBtn.disabled = false;
-                    applyDiscountBtn.textContent = 'Apply';
+                    applyDiscountBtn.innerHTML = 'Apply';
                 }
             });
             
             removeDiscountBtn.addEventListener('click', function() {
                 // Remove discount
                 discountCode = '';
+                discountDetails = null;
                 pricing.discountAmount = 0;
+                pricing.discountPercent = 0;
                 pricing.totalAmount = pricing.subtotal;
                 
                 // Update UI
-                document.getElementById('discount-code').value = '';
-                document.getElementById('discount-code').disabled = false;
-                applyDiscountBtn.textContent = 'Apply';
+                discountInput.value = '';
+                discountInput.disabled = false;
+                applyDiscountBtn.innerHTML = 'Apply';
                 applyDiscountBtn.disabled = false;
                 removeDiscountBtn.classList.add('hidden');
                 
@@ -510,35 +687,46 @@
                     const paymentData = {
                         action: 'create_checkout',
                         bookingData: {
+                            // Both field names for compatibility
                             customerName: bookingData.fullName,
+                            fullName: bookingData.fullName,
                             email: bookingData.email,
                             phone: bookingData.phone,
                             address: bookingData.address,
                             serviceDate: bookingData.cleaningDate,
+                            cleaningDate: bookingData.cleaningDate,
                             timeSlot: bookingData.timeSlot,
                             serviceType: bookingData.serviceType,
                             propertySize: bookingData.propertySize,
                             materialsOption: bookingData.materialsOption,
                             isEmergency: bookingData.isEmergency || false,
-                            specialInstructions: bookingData.instructions || ''
+                            specialInstructions: bookingData.instructions || '',
+                            instructions: bookingData.instructions || ''
                         },
                         addonsData: addonsData || {},
                         discountCode: discountCode || ''
                     };
                     
-                    console.log('Sending to GAS:', paymentData);
+                    console.log('Sending to backend:', paymentData);
+                    showNotification('Creating secure checkout...', 'info');
                     
-                    // Send to Google Apps Script
+                    // Send to Google Apps Script with timeout
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 30000);
+                    
                     const response = await fetch(CONFIG.GAS_ENDPOINT_URL, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify(paymentData)
+                        body: JSON.stringify(paymentData),
+                        signal: controller.signal
                     });
                     
+                    clearTimeout(timeoutId);
+                    
                     const data = await response.json();
-                    console.log('Response from GAS:', data);
+                    console.log('Response from backend:', data);
                     
                     if (data.success && data.checkoutUrl) {
                         showNotification('Redirecting to secure payment...', 'success');
@@ -546,26 +734,33 @@
                         // Store booking reference
                         if (data.bookingRef) {
                             localStorage.setItem('lastBookingRef', data.bookingRef);
+                            localStorage.setItem('lastCheckoutAmount', pricing.totalAmount);
                         }
                         
-                        // Clear booking data
-                        localStorage.removeItem('bookingData');
-                        localStorage.removeItem('bookingAddons');
+                        // Optionally clear booking data (or keep for retry)
+                        // localStorage.removeItem('bookingData');
+                        // localStorage.removeItem('bookingAddons');
                         
                         // Redirect to Yoco
                         setTimeout(() => {
                             window.location.href = data.checkoutUrl;
-                        }, 1500);
+                        }, 1000);
                         
                     } else {
-                        throw new Error(data.error || 'Payment processing failed');
+                        let errorMsg = data.error || 'Payment processing failed';
+                        if (data.details) {
+                            errorMsg += ' - ' + JSON.stringify(data.details);
+                        }
+                        throw new Error(errorMsg);
                     }
                     
                 } catch (error) {
                     console.error('Payment error:', error);
                     
                     let errorMessage = 'Error processing payment. ';
-                    if (error.message.includes('Failed to fetch')) {
+                    if (error.name === 'AbortError') {
+                        errorMessage += 'Request timeout. Please try again.';
+                    } else if (error.message.includes('Failed to fetch')) {
                         errorMessage += 'Cannot connect to server. Please check your internet connection.';
                     } else {
                         errorMessage += error.message;
@@ -591,6 +786,12 @@
             if (pricing.discountAmount > 0) {
                 document.getElementById('discount-container').classList.remove('hidden');
                 document.getElementById('price-discount').textContent = `- R ${pricing.discountAmount.toFixed(2)}`;
+                
+                // Add percentage if available
+                if (pricing.discountPercent > 0) {
+                    document.getElementById('price-discount').innerHTML = 
+                        `- R ${pricing.discountAmount.toFixed(2)} <span class="text-xs">(${pricing.discountPercent}%)</span>`;
+                }
             } else {
                 document.getElementById('discount-container').classList.add('hidden');
             }
@@ -666,6 +867,8 @@
         // Debug function
         window.testConnection = async function() {
             try {
+                showNotification('Testing connection...', 'info');
+                
                 const response = await fetch(CONFIG.GAS_ENDPOINT_URL, {
                     method: 'POST',
                     headers: {
@@ -678,12 +881,26 @@
                 
                 const data = await response.json();
                 console.log('Connection test:', data);
-                showNotification(`Connection: ${data.success ? 'Success' : 'Failed'}`, data.success ? 'success' : 'error');
+                
+                if (data.success) {
+                    showNotification(`✅ Connection successful! ${data.message}`, 'success');
+                } else {
+                    showNotification(`❌ Connection failed: ${data.error || 'Unknown error'}`, 'error');
+                }
+                
                 return data;
             } catch (error) {
                 console.error('Connection test failed:', error);
-                showNotification('Connection test failed: ' + error.message, 'error');
+                showNotification('❌ Connection test failed: ' + error.message, 'error');
+                return { success: false, error: error.message };
             }
+        };
+        
+        // Test discount codes
+        window.testDiscountCodes = function() {
+            const testCodes = ['WELCOME10', 'CLEAN15', 'FIRST20', 'REFER25'];
+            console.log('Available test discount codes:', testCodes);
+            showNotification(`Test discount codes: ${testCodes.join(', ')}`, 'info');
         };
     </script>
 </body>
