@@ -17,27 +17,6 @@
             z-index: 1000;
             max-width: 400px;
         }
-        
-        .spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Ensure loading state is visible */
-        #pay-loading {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
     </style>
 </head>
 <body class="font-sans text-gray-700 bg-white">
@@ -189,14 +168,9 @@
 
                             <!-- Payment Button -->
                             <button id="pay-button"
-                                    class="w-full bg-gradient-to-r from-blue-900 to-blue-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    class="w-full bg-gradient-to-r from-blue-900 to-blue-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                                     disabled>
-                                <span id="pay-text">
-                                    <i class="fas fa-lock mr-2"></i> Pay Securely Now
-                                </span>
-                                <span id="pay-loading" class="hidden items-center justify-center">
-                                    <span class="spinner mr-2"></span> Processing...
-                                </span>
+                                <i class="fas fa-lock mr-2"></i> Pay Securely Now
                             </button>
 
                             <p class="text-center text-gray-500 text-sm mt-4">
@@ -225,10 +199,10 @@
 
     <!-- Payment Processing Script -->
     <script>
-        // CONFIGURATION - UPDATE THESE VALUES
+        // CONFIGURATION
         const CONFIG = {
-            // IMPORTANT: Your Google Apps Script URL
-            GAS_ENDPOINT_URL: "https://script.google.com/macros/s/AKfycbwTZC6UhpLsyklDlI5YxxJUavYjza3Qni_k-Th9fo01B6x6YqWtcy-dL_SGD1hdY_Jw/exec"
+            // Your Google Apps Script URL
+            GAS_ENDPOINT_URL: "https://script.google.com/macros/s/AKfycbz0INq6R3IrDZ1WLOCAGGz46du73urrNeBvjyHtLI9h9BpYnNlOlnjTAJXLjwJbkXY7Rw/exec"
         };
         
         // Global variables
@@ -343,9 +317,7 @@
                     materialsOption: bookingData.materialsOption
                 };
                 
-                console.log('Fetching service price:', priceRequest);
-                
-                const response = await fetchWithCORS(CONFIG.GAS_ENDPOINT_URL, {
+                const response = await fetch(CONFIG.GAS_ENDPOINT_URL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -354,7 +326,6 @@
                 });
                 
                 const data = await response.json();
-                console.log('Price response:', data);
                 
                 if (data.success) {
                     // Use the price from backend
@@ -375,7 +346,6 @@
                     
                 } else {
                     // Fallback to frontend calculation
-                    console.warn('Using fallback pricing:', data.error);
                     calculatePricingFallback();
                 }
                 
@@ -552,12 +522,13 @@
                 }
                 
                 // Show loading
+                const originalText = applyDiscountBtn.innerHTML;
                 applyDiscountBtn.disabled = true;
-                applyDiscountBtn.innerHTML = '<span class="spinner mr-1" style="width: 12px; height: 12px;"></span> Applying...';
+                applyDiscountBtn.innerHTML = 'Applying...';
                 
                 try {
                     // Validate discount with backend
-                    const response = await fetchWithCORS(CONFIG.GAS_ENDPOINT_URL, {
+                    const response = await fetch(CONFIG.GAS_ENDPOINT_URL, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -570,7 +541,6 @@
                     });
                     
                     const data = await response.json();
-                    console.log('Discount validation:', data);
                     
                     if (data.success) {
                         // Apply discount
@@ -596,7 +566,7 @@
                         showDiscountMessage(data.error || 'Invalid discount code', 'error');
                         showNotification(data.error || 'Invalid discount code', 'error');
                         applyDiscountBtn.disabled = false;
-                        applyDiscountBtn.innerHTML = 'Apply';
+                        applyDiscountBtn.innerHTML = originalText;
                     }
                     
                 } catch (error) {
@@ -604,7 +574,7 @@
                     showDiscountMessage('Server connection failed. Please try again.', 'error');
                     showNotification('Server connection failed. Please try again.', 'error');
                     applyDiscountBtn.disabled = false;
-                    applyDiscountBtn.innerHTML = 'Apply';
+                    applyDiscountBtn.innerHTML = originalText;
                 }
             });
             
@@ -651,12 +621,9 @@
                     return;
                 }
                 
-                // Show loading
-                const payText = document.getElementById('pay-text');
-                const payLoading = document.getElementById('pay-loading');
-                payText.classList.add('hidden');
-                payLoading.classList.remove('hidden');
+                // Disable button and show simple processing
                 payButton.disabled = true;
+                payButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Creating Payment...';
                 
                 try {
                     // Prepare booking data
@@ -679,11 +646,10 @@
                         discountCode: discountCode || ''
                     };
                     
-                    console.log('Sending to backend:', paymentData);
                     showNotification('Creating secure checkout...', 'info');
                     
                     // Send to Google Apps Script
-                    const response = await fetchWithCORS(CONFIG.GAS_ENDPOINT_URL, {
+                    const response = await fetch(CONFIG.GAS_ENDPOINT_URL, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -692,7 +658,6 @@
                     });
                     
                     const data = await response.json();
-                    console.log('Response from backend:', data);
                     
                     if (data.success && data.checkoutUrl) {
                         showNotification('Redirecting to secure payment...', 'success');
@@ -702,16 +667,11 @@
                             localStorage.setItem(`payment_${data.bookingRef}`, data.checkoutId);
                         }
                         
-                        // Redirect to Yoco
-                        setTimeout(() => {
-                            window.location.href = data.checkoutUrl;
-                        }, 1000);
+                        // Redirect to Yoco immediately
+                        window.location.href = data.checkoutUrl;
                         
                     } else {
                         let errorMsg = data.error || 'Payment processing failed';
-                        if (data.details) {
-                            errorMsg += ' - ' + JSON.stringify(data.details);
-                        }
                         throw new Error(errorMsg);
                     }
                     
@@ -729,9 +689,8 @@
                     showInlineMessage(errorMessage, 'error');
                     
                     // Reset button
-                    payText.classList.remove('hidden');
-                    payLoading.classList.add('hidden');
                     payButton.disabled = false;
+                    payButton.innerHTML = '<i class="fas fa-lock mr-2"></i> Pay Securely Now';
                 }
             });
         }
@@ -821,44 +780,6 @@
             setTimeout(() => {
                 messageDiv.classList.add('hidden');
             }, 5000);
-        }
-        
-        // CORS-compatible fetch function
-        async function fetchWithCORS(url, options = {}) {
-            // Add CORS headers to request
-            options.headers = {
-                ...options.headers,
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            };
-            
-            // For Google Apps Script, we need to handle CORS differently
-            const corsOptions = {
-                ...options,
-                mode: 'cors',
-                credentials: 'omit'
-            };
-            
-            try {
-                const response = await fetch(url, corsOptions);
-                
-                // Check if the response is ok
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                return response;
-            } catch (error) {
-                console.warn('CORS fetch failed, trying alternative method...', error);
-                
-                // Fallback: Try without CORS mode for Google Apps Script
-                const fallbackOptions = {
-                    ...options,
-                    mode: 'no-cors' // Google Apps Script handles CORS
-                };
-                
-                return fetch(url, fallbackOptions);
-            }
         }
     </script>
 </body>
