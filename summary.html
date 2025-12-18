@@ -58,9 +58,9 @@
                     </div>
                 </div>
                 <div>
-                    <button onclick="testConnection()" class="text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded">
-                        Test Connection
-                    </button>
+                    <a href="booking.html" class="text-sm bg-blue-100 hover:bg-blue-200 text-blue-900 px-4 py-2 rounded-lg font-medium">
+                        <i class="fas fa-edit mr-1"></i> Edit Booking
+                    </a>
                 </div>
             </div>
         </nav>
@@ -143,7 +143,7 @@
                             <div class="space-y-3 mb-6">
                                 <div class="flex justify-between">
                                     <span class="text-gray-600">Subtotal:</span>
-                                    <span id="price-subtotal" class="font-semibold">R 0</span>
+                                    <span id="price-subtotal" class="font-semibold">R 0.00</span>
                                 </div>
                                 
                                 <!-- Discount Field -->
@@ -168,11 +168,11 @@
                                 <div class="border-t pt-3">
                                     <div id="discount-container" class="flex justify-between mb-2 hidden">
                                         <span class="text-gray-700">Discount:</span>
-                                        <span id="price-discount" class="text-green-600">- R 0</span>
+                                        <span id="price-discount" class="text-green-600">- R 0.00</span>
                                     </div>
                                     <div class="flex justify-between mt-3 pt-3 border-t">
                                         <span class="text-lg font-bold text-blue-900">Total:</span>
-                                        <span id="price-total" class="text-2xl font-bold text-blue-900">R 0</span>
+                                        <span id="price-total" class="text-2xl font-bold text-blue-900">R 0.00</span>
                                     </div>
                                 </div>
                             </div>
@@ -182,7 +182,7 @@
                                 <div class="flex items-start">
                                     <input type="checkbox" id="terms-agree" class="mt-1 mr-2">
                                     <label for="terms-agree" class="text-sm text-gray-600">
-                                        I agree to the Terms & Conditions and Privacy Policy.
+                                        I agree to the <a href="#" class="text-blue-600 hover:underline">Terms & Conditions</a> and <a href="#" class="text-blue-600 hover:underline">Privacy Policy</a>.
                                     </label>
                                 </div>
                             </div>
@@ -202,6 +202,13 @@
                             <p class="text-center text-gray-500 text-sm mt-4">
                                 <i class="fas fa-shield-alt mr-1"></i> Secure payment powered by Yoco
                             </p>
+                            
+                            <div class="mt-6 p-4 bg-gray-50 rounded-lg">
+                                <div class="flex items-center text-gray-600 text-sm">
+                                    <i class="fas fa-info-circle mr-2 text-blue-600"></i>
+                                    <span>You'll receive confirmation within 30 minutes after payment</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -220,12 +227,8 @@
     <script>
         // CONFIGURATION - UPDATE THESE VALUES
         const CONFIG = {
-            // IMPORTANT: Update this with your Google Apps Script URL
-            // Your URL: https://script.google.com/macros/s/AKfycbwvBoRraQfbTzQ35iiz5PwI-uZcADIGKs77fSUN-kvv70SM9pcxnA6BPspjzBzNxDs6ag/exec
-            GAS_ENDPOINT_URL: "https://script.google.com/macros/s/AKfycbwi6CVWbibe8pLddO-X-mynhGEbuRHoC4voHmundcfiHlssD_b9lHXxl5drbhBhJ16gtA/exec",
-            
-            // Yoco Public Key (for reference - backend handles payment)
-            YOCO_PUBLIC_KEY: "pk_live_6d6373c9oWD3O3l181a4"
+            // IMPORTANT: Your Google Apps Script URL
+            GAS_ENDPOINT_URL: "https://script.google.com/macros/s/AKfycbwTZC6UhpLsyklDlI5YxxJUavYjza3Qni_k-Th9fo01B6x6YqWtcy-dL_SGD1hdY_Jw/exec"
         };
         
         // Global variables
@@ -254,34 +257,7 @@
                 console.log('Booking Data:', bookingData);
                 console.log('Addons Data:', addonsData);
                 
-                // If no data in localStorage, check URL parameters (for testing)
-                if (!bookingData.fullName) {
-                    const urlParams = new URLSearchParams(window.location.search);
-                    if (urlParams.has('test')) {
-                        // Load test data
-                        bookingData = {
-                            fullName: "Test Customer",
-                            email: "test@example.com",
-                            phone: "071 123 4567",
-                            address: "123 Test Street, Pretoria",
-                            cleaningDate: "2024-12-25",
-                            timeSlot: "9am",
-                            serviceType: "once-off",
-                            propertySize: "2-bed",
-                            materialsOption: "we-supply",
-                            isEmergency: false,
-                            instructions: "Test booking",
-                            basePrice: 450
-                        };
-                        addonsData = {
-                            windows: { quantity: 1, total: 150 },
-                            laundry: { quantity: 2, total: 160 }
-                        };
-                        console.log('Using test data');
-                    }
-                }
-                
-                // Validate data
+                // If no data in localStorage, redirect to booking page
                 if (!bookingData.fullName || !bookingData.email) {
                     showNotification('No booking data found. Please start a new booking.', 'error');
                     setTimeout(() => {
@@ -369,7 +345,7 @@
                 
                 console.log('Fetching service price:', priceRequest);
                 
-                const response = await fetch(CONFIG.GAS_ENDPOINT_URL, {
+                const response = await fetchWithCORS(CONFIG.GAS_ENDPOINT_URL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -581,7 +557,7 @@
                 
                 try {
                     // Validate discount with backend
-                    const response = await fetch(CONFIG.GAS_ENDPOINT_URL, {
+                    const response = await fetchWithCORS(CONFIG.GAS_ENDPOINT_URL, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -683,24 +659,20 @@
                 payButton.disabled = true;
                 
                 try {
-                    // Prepare booking data - matching Google Apps Script expectations
+                    // Prepare booking data
                     const paymentData = {
                         action: 'create_checkout',
                         bookingData: {
-                            // Both field names for compatibility
-                            customerName: bookingData.fullName,
                             fullName: bookingData.fullName,
                             email: bookingData.email,
                             phone: bookingData.phone,
                             address: bookingData.address,
-                            serviceDate: bookingData.cleaningDate,
                             cleaningDate: bookingData.cleaningDate,
                             timeSlot: bookingData.timeSlot,
                             serviceType: bookingData.serviceType,
                             propertySize: bookingData.propertySize,
                             materialsOption: bookingData.materialsOption,
                             isEmergency: bookingData.isEmergency || false,
-                            specialInstructions: bookingData.instructions || '',
                             instructions: bookingData.instructions || ''
                         },
                         addonsData: addonsData || {},
@@ -710,20 +682,14 @@
                     console.log('Sending to backend:', paymentData);
                     showNotification('Creating secure checkout...', 'info');
                     
-                    // Send to Google Apps Script with timeout
-                    const controller = new AbortController();
-                    const timeoutId = setTimeout(() => controller.abort(), 30000);
-                    
-                    const response = await fetch(CONFIG.GAS_ENDPOINT_URL, {
+                    // Send to Google Apps Script
+                    const response = await fetchWithCORS(CONFIG.GAS_ENDPOINT_URL, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify(paymentData),
-                        signal: controller.signal
+                        body: JSON.stringify(paymentData)
                     });
-                    
-                    clearTimeout(timeoutId);
                     
                     const data = await response.json();
                     console.log('Response from backend:', data);
@@ -731,15 +697,10 @@
                     if (data.success && data.checkoutUrl) {
                         showNotification('Redirecting to secure payment...', 'success');
                         
-                        // Store booking reference
-                        if (data.bookingRef) {
-                            localStorage.setItem('lastBookingRef', data.bookingRef);
-                            localStorage.setItem('lastCheckoutAmount', pricing.totalAmount);
+                        // Store checkout ID for success page
+                        if (data.bookingRef && data.checkoutId) {
+                            localStorage.setItem(`payment_${data.bookingRef}`, data.checkoutId);
                         }
-                        
-                        // Optionally clear booking data (or keep for retry)
-                        // localStorage.removeItem('bookingData');
-                        // localStorage.removeItem('bookingAddons');
                         
                         // Redirect to Yoco
                         setTimeout(() => {
@@ -758,9 +719,7 @@
                     console.error('Payment error:', error);
                     
                     let errorMessage = 'Error processing payment. ';
-                    if (error.name === 'AbortError') {
-                        errorMessage += 'Request timeout. Please try again.';
-                    } else if (error.message.includes('Failed to fetch')) {
+                    if (error.message.includes('Failed to fetch')) {
                         errorMessage += 'Cannot connect to server. Please check your internet connection.';
                     } else {
                         errorMessage += error.message;
@@ -778,7 +737,7 @@
         }
         
         function updatePriceDisplay() {
-            // Update prices
+            // Update prices with R format
             document.getElementById('price-subtotal').textContent = `R ${pricing.subtotal.toFixed(2)}`;
             document.getElementById('price-total').textContent = `R ${pricing.totalAmount.toFixed(2)}`;
             
@@ -864,44 +823,43 @@
             }, 5000);
         }
         
-        // Debug function
-        window.testConnection = async function() {
+        // CORS-compatible fetch function
+        async function fetchWithCORS(url, options = {}) {
+            // Add CORS headers to request
+            options.headers = {
+                ...options.headers,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            };
+            
+            // For Google Apps Script, we need to handle CORS differently
+            const corsOptions = {
+                ...options,
+                mode: 'cors',
+                credentials: 'omit'
+            };
+            
             try {
-                showNotification('Testing connection...', 'info');
+                const response = await fetch(url, corsOptions);
                 
-                const response = await fetch(CONFIG.GAS_ENDPOINT_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        action: 'test_connection'
-                    })
-                });
-                
-                const data = await response.json();
-                console.log('Connection test:', data);
-                
-                if (data.success) {
-                    showNotification(`✅ Connection successful! ${data.message}`, 'success');
-                } else {
-                    showNotification(`❌ Connection failed: ${data.error || 'Unknown error'}`, 'error');
+                // Check if the response is ok
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 
-                return data;
+                return response;
             } catch (error) {
-                console.error('Connection test failed:', error);
-                showNotification('❌ Connection test failed: ' + error.message, 'error');
-                return { success: false, error: error.message };
+                console.warn('CORS fetch failed, trying alternative method...', error);
+                
+                // Fallback: Try without CORS mode for Google Apps Script
+                const fallbackOptions = {
+                    ...options,
+                    mode: 'no-cors' // Google Apps Script handles CORS
+                };
+                
+                return fetch(url, fallbackOptions);
             }
-        };
-        
-        // Test discount codes
-        window.testDiscountCodes = function() {
-            const testCodes = ['WELCOME10', 'CLEAN15', 'FIRST20', 'REFER25'];
-            console.log('Available test discount codes:', testCodes);
-            showNotification(`Test discount codes: ${testCodes.join(', ')}`, 'info');
-        };
+        }
     </script>
 </body>
 </html>
