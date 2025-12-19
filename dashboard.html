@@ -54,6 +54,7 @@
             <div class="px-6 mb-2 mt-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Management</div>
             <a href="#" onclick="switchTab('database')" id="nav-database" class="nav-item flex items-center px-6 py-3 text-slate-500 hover:bg-slate-50 transition"><i class="fas fa-database w-5 mr-3"></i> Database</a>
             <a href="#" onclick="switchTab('customers')" id="nav-customers" class="nav-item flex items-center px-6 py-3 text-slate-500 hover:bg-slate-50 transition"><i class="fas fa-users w-5 mr-3"></i> Customers</a>
+            <a href="#" onclick="switchTab('discounts')" id="nav-discounts" class="nav-item flex items-center px-6 py-3 text-slate-500 hover:bg-slate-50 transition"><i class="fas fa-tags w-5 mr-3"></i> Discounts</a>
             <a href="#" onclick="switchTab('banking')" id="nav-banking" class="nav-item flex items-center px-6 py-3 text-slate-500 hover:bg-slate-50 transition"><i class="fas fa-university w-5 mr-3"></i> Banking Info</a>
             
             <div class="px-6 mb-2 mt-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Tools</div>
@@ -80,6 +81,11 @@
                     <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-gray-500"><p class="text-xs font-bold text-slate-400 uppercase">Completed</p><h3 class="text-2xl font-bold text-slate-800 mt-1" id="stat-completed">0</h3></div>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100"><h4 class="font-bold text-slate-800 mb-6">Sales Trend</h4><div class="h-72"><canvas id="chartSales"></canvas></div></div>
+            </div>
+
+            <div id="section-discounts" class="hidden-section animate-fade">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="discounts-grid">
+                    </div>
             </div>
 
             <div id="section-banking" class="hidden-section animate-fade">
@@ -166,9 +172,12 @@
             document.querySelectorAll('[id^="section-"]').forEach(e => e.classList.add('hidden-section'));
             document.getElementById('section-' + id).classList.remove('hidden-section');
             document.getElementById('page-title').textContent = id.charAt(0).toUpperCase() + id.slice(1);
+            
+            // Logic for specific tabs
             if(id === 'database') loadTable('Pending Bookings');
             if(id === 'customers') loadTable('Customers');
             if(id === 'active') loadActiveJobs();
+            if(id === 'discounts') loadDiscounts(); // Added Discount Loader
         }
 
         async function loadMasterData() {
@@ -214,6 +223,66 @@
             setTimeout(() => btn.textContent = "Save Changes", 2000);
         });
 
+        // --- NEW: DISCOUNTS FUNCTIONALITY ---
+        async function loadDiscounts() {
+            document.getElementById('loading-overlay').classList.remove('hidden');
+            // Re-using fetch-table action but for 'Discounts' sheet
+            const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'fetch-table', sheetName: 'Discounts', token: sessionStorage.getItem('dash_token') }) });
+            const data = await res.json();
+            
+            if(data.success) {
+                const container = document.getElementById('discounts-grid');
+                if(data.rows.length === 0) {
+                    container.innerHTML = '<p class="text-slate-400">No discounts found.</p>';
+                } else {
+                    container.innerHTML = data.rows.map(r => {
+                        // MAP: r[0]=Code, r[1]=Percent, r[2]=Status, r[3]=Max, r[4]=Used, r[5]=Expires
+                        const code = r[0];
+                        const percent = r[1];
+                        const status = r[2]; // Active or Expired
+                        const max = Number(r[3]) || 1;
+                        const used = Number(r[4]) || 0;
+                        const expiry = r[5] ? new Date(r[5]).toLocaleDateString() : 'N/A';
+                        
+                        // Calculate usage percent for progress bar
+                        const usagePct = Math.min((used / max) * 100, 100);
+                        const statusColor = String(status).toLowerCase().includes('active') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700';
+
+                        return `
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h4 class="font-mono font-bold text-xl text-slate-800 tracking-wider">${code}</h4>
+                                    <span class="text-xs text-slate-400 font-bold uppercase tracking-wide">Discount Code</span>
+                                </div>
+                                <span class="bg-blue-100 text-blue-700 font-bold px-3 py-1 rounded-lg text-sm">${percent}</span>
+                            </div>
+
+                            <div class="mb-4">
+                                <div class="flex justify-between text-xs font-bold text-slate-500 mb-1">
+                                    <span>Usage</span>
+                                    <span>${used} / ${max}</span>
+                                </div>
+                                <div class="w-full bg-slate-100 rounded-full h-2.5">
+                                    <div class="bg-blue-600 h-2.5 rounded-full transition-all duration-500" style="width: ${usagePct}%"></div>
+                                </div>
+                            </div>
+
+                            <div class="flex justify-between items-center border-t border-slate-100 pt-4 mt-2">
+                                <div class="text-xs">
+                                    <p class="text-slate-400">Valid Until</p>
+                                    <p class="font-semibold text-slate-700">${expiry}</p>
+                                </div>
+                                <span class="${statusColor} px-2 py-1 rounded text-xs font-bold uppercase">${status}</span>
+                            </div>
+                        </div>
+                        `;
+                    }).join('');
+                }
+            }
+            document.getElementById('loading-overlay').classList.add('hidden');
+        }
+
         // TABLE WITH ACTIONS
         async function loadTable(sheet) {
             document.getElementById('loading-overlay').classList.remove('hidden');
@@ -221,13 +290,14 @@
             const data = await res.json();
             if(data.success) {
                 const target = sheet === 'Customers' ? document.getElementById('cust-body') : document.getElementById('table-body');
-                const head = document.getElementById('table-head');
                 
-                // Add "Actions" Header if Pending
-                let headers = data.headers;
-                if(sheet === 'Pending Bookings') headers = [...headers, 'Email Status', 'Action'];
-
-                if(sheet !== 'Customers') head.innerHTML = headers.map(h => `<th class="px-6 py-3 whitespace-nowrap text-xs font-bold text-gray-500 uppercase">${h}</th>`).join('');
+                // If it's the database tab, setup headers
+                if(sheet !== 'Customers') {
+                    const head = document.getElementById('table-head');
+                    let headers = data.headers;
+                    if(sheet === 'Pending Bookings') headers = [...headers, 'Email Status', 'Action'];
+                    head.innerHTML = headers.map(h => `<th class="px-6 py-3 whitespace-nowrap text-xs font-bold text-gray-500 uppercase">${h}</th>`).join('');
+                }
                 
                 target.innerHTML = data.rows.map(r => {
                     let extra = '';
