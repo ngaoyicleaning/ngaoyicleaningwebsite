@@ -15,7 +15,6 @@
         #loading-overlay { background: rgba(255,255,255,0.9); z-index: 60; }
         .animate-fade { animation: fadeIn 0.3s ease-in; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-        /* Bank Card Gradient */
         .bank-card { background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); color: white; }
     </style>
 </head>
@@ -24,7 +23,7 @@
     <div id="loading-overlay" class="fixed inset-0 flex items-center justify-center hidden">
         <div class="flex flex-col items-center">
             <div class="w-10 h-10 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin mb-3"></div>
-            <p class="text-xs font-bold text-blue-900 uppercase tracking-widest">Syncing...</p>
+            <p class="text-xs font-bold text-blue-900 uppercase tracking-widest" id="loading-text">Syncing...</p>
         </div>
     </div>
 
@@ -75,113 +74,34 @@
             
             <div id="section-overview" class="space-y-6 animate-fade">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-blue-600">
-                        <p class="text-xs font-bold text-slate-400 uppercase">Revenue</p>
-                        <h3 class="text-2xl font-bold text-slate-800 mt-1" id="stat-rev">R 0.00</h3>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-orange-500">
-                        <p class="text-xs font-bold text-slate-400 uppercase">Pending</p>
-                        <h3 class="text-2xl font-bold text-slate-800 mt-1" id="stat-pending">0</h3>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-green-500">
-                        <p class="text-xs font-bold text-slate-400 uppercase">Active</p>
-                        <h3 class="text-2xl font-bold text-slate-800 mt-1" id="stat-active">0</h3>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-gray-500">
-                        <p class="text-xs font-bold text-slate-400 uppercase">Completed</p>
-                        <h3 class="text-2xl font-bold text-slate-800 mt-1" id="stat-completed">0</h3>
-                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-blue-600"><p class="text-xs font-bold text-slate-400 uppercase">Revenue</p><h3 class="text-2xl font-bold text-slate-800 mt-1" id="stat-rev">R 0.00</h3></div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-orange-500"><p class="text-xs font-bold text-slate-400 uppercase">Pending</p><h3 class="text-2xl font-bold text-slate-800 mt-1" id="stat-pending">0</h3></div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-green-500"><p class="text-xs font-bold text-slate-400 uppercase">Active</p><h3 class="text-2xl font-bold text-slate-800 mt-1" id="stat-active">0</h3></div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-gray-500"><p class="text-xs font-bold text-slate-400 uppercase">Completed</p><h3 class="text-2xl font-bold text-slate-800 mt-1" id="stat-completed">0</h3></div>
                 </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                    <h4 class="font-bold text-slate-800 mb-6">Sales Trend</h4>
-                    <div class="h-72"><canvas id="chartSales"></canvas></div>
-                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100"><h4 class="font-bold text-slate-800 mb-6">Sales Trend</h4><div class="h-72"><canvas id="chartSales"></canvas></div></div>
             </div>
 
             <div id="section-banking" class="hidden-section animate-fade">
                 <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
-                    
                     <div class="bank-card p-8 rounded-2xl shadow-xl flex flex-col justify-between h-64 relative overflow-hidden">
-                        <div class="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
-                        
-                        <div class="flex justify-between items-start">
-                            <h3 class="text-lg font-bold tracking-wider">Business Account</h3>
-                            <i class="fas fa-university text-2xl opacity-80"></i>
-                        </div>
-                        
-                        <div class="space-y-4">
-                            <div>
-                                <p class="text-xs opacity-75 uppercase">Account Number</p>
-                                <p class="text-2xl font-mono tracking-widest" id="card-acc">.... .... ....</p>
-                            </div>
-                            <div class="flex justify-between">
-                                <div>
-                                    <p class="text-xs opacity-75 uppercase">Bank</p>
-                                    <p class="font-bold" id="card-bank">-</p>
-                                </div>
-                                <div>
-                                    <p class="text-xs opacity-75 uppercase">Branch Code</p>
-                                    <p class="font-bold" id="card-branch">-</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="border-t border-white/20 pt-4 mt-2">
-                            <p class="text-xs opacity-75 uppercase">Account Holder</p>
-                            <p class="font-medium" id="card-holder">Ngaoyi Cleaning</p>
-                        </div>
+                        <div class="flex justify-between items-start"><h3 class="text-lg font-bold tracking-wider">Business Account</h3><i class="fas fa-university text-2xl opacity-80"></i></div>
+                        <div class="space-y-4"><div><p class="text-xs opacity-75 uppercase">Account Number</p><p class="text-2xl font-mono tracking-widest" id="card-acc">....</p></div><div class="flex justify-between"><div><p class="text-xs opacity-75 uppercase">Bank</p><p class="font-bold" id="card-bank">-</p></div><div><p class="text-xs opacity-75 uppercase">Branch</p><p class="font-bold" id="card-branch">-</p></div></div></div>
+                        <div class="border-t border-white/20 pt-4 mt-2"><p class="text-xs opacity-75 uppercase">Holder</p><p class="font-medium" id="card-holder">-</p></div>
                     </div>
-
                     <div class="bg-white p-8 rounded-xl shadow-sm border border-slate-200">
                         <h3 class="font-bold text-lg text-slate-800 mb-6">Update Details</h3>
                         <form id="bank-form" class="space-y-5">
                             <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Bank Name</label>
-                                    <input type="text" id="bank-name" class="w-full px-3 py-2 border rounded-lg focus:border-blue-900 outline-none transition text-sm">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Branch Code</label>
-                                    <input type="text" id="bank-branch" class="w-full px-3 py-2 border rounded-lg focus:border-blue-900 outline-none transition text-sm">
-                                </div>
+                                <input type="text" id="bank-name" class="w-full px-3 py-2 border rounded-lg text-sm" placeholder="Bank Name">
+                                <input type="text" id="bank-branch" class="w-full px-3 py-2 border rounded-lg text-sm" placeholder="Branch Code">
                             </div>
-                            <div>
-                                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Account Number</label>
-                                <input type="text" id="bank-acc" class="w-full px-3 py-2 border rounded-lg focus:border-blue-900 outline-none transition text-sm font-mono">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Account Holder</label>
-                                <input type="text" id="bank-holder" class="w-full px-3 py-2 border rounded-lg focus:border-blue-900 outline-none transition text-sm">
-                            </div>
-                            <button type="submit" id="save-bank-btn" class="w-full bg-blue-900 text-white py-3 rounded-lg font-bold hover:bg-blue-800 transition mt-2">Save Changes</button>
+                            <input type="text" id="bank-acc" class="w-full px-3 py-2 border rounded-lg text-sm" placeholder="Account Number">
+                            <input type="text" id="bank-holder" class="w-full px-3 py-2 border rounded-lg text-sm" placeholder="Account Holder">
+                            <button type="submit" id="save-bank-btn" class="w-full bg-blue-900 text-white py-3 rounded-lg font-bold hover:bg-blue-800 transition">Save Changes</button>
                         </form>
                     </div>
                 </div>
-            </div>
-
-            <div id="section-notifications" class="hidden-section animate-fade">
-                <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                    <div class="p-6 border-b border-slate-100"><h3 class="font-bold text-lg text-slate-800">Alerts</h3></div>
-                    <div id="notification-feed" class="divide-y divide-slate-100"></div>
-                </div>
-            </div>
-
-            <div id="section-analytics" class="hidden-section animate-fade">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                    <div class="bg-white p-6 rounded-xl shadow-sm text-center">
-                        <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-3"><i class="fab fa-google text-xl"></i></div>
-                        <h3 class="text-3xl font-bold text-slate-800" id="ana-views">0</h3><p class="text-sm text-slate-500">Views</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm text-center">
-                        <div class="w-12 h-12 bg-green-50 text-green-600 rounded-full flex items-center justify-center mx-auto mb-3"><i class="fas fa-phone text-xl"></i></div>
-                        <h3 class="text-3xl font-bold text-slate-800" id="ana-calls">0</h3><p class="text-sm text-slate-500">Calls</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm text-center">
-                        <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-3"><i class="fas fa-mouse-pointer text-xl"></i></div>
-                        <h3 class="text-3xl font-bold text-slate-800" id="ana-clicks">0</h3><p class="text-sm text-slate-500">Clicks</p>
-                    </div>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm"><div class="h-64"><canvas id="chartTraffic"></canvas></div></div>
             </div>
 
             <div id="section-database" class="hidden-section space-y-4 animate-fade">
@@ -192,25 +112,17 @@
                 </div>
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                     <div class="overflow-x-auto max-h-[70vh]">
-                        <table class="w-full text-sm text-left"><thead class="bg-slate-50 text-slate-500 border-b sticky top-0"><tr id="table-head"></tr></thead><tbody id="table-body" class="divide-y divide-slate-100"></tbody></table>
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-slate-50 text-slate-500 border-b sticky top-0"><tr id="table-head"></tr></thead>
+                            <tbody id="table-body" class="divide-y divide-slate-100"></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
-            <div id="section-invoices" class="hidden-section animate-fade">
-                <div class="max-w-lg mx-auto bg-white p-8 rounded-xl shadow-sm border border-slate-200 text-center no-print">
-                    <h3 class="font-bold text-lg mb-4">Invoice Lookup</h3>
-                    <div class="flex gap-2">
-                        <input type="text" id="invoice-ref" placeholder="Ref (NGY...)" class="flex-1 border rounded-lg px-4 py-2 uppercase font-mono">
-                        <button onclick="generateInvoice()" class="bg-blue-900 text-white px-6 py-2 rounded-lg font-bold">Find</button>
-                    </div>
-                </div>
-                <div id="invoice-preview" class="hidden mt-8 bg-white p-12 shadow-lg max-w-4xl mx-auto print:block">
-                    <div id="inv-content"></div>
-                    <button onclick="window.print()" class="mt-8 text-blue-600 hover:underline no-print mx-auto block">Print PDF</button>
-                </div>
-            </div>
-
+            <div id="section-notifications" class="hidden-section animate-fade"><div class="max-w-3xl mx-auto bg-white rounded-xl shadow-sm border border-slate-200"><div class="p-6 border-b border-slate-100"><h3 class="font-bold text-lg text-slate-800">Alerts</h3></div><div id="notification-feed" class="divide-y divide-slate-100"></div></div></div>
+            <div id="section-analytics" class="hidden-section animate-fade"><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6"><div class="bg-white p-6 rounded-xl shadow-sm text-center"><h3 class="text-3xl font-bold" id="ana-views">0</h3><p class="text-sm">Views</p></div><div class="bg-white p-6 rounded-xl shadow-sm text-center"><h3 class="text-3xl font-bold" id="ana-calls">0</h3><p class="text-sm">Calls</p></div><div class="bg-white p-6 rounded-xl shadow-sm text-center"><h3 class="text-3xl font-bold" id="ana-clicks">0</h3><p class="text-sm">Clicks</p></div></div><div class="bg-white p-6 rounded-xl shadow-sm"><div class="h-64"><canvas id="chartTraffic"></canvas></div></div></div>
+            <div id="section-invoices" class="hidden-section animate-fade"><div class="max-w-lg mx-auto bg-white p-8 rounded-xl shadow-sm border border-slate-200 text-center"><input type="text" id="invoice-ref" placeholder="Ref" class="border rounded px-4 py-2 uppercase"><button onclick="generateInvoice()" class="bg-blue-900 text-white px-6 py-2 rounded ml-2">Find</button></div><div id="invoice-preview" class="hidden mt-8 bg-white p-12 shadow-lg max-w-4xl mx-auto print:block"><div id="inv-content"></div><button onclick="window.print()" class="mt-8 text-blue-600 underline no-print block mx-auto">Print</button></div></div>
             <div id="section-customers" class="hidden-section animate-fade"><div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"><table class="w-full text-sm text-left"><tbody id="cust-body" class="divide-y divide-slate-100"></tbody></table></div></div>
             <div id="section-active" class="hidden-section animate-fade"><div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="active-jobs-grid"></div></div>
 
@@ -218,7 +130,7 @@
     </main>
 
     <script>
-        // 🔴 PASTE YOUR WEB APP URL HERE
+        // 🔴 PASTE YOUR API URL HERE
         const API_URL = "https://script.google.com/macros/s/AKfycbz-gZKoEio2R-mXsS6gpGwM0DGdWZvJT_fQceRRtQKbxO4FjuDTtKUt8tnrhr51a9SmIw/exec";
 
         let salesChart = null, trafChart = null;
@@ -280,14 +192,11 @@
 
                     if(data.bank) {
                         const b = data.bank;
-                        ['name','acc','branch','holder'].forEach(k => {
-                            document.getElementById('bank-'+k).value = b[k === 'name' ? 'bankName' : k === 'acc' ? 'accNum' : k === 'branch' ? 'branch' : 'holder'] || '';
-                        });
-                        // Update Display Card
+                        ['name','acc','branch','holder'].forEach(k => document.getElementById('bank-'+k).value = b[k==='name'?'bankName':k==='acc'?'accNum':k==='branch'?'branch':'holder']||'');
                         document.getElementById('card-bank').textContent = b.bankName || 'Bank Name';
-                        document.getElementById('card-acc').textContent = b.accNum || '.... .... ....';
+                        document.getElementById('card-acc').textContent = b.accNum || '....';
                         document.getElementById('card-branch').textContent = b.branch || 'Code';
-                        document.getElementById('card-holder').textContent = b.holder || 'Ngaoyi Cleaning';
+                        document.getElementById('card-holder').textContent = b.holder || 'Holder';
                     }
                 }
             } catch(e) { console.error(e); }
@@ -298,46 +207,14 @@
             e.preventDefault();
             const btn = document.getElementById('save-bank-btn');
             btn.textContent = "Saving...";
-            const payload = {
-                action: 'update-bank',
-                token: sessionStorage.getItem('dash_token'),
-                bankName: document.getElementById('bank-name').value,
-                accNum: document.getElementById('bank-acc').value,
-                branch: document.getElementById('bank-branch').value,
-                holder: document.getElementById('bank-holder').value
-            };
+            const payload = { action: 'update-bank', token: sessionStorage.getItem('dash_token'), bankName: document.getElementById('bank-name').value, accNum: document.getElementById('bank-acc').value, branch: document.getElementById('bank-branch').value, holder: document.getElementById('bank-holder').value };
             await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
             btn.textContent = "Saved!";
-            loadMasterData(); // Refresh card
+            loadMasterData(); 
             setTimeout(() => btn.textContent = "Save Changes", 2000);
         });
 
-        function renderNotifications(items) {
-            const list = document.getElementById('notification-feed');
-            const badge = document.getElementById('nav-badge');
-            if(items.length > 0) {
-                badge.textContent = items.length; badge.classList.remove('hidden');
-                list.innerHTML = items.map(n => `
-                    <div class="p-4 hover:bg-slate-50 flex justify-between items-center transition">
-                        <div><p class="font-bold text-slate-800 text-sm">${n.message}</p><p class="text-xs text-slate-400 mt-1">Ref: ${n.id}</p></div>
-                        <span class="bg-orange-100 text-orange-600 px-2 py-1 rounded text-xs font-bold">${n.time}</span>
-                    </div>`).join('');
-            } else { list.innerHTML = '<p class="p-8 text-center text-slate-400">No new alerts</p>'; badge.classList.add('hidden'); }
-        }
-
-        function renderCharts(c) {
-            if(salesChart) salesChart.destroy();
-            salesChart = new Chart(document.getElementById('chartSales'), {
-                type: 'line', data: { labels: c.salesLabels, datasets: [{ label: 'Sales', data: c.salesData, borderColor: '#2563eb', tension: 0.3, fill: true, backgroundColor: 'rgba(37,99,235,0.1)' }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true }, x: { grid: { display: false } } } }
-            });
-            if(trafChart) trafChart.destroy();
-            trafChart = new Chart(document.getElementById('chartTraffic'), {
-                type: 'bar', data: { labels: ['Views', 'Clicks', 'Calls'], datasets: [{ label: 'Traffic', data: [c.analytics.views, c.analytics.clicks, c.analytics.calls], backgroundColor: ['#3b82f6', '#8b5cf6', '#10b981'], borderRadius: 4 }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false } } } }
-            });
-        }
-
+        // TABLE WITH ACTIONS
         async function loadTable(sheet) {
             document.getElementById('loading-overlay').classList.remove('hidden');
             const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'fetch-table', sheetName: sheet, token: sessionStorage.getItem('dash_token') }) });
@@ -345,37 +222,72 @@
             if(data.success) {
                 const target = sheet === 'Customers' ? document.getElementById('cust-body') : document.getElementById('table-body');
                 const head = document.getElementById('table-head');
-                if(sheet !== 'Customers') head.innerHTML = data.headers.map(h => `<th class="px-6 py-3 whitespace-nowrap">${h}</th>`).join('');
-                target.innerHTML = data.rows.map(r => `<tr class="hover:bg-slate-50 border-b border-slate-100">${r.map(c => `<td class="px-6 py-4 whitespace-nowrap text-slate-600">${c}</td>`).join('')}</tr>`).join('');
+                
+                // Add "Actions" Header if Pending
+                let headers = data.headers;
+                if(sheet === 'Pending Bookings') headers = [...headers, 'Email Status', 'Action'];
+
+                if(sheet !== 'Customers') head.innerHTML = headers.map(h => `<th class="px-6 py-3 whitespace-nowrap text-xs font-bold text-gray-500 uppercase">${h}</th>`).join('');
+                
+                target.innerHTML = data.rows.map(r => {
+                    let extra = '';
+                    if(sheet === 'Pending Bookings') {
+                        const ref = r[0]; // Assuming Col 0 is Ref
+                        extra = `
+                            <td class="px-6 py-4"><span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-bold">Sent <i class="fas fa-check ml-1"></i></span></td>
+                            <td class="px-6 py-4"><button onclick="confirmBooking('${ref}')" class="bg-green-600 text-white px-3 py-1 rounded text-xs font-bold hover:bg-green-700 transition">Confirm</button></td>
+                        `;
+                    }
+                    return `<tr class="hover:bg-slate-50 border-b border-slate-100 transition">${r.map(c => `<td class="px-6 py-4 whitespace-nowrap text-slate-600 text-sm max-w-xs overflow-hidden text-ellipsis">${c}</td>`).join('')}${extra}</tr>`;
+                }).join('');
             }
             document.getElementById('loading-overlay').classList.add('hidden');
         }
 
+        async function confirmBooking(ref) {
+            if(!confirm(`Confirm booking ${ref} manually? This will send the confirmation email.`)) return;
+            document.getElementById('loading-text').textContent = "Confirming...";
+            document.getElementById('loading-overlay').classList.remove('hidden');
+            
+            try {
+                const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'confirm-booking', ref: ref, token: sessionStorage.getItem('dash_token') }) });
+                const data = await res.json();
+                if(data.success) {
+                    alert("Success! Booking moved to Confirmed.");
+                    loadTable('Pending Bookings');
+                    loadMasterData(); // Refresh stats
+                } else {
+                    alert("Error: " + data.error);
+                }
+            } catch(e) { alert("Connection Failed"); }
+            
+            document.getElementById('loading-overlay').classList.add('hidden');
+            document.getElementById('loading-text').textContent = "Syncing...";
+        }
+
+        // --- HELPERS (Charts, Notifications, etc are same as before) ---
+        function renderNotifications(items) {
+            const list = document.getElementById('notification-feed');
+            const badge = document.getElementById('nav-badge');
+            if(items.length > 0) { badge.textContent = items.length; badge.classList.remove('hidden'); list.innerHTML = items.map(n => `<div class="p-4 hover:bg-slate-50 flex justify-between items-center transition"><div><p class="font-bold text-slate-800 text-sm">${n.message}</p><p class="text-xs text-slate-400 mt-1">Ref: ${n.id}</p></div><span class="bg-orange-100 text-orange-600 px-2 py-1 rounded text-xs font-bold">${n.time}</span></div>`).join(''); } 
+            else { list.innerHTML = '<p class="p-8 text-center text-slate-400">No new alerts</p>'; badge.classList.add('hidden'); }
+        }
+        function renderCharts(c) {
+            if(salesChart) salesChart.destroy(); salesChart = new Chart(document.getElementById('chartSales'), { type: 'line', data: { labels: c.salesLabels, datasets: [{ label: 'Sales', data: c.salesData, borderColor: '#2563eb', tension: 0.3, fill: true, backgroundColor: 'rgba(37,99,235,0.1)' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true }, x: { grid: { display: false } } } } });
+            if(trafChart) trafChart.destroy(); trafChart = new Chart(document.getElementById('chartTraffic'), { type: 'bar', data: { labels: ['Views', 'Clicks', 'Calls'], datasets: [{ label: 'Traffic', data: [c.analytics.views, c.analytics.clicks, c.analytics.calls], backgroundColor: ['#3b82f6', '#8b5cf6', '#10b981'], borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false } } } } });
+        }
         async function loadActiveJobs() {
             const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'fetch-table', sheetName: 'Active Jobs', token: sessionStorage.getItem('dash_token') }) });
             const data = await res.json();
-            if(data.success) {
-                document.getElementById('active-jobs-grid').innerHTML = data.rows.map(r => `
-                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden">
-                        <div class="absolute top-0 left-0 w-1.5 h-full bg-blue-600"></div>
-                        <div class="flex justify-between items-start mb-4"><span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded uppercase">Active</span><span class="text-gray-400 text-xs font-mono">${r[0]}</span></div>
-                        <h4 class="font-bold text-lg text-gray-800 mb-1">${r[2]}</h4><p class="text-sm text-gray-500 mb-4">${r[4]}</p>
-                        <div class="flex items-center gap-3 pt-4 border-t border-slate-100"><i class="fas fa-user text-slate-400"></i><p class="text-sm font-bold text-slate-700">${r[6] || 'Unassigned'}</p></div>
-                    </div>`).join('');
-            }
+            if(data.success) { document.getElementById('active-jobs-grid').innerHTML = data.rows.map(r => `<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden"><div class="absolute top-0 left-0 w-1.5 h-full bg-blue-600"></div><div class="flex justify-between items-start mb-4"><span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded uppercase">Active</span><span class="text-gray-400 text-xs font-mono">${r[0]}</span></div><h4 class="font-bold text-lg text-gray-800 mb-1">${r[2]}</h4><p class="text-sm text-gray-500 mb-4">${r[4]}</p><div class="flex items-center gap-3 pt-4 border-t border-slate-100"><i class="fas fa-user text-slate-400"></i><p class="text-sm font-bold text-slate-700">${r[6] || 'Unassigned'}</p></div></div>`).join(''); }
         }
-
         async function generateInvoice() {
             const ref = document.getElementById('invoice-ref').value;
             const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'fetch-invoice', ref: ref, token: sessionStorage.getItem('dash_token') }) });
             const data = await res.json();
             if(data.success) {
                 const i = data.invoice;
-                document.getElementById('inv-content').innerHTML = `
-                    <div class="flex justify-between mb-8 border-b pb-4"><div><h1 class="text-3xl font-bold text-blue-900">INVOICE</h1><p class="text-slate-500 mt-1">#${i.ref}</p></div><div class="text-right"><h3 class="font-bold">Ngaoyi Cleaning</h3><p class="text-sm">Gauteng, ZA</p></div></div>
-                    <div class="grid grid-cols-2 mb-8"><div><p class="text-xs font-bold text-slate-400 uppercase">Bill To</p><p class="font-bold">${i.customer}</p><p class="text-sm text-slate-600">${i.email}</p></div><div class="text-right"><p class="text-xs font-bold text-slate-400 uppercase">Details</p><p class="text-sm">Date: ${i.date}</p><p class="text-sm uppercase font-bold text-green-600">${i.status}</p></div></div>
-                    <table class="w-full mb-8"><tr class="bg-slate-50"><th class="text-left p-3 text-sm">Service</th><th class="text-right p-3 text-sm">Amount</th></tr><tr><td class="p-3 border-b">${i.service}</td><td class="p-3 border-b text-right font-bold">R ${i.amount.toFixed(2)}</td></tr></table>
-                    <div class="text-right text-2xl font-bold text-blue-900">Total: R ${i.amount.toFixed(2)}</div>`;
+                document.getElementById('inv-content').innerHTML = `<div class="flex justify-between mb-8 border-b pb-4"><div><h1 class="text-3xl font-bold text-blue-900">INVOICE</h1><p class="text-slate-500 mt-1">#${i.ref}</p></div><div class="text-right"><h3 class="font-bold">Ngaoyi Cleaning</h3><p class="text-sm">Gauteng, ZA</p></div></div><div class="grid grid-cols-2 mb-8"><div><p class="text-xs font-bold text-slate-400 uppercase">Bill To</p><p class="font-bold">${i.customer}</p><p class="text-sm text-slate-600">${i.email}</p></div><div class="text-right"><p class="text-xs font-bold text-slate-400 uppercase">Details</p><p class="text-sm">Date: ${i.date}</p><p class="text-sm uppercase font-bold text-green-600">${i.status}</p></div></div><table class="w-full mb-8"><tr class="bg-slate-50"><th class="text-left p-3 text-sm">Service</th><th class="text-right p-3 text-sm">Amount</th></tr><tr><td class="p-3 border-b">${i.service}</td><td class="p-3 border-b text-right font-bold">R ${i.amount.toFixed(2)}</td></tr></table><div class="text-right text-2xl font-bold text-blue-900">Total: R ${i.amount.toFixed(2)}</div>`;
                 document.getElementById('invoice-preview').classList.remove('hidden');
             } else alert('Invoice not found');
         }
