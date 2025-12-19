@@ -3,172 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ngaoyi Admin Portal</title>
+    <title>Ngaoyi Cleaning Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
-        .nav-item.active { background-color: #e2e8f0; color: #0f172a; font-weight: 600; border-right: 3px solid #1e3a8a; }
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+        .sidebar { background: #1e3a8a; color: white; }
+        .nav-item { opacity: 0.7; transition: 0.3s; }
+        .nav-item:hover, .nav-item.active { opacity: 1; background: rgba(255,255,255,0.1); border-left: 4px solid #60a5fa; }
         .hidden-section { display: none; }
-        #loading-overlay { background: rgba(255,255,255,0.95); z-index: 999; }
-        .animate-fade { animation: fadeIn 0.3s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-        .bank-card { background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); color: white; }
-        #calendar { min-height: 600px; height: 100%; }
-        /* Scrollbar styling */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
     </style>
 </head>
-<body class="text-slate-800 h-screen flex overflow-hidden" onclick="resetTimer()" onkeypress="resetTimer()">
+<body class="h-screen flex overflow-hidden">
 
-    <div id="loading-overlay" class="fixed inset-0 flex items-center justify-center hidden">
-        <div class="flex flex-col items-center">
-            <div class="w-10 h-10 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin mb-3"></div>
-            <p class="text-xs font-bold text-blue-900 uppercase tracking-widest" id="loading-text">Loading...</p>
-        </div>
-    </div>
-
-    <div id="login-screen" class="fixed inset-0 z-50 bg-slate-900 flex items-center justify-center p-4">
-        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-sm">
-            <h2 class="text-2xl font-bold text-center mb-6">Ngaoyi Admin</h2>
-            <form id="login-form" class="space-y-5">
-                <input type="text" id="username" class="w-full px-4 py-3 border rounded-lg" placeholder="Username">
-                <input type="password" id="password" class="w-full px-4 py-3 border rounded-lg" placeholder="Password">
-                <button type="submit" class="w-full bg-blue-900 text-white py-3 rounded-lg font-bold">Sign In</button>
+    <div id="login-screen" class="fixed inset-0 z-50 bg-slate-900 flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg shadow-xl w-96">
+            <div class="text-center mb-6">
+                <h1 class="text-2xl font-bold text-blue-900">Ngaoyi Admin</h1>
+                <p class="text-sm text-gray-500">Secure Access</p>
+            </div>
+            <form id="login-form" class="space-y-4">
+                <input type="text" id="username" placeholder="Username" class="w-full border p-2 rounded">
+                <input type="password" id="password" placeholder="Password" class="w-full border p-2 rounded">
+                <button type="submit" class="w-full bg-blue-900 text-white py-2 rounded font-bold">Login</button>
             </form>
         </div>
     </div>
 
-    <aside class="w-64 bg-white border-r border-slate-200 flex-col hidden md:flex z-20">
-        <div class="h-16 flex items-center px-6 border-b"><span class="font-bold text-lg text-slate-800">Ngaoyi Admin</span></div>
-        <nav class="flex-1 py-6 space-y-1 overflow-y-auto">
-            <a href="#" onclick="switchTab('overview')" id="nav-overview" class="nav-item active flex items-center px-6 py-3 text-slate-500 hover:bg-slate-50 transition"><i class="fas fa-home w-5 mr-3"></i> Overview</a>
-            <a href="#" onclick="switchTab('calendar')" id="nav-calendar" class="nav-item flex items-center px-6 py-3 text-slate-500 hover:bg-slate-50 transition"><i class="fas fa-calendar-alt w-5 mr-3"></i> Calendar</a>
-            
-            <div class="px-6 mb-2 mt-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Management</div>
-            <a href="#" onclick="switchTab('database')" id="nav-database" class="nav-item flex items-center px-6 py-3 text-slate-500 hover:bg-slate-50 transition"><i class="fas fa-database w-5 mr-3"></i> Bookings</a>
-            <a href="#" onclick="switchTab('customers')" id="nav-customers" class="nav-item flex items-center px-6 py-3 text-slate-500 hover:bg-slate-50 transition"><i class="fas fa-users w-5 mr-3"></i> Customers</a>
-            
-            <div class="px-6 mb-2 mt-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Finance</div>
-            <a href="#" onclick="switchTab('banking')" id="nav-banking" class="nav-item flex items-center px-6 py-3 text-slate-500 hover:bg-slate-50 transition"><i class="fas fa-university w-5 mr-3"></i> Banking</a>
-            <a href="#" onclick="switchTab('invoices')" id="nav-invoices" class="nav-item flex items-center px-6 py-3 text-slate-500 hover:bg-slate-50 transition"><i class="fas fa-file-invoice w-5 mr-3"></i> Invoices</a>
+    <aside class="sidebar w-64 hidden md:flex flex-col z-10">
+        <div class="h-16 flex items-center px-6 font-bold text-xl border-b border-blue-800">Ngaoyi Cleaning</div>
+        <nav class="flex-1 py-4 space-y-1">
+            <a onclick="switchTab('overview')" id="nav-overview" class="nav-item active flex items-center px-6 py-3 cursor-pointer"><i class="fas fa-home w-6"></i> Overview</a>
+            <a onclick="switchTab('database')" id="nav-database" class="nav-item flex items-center px-6 py-3 cursor-pointer"><i class="fas fa-database w-6"></i> Bookings</a>
+            <a onclick="switchTab('calendar')" id="nav-calendar" class="nav-item flex items-center px-6 py-3 cursor-pointer"><i class="fas fa-calendar w-6"></i> Calendar</a>
+            <a onclick="switchTab('invoices')" id="nav-invoices" class="nav-item flex items-center px-6 py-3 cursor-pointer"><i class="fas fa-file-invoice w-6"></i> Invoices</a>
+            <a onclick="switchTab('analytics')" id="nav-analytics" class="nav-item flex items-center px-6 py-3 cursor-pointer"><i class="fas fa-chart-pie w-6"></i> Analytics</a>
+            <a onclick="switchTab('banking')" id="nav-banking" class="nav-item flex items-center px-6 py-3 cursor-pointer"><i class="fas fa-university w-6"></i> Banking</a>
         </nav>
-        <div class="p-4 border-t"><button onclick="logout()" class="w-full py-2 text-sm text-red-600">Sign Out</button></div>
+        <div class="p-4"><button onclick="logout()" class="w-full bg-red-600 py-2 rounded text-sm hover:bg-red-700">Logout</button></div>
     </aside>
 
     <main class="flex-1 flex flex-col h-screen overflow-hidden">
-        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 z-10">
-            <h2 class="font-bold text-xl text-slate-800" id="page-title">Overview</h2>
-            <div class="flex items-center gap-4">
-                <span class="text-xs text-slate-400 font-mono" id="session-device">Detecting...</span>
-                <button onclick="loadMasterData()" class="text-slate-400 hover:text-blue-900"><i class="fas fa-sync-alt"></i></button>
-            </div>
+        <header class="h-16 bg-white border-b flex items-center justify-between px-8">
+            <h2 class="font-bold text-xl" id="page-title">Overview</h2>
+            <button onclick="loadData()" class="text-blue-900 hover:text-blue-700"><i class="fas fa-sync"></i> Refresh</button>
         </header>
 
-        <div class="flex-1 overflow-y-auto p-8 bg-slate-50">
+        <div class="flex-1 overflow-y-auto p-8">
             
-            <div id="section-overview" class="space-y-6 animate-fade">
+            <div id="section-overview" class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-blue-600"><p class="text-xs font-bold text-slate-400 uppercase">Revenue</p><h3 class="text-2xl font-bold text-slate-800 mt-1" id="stat-rev">R 0.00</h3></div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-orange-500"><p class="text-xs font-bold text-slate-400 uppercase">Pending</p><h3 class="text-2xl font-bold text-slate-800 mt-1" id="stat-pending">0</h3></div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-green-500"><p class="text-xs font-bold text-slate-400 uppercase">Active</p><h3 class="text-2xl font-bold text-slate-800 mt-1" id="stat-active">0</h3></div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-gray-500"><p class="text-xs font-bold text-slate-400 uppercase">Completed</p><h3 class="text-2xl font-bold text-slate-800 mt-1" id="stat-completed">0</h3></div>
+                    <div class="bg-white p-6 rounded shadow border-l-4 border-blue-600">
+                        <p class="text-gray-500 text-xs font-bold uppercase">Revenue</p>
+                        <h3 class="text-2xl font-bold mt-1" id="stat-revenue">R 0.00</h3>
+                    </div>
+                    <div class="bg-white p-6 rounded shadow border-l-4 border-yellow-500">
+                        <p class="text-gray-500 text-xs font-bold uppercase">Pending</p>
+                        <h3 class="text-2xl font-bold mt-1" id="stat-pending">0</h3>
+                    </div>
+                    <div class="bg-white p-6 rounded shadow border-l-4 border-green-500">
+                        <p class="text-gray-500 text-xs font-bold uppercase">Active</p>
+                        <h3 class="text-2xl font-bold mt-1" id="stat-active">0</h3>
+                    </div>
+                    <div class="bg-white p-6 rounded shadow border-l-4 border-gray-500">
+                        <p class="text-gray-500 text-xs font-bold uppercase">Completed</p>
+                        <h3 class="text-2xl font-bold mt-1" id="stat-completed">0</h3>
+                    </div>
                 </div>
-                
-                <div class="flex justify-end gap-2">
-                    <button onclick="updateFilter('7d')" class="filter-btn px-3 py-1 bg-blue-100 text-blue-700 rounded text-xs font-bold">7 Days</button>
-                    <button onclick="updateFilter('30d')" class="filter-btn px-3 py-1 bg-slate-100 text-slate-600 rounded text-xs font-bold">30 Days</button>
-                    <button onclick="updateFilter('month')" class="filter-btn px-3 py-1 bg-slate-100 text-slate-600 rounded text-xs font-bold">Monthly</button>
-                </div>
-                
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100"><h4 class="font-bold text-slate-800 mb-6">Sales Trend</h4><div class="h-64"><canvas id="chartSales"></canvas></div></div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                        <h4 class="font-bold text-slate-800 mb-6">Service Split</h4>
-                        <div class="h-64 relative flex items-center justify-center">
-                            <canvas id="chartPkg"></canvas>
-                            <p id="pkg-no-data" class="hidden absolute text-sm text-gray-400">No Data Available</p>
-                        </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded shadow">
+                        <h4 class="font-bold mb-4">Sales Trend</h4>
+                        <div class="h-64"><canvas id="chartSales"></canvas></div>
+                    </div>
+                    <div class="bg-white p-6 rounded shadow">
+                        <h4 class="font-bold mb-4">Service Breakdown</h4>
+                        <div class="h-64"><canvas id="chartPkg"></canvas></div>
                     </div>
                 </div>
             </div>
 
-            <div id="section-calendar" class="hidden-section animate-fade h-full">
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 h-full">
-                    <div id='calendar'></div>
-                </div>
-            </div>
-
-            <div id="section-database" class="hidden-section space-y-4 animate-fade">
+            <div id="section-database" class="hidden-section space-y-4">
                 <div class="flex gap-2">
-                    <button onclick="loadTable('Pending Bookings')" class="px-4 py-2 rounded bg-white shadow-sm border text-sm font-bold hover:bg-gray-50">Pending</button>
-                    <button onclick="loadTable('Confirmed Bookings')" class="px-4 py-2 rounded bg-white shadow-sm border text-sm font-bold hover:bg-gray-50">Confirmed</button>
-                    <button onclick="loadTable('Completed Jobs')" class="px-4 py-2 rounded bg-white shadow-sm border text-sm font-bold hover:bg-gray-50">History</button>
+                    <button onclick="loadTable('Pending Bookings')" class="px-4 py-2 bg-white border rounded font-bold hover:bg-gray-50">Pending</button>
+                    <button onclick="loadTable('Confirmed Bookings')" class="px-4 py-2 bg-white border rounded font-bold hover:bg-gray-50">Confirmed</button>
+                    <button onclick="loadTable('Completed Jobs')" class="px-4 py-2 bg-white border rounded font-bold hover:bg-gray-50">History</button>
                 </div>
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="bg-white rounded shadow overflow-hidden">
                     <div class="overflow-x-auto max-h-[70vh]">
                         <table class="w-full text-sm text-left">
-                            <thead class="bg-slate-50 border-b sticky top-0"><tr id="table-head"></tr></thead>
-                            <tbody id="table-body" class="divide-y divide-slate-100"></tbody>
+                            <thead class="bg-gray-50 border-b"><tr id="table-head"></tr></thead>
+                            <tbody id="table-body" class="divide-y"></tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-            <div id="section-invoices" class="hidden-section animate-fade">
-                <div class="max-w-lg mx-auto bg-white p-8 rounded-xl shadow-sm border border-slate-200 text-center mb-8">
-                    <h3 class="font-bold text-lg mb-4">Create & Manage Invoices</h3>
+            <div id="section-calendar" class="hidden-section h-full">
+                <div class="bg-white p-4 rounded shadow h-full" id="calendar"></div>
+            </div>
+
+            <div id="section-invoices" class="hidden-section">
+                <div class="max-w-xl mx-auto bg-white p-8 rounded shadow text-center">
+                    <h3 class="text-lg font-bold mb-4">Generate Invoice</h3>
                     <div class="flex gap-2">
-                        <input type="text" id="invoice-ref" placeholder="Confirmed Booking Ref (e.g. NGY...)" class="flex-1 border rounded px-4 py-2 uppercase">
-                        <button onclick="previewInvoice()" class="bg-blue-900 text-white px-6 py-2 rounded">Preview</button>
+                        <input type="text" id="inv-ref" placeholder="Enter Booking Ref (e.g. NGY...)" class="flex-1 border p-2 rounded uppercase">
+                        <button onclick="previewInvoice()" class="bg-blue-900 text-white px-6 py-2 rounded font-bold">Preview</button>
                     </div>
-                    <p class="text-xs text-gray-400 mt-2">Note: You can only invoice Confirmed bookings.</p>
                 </div>
-                
-                <div id="invoice-area" class="hidden max-w-4xl mx-auto bg-white p-12 shadow-lg border border-slate-200">
-                    <div id="inv-content"></div>
-                    <div class="mt-8 flex justify-center gap-4 no-print">
-                        <button onclick="saveInvoice()" id="btn-save-inv" class="bg-green-600 text-white px-6 py-2 rounded font-bold hover:bg-green-700">Save Invoice</button>
-                        <button onclick="sendInvoice()" id="btn-send-inv" class="hidden bg-blue-600 text-white px-6 py-2 rounded font-bold hover:bg-blue-700"><i class="fas fa-envelope mr-2"></i> Email to Customer</button>
-                        <button onclick="window.print()" class="bg-gray-200 text-gray-800 px-6 py-2 rounded font-bold hover:bg-gray-300">Print PDF</button>
+                <div id="invoice-preview" class="hidden mt-8 max-w-3xl mx-auto bg-white p-12 shadow-lg border">
+                    <div id="invoice-html"></div>
+                    <div class="mt-8 flex justify-center gap-4">
+                        <button onclick="saveInvoice()" id="btn-save" class="bg-green-600 text-white px-6 py-2 rounded">Save Invoice</button>
+                        <button onclick="sendInvoice()" id="btn-send" class="hidden bg-blue-600 text-white px-6 py-2 rounded">Email Customer</button>
                     </div>
                 </div>
             </div>
 
-            <div id="section-customers" class="hidden-section animate-fade">
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                    <table class="w-full text-sm text-left"><tbody id="cust-body" class="divide-y divide-slate-100"></tbody></table>
-                </div>
-            </div>
-
-            <div id="section-banking" class="hidden-section animate-fade">
-                <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
-                    <div class="bank-card p-8 rounded-2xl shadow-xl flex flex-col justify-between h-64">
-                        <div class="flex justify-between items-start"><h3 class="text-lg font-bold">Business Account</h3><i class="fas fa-university text-2xl"></i></div>
-                        <div class="space-y-4">
-                            <div><p class="text-xs opacity-75">ACCOUNT</p><p class="text-2xl font-mono" id="card-acc">....</p></div>
-                            <div class="flex justify-between">
-                                <div><p class="text-xs opacity-75">BANK</p><p class="font-bold" id="card-bank">-</p></div>
-                                <div><p class="text-xs opacity-75">BRANCH</p><p class="font-bold" id="card-branch">-</p></div>
-                            </div>
+            <div id="section-analytics" class="hidden-section">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="col-span-2 bg-white p-6 rounded shadow">
+                        <h4 class="font-bold mb-4">Traffic Sources</h4>
+                        <div class="h-64"><canvas id="chartTraffic"></canvas></div>
+                    </div>
+                    <div class="bg-white p-6 rounded shadow">
+                        <h4 class="font-bold mb-4">Website Stats</h4>
+                        <div class="space-y-4 text-center">
+                            <div><h3 class="text-3xl font-bold" id="ana-views">0</h3><p class="text-gray-500">Page Views</p></div>
+                            <div><h3 class="text-3xl font-bold" id="ana-clicks">0</h3><p class="text-gray-500">Bookings Clicked</p></div>
                         </div>
-                        <div class="border-t border-white/20 pt-4 mt-2"><p class="text-xs opacity-75">HOLDER</p><p class="font-medium" id="card-holder">-</p></div>
                     </div>
-                    <div class="bg-white p-8 rounded-xl shadow-sm border">
-                        <h3 class="font-bold text-lg mb-6">Update Details</h3>
-                        <form id="bank-form" class="space-y-5">
-                            <div class="grid grid-cols-2 gap-4">
-                                <input type="text" id="bank-name" class="w-full px-3 py-2 border rounded" placeholder="Bank">
-                                <input type="text" id="bank-branch" class="w-full px-3 py-2 border rounded" placeholder="Branch">
-                            </div>
-                            <input type="text" id="bank-acc" class="w-full px-3 py-2 border rounded" placeholder="Account No">
-                            <input type="text" id="bank-holder" class="w-full px-3 py-2 border rounded" placeholder="Holder">
-                            <button type="submit" id="save-bank-btn" class="w-full bg-blue-900 text-white py-3 rounded font-bold">Save Changes</button>
+                </div>
+            </div>
+
+            <div id="section-banking" class="hidden-section">
+                <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div class="bank-card p-8 rounded-xl shadow-lg flex flex-col justify-between h-56">
+                        <div><p class="text-sm opacity-80">Business Account</p><p class="text-2xl font-mono mt-2" id="card-acc">....</p></div>
+                        <div class="flex justify-between text-sm">
+                            <div><p class="opacity-80">Bank</p><p class="font-bold" id="card-bank">-</p></div>
+                            <div><p class="opacity-80">Branch</p><p class="font-bold" id="card-branch">-</p></div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded shadow">
+                        <h3 class="font-bold mb-4">Update Banking Details</h3>
+                        <form id="bank-form" class="space-y-4">
+                            <input id="bank-name" placeholder="Bank Name" class="w-full border p-2 rounded">
+                            <input id="bank-acc" placeholder="Account Number" class="w-full border p-2 rounded">
+                            <input id="bank-branch" placeholder="Branch Code" class="w-full border p-2 rounded">
+                            <input id="bank-holder" placeholder="Account Holder" class="w-full border p-2 rounded">
+                            <button type="submit" class="w-full bg-blue-900 text-white py-2 rounded font-bold">Save Changes</button>
                         </form>
                     </div>
                 </div>
@@ -178,256 +165,197 @@
     </main>
 
     <script>
-        // 🔴 API LINK (V6.0 BUSINESS SPECIFIC)
-        const API_URL = "https://script.google.com/macros/s/AKfycbz-gZKoEio2R-mXsS6gpGwM0DGdWZvJT_fQceRRtQKbxO4FjuDTtKUt8tnrhr51a9SmIw/exec";
+        // 🔴 PASTE YOUR NEW DEPLOYMENT URL HERE
+        const API_URL = "https://script.google.com/macros/s/AKfycbxB3TPaILmxQih9RTZpSd4mmxB7mcSWaBWwPUUwQiLHxk1yKOh2KzP6IONGtjqA3mKeKQ/exec";
 
-        let salesChart, pkgChart, calendar;
-        let globalHistory = [];
-        let currentInvoice = null;
-        let savedInvoiceID = null;
+        let salesChart, pkgChart, trafficChart, calendar;
+        let currentInvData = null;
+        let savedInvID = null;
 
-        // --- AUTH & INIT ---
+        // AUTH
         document.addEventListener('DOMContentLoaded', () => {
-            detectDevice();
-            if(sessionStorage.getItem('dash_token')) { 
-                document.getElementById('login-screen').classList.add('hidden'); 
-                loadMasterData(); 
-                resetTimer(); 
+            if(sessionStorage.getItem('ngaoyi_token')) {
+                document.getElementById('login-screen').classList.add('hidden');
+                loadData();
             }
         });
 
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            try {
-                const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'login', username: document.getElementById('username').value, password: document.getElementById('password').value }) });
-                const data = await res.json();
-                if(data.success) { 
-                    sessionStorage.setItem('dash_token', data.token); 
-                    document.getElementById('login-screen').classList.add('hidden'); 
-                    loadMasterData(); 
-                    resetTimer(); 
-                } else {
-                    alert(data.error);
-                }
-            } catch(e) { alert("Login Error"); }
+            const res = await post({ action: 'login', username: e.target.username.value, password: e.target.password.value });
+            if(res.success) {
+                sessionStorage.setItem('ngaoyi_token', res.token);
+                document.getElementById('login-screen').classList.add('hidden');
+                loadData();
+            } else alert(res.error);
         });
 
-        function logout() { sessionStorage.clear(); location.reload(); }
-        let logoutTimer;
-        function resetTimer() { clearTimeout(logoutTimer); if(sessionStorage.getItem('dash_token')) logoutTimer = setTimeout(logout, 600000); }
+        function logout() { sessionStorage.removeItem('ngaoyi_token'); location.reload(); }
 
+        // NAVIGATION
         function switchTab(id) {
-            document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
-            document.getElementById('nav-' + id).classList.add('active');
-            document.querySelectorAll('[id^="section-"]').forEach(e => e.classList.add('hidden-section'));
-            document.getElementById('section-' + id).classList.remove('hidden-section');
-            document.getElementById('page-title').textContent = id.charAt(0).toUpperCase() + id.slice(1);
-            if(id==='database') loadTable('Pending Bookings'); 
-            if(id==='customers') loadTable('Customers'); 
-            if(id==='calendar') loadCalendar();
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('nav-'+id).classList.add('active');
+            document.querySelectorAll('[id^="section-"]').forEach(el => el.classList.add('hidden-section'));
+            document.getElementById('section-'+id).classList.remove('hidden-section');
+            if(id === 'database') loadTable('Pending Bookings');
+            if(id === 'calendar') loadCalendar();
         }
 
-        // --- MASTER DATA LOAD ---
-        async function loadMasterData() {
-            document.getElementById('loading-overlay').classList.remove('hidden');
-            try {
-                const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'fetch-dashboard-data', token: sessionStorage.getItem('dash_token') }) });
-                const data = await res.json();
+        // DATA LOADING
+        async function loadData() {
+            const data = await post({ action: 'fetch-dashboard-data', token: getToken() });
+            if(data.success) {
+                // Stats
+                document.getElementById('stat-rev').textContent = `R ${data.stats.revenue.toLocaleString()}`;
+                document.getElementById('stat-pending').textContent = data.stats.pending;
+                document.getElementById('stat-active').textContent = data.stats.active;
+                document.getElementById('stat-completed').textContent = data.stats.completed;
+
+                // Charts
+                renderCharts(data.charts);
                 
-                if(data.success) {
-                    const s = data.stats;
-                    document.getElementById('stat-rev').textContent = `R ${s.revenue.toLocaleString()}`;
-                    document.getElementById('stat-pending').textContent = s.pending;
-                    document.getElementById('stat-active').textContent = s.active;
-                    document.getElementById('stat-completed').textContent = s.completed;
-                    
-                    globalHistory = data.charts.history || [];
-                    updateFilter('7d');
-                    
-                    // Render Package Chart if data exists, else handle empty
-                    if(data.charts.pkgLabels && data.charts.pkgLabels.length > 0) {
-                        renderPackageChart(data.charts.pkgLabels, data.charts.pkgData);
-                    } else {
-                        // Demo data if empty, or hide
-                        renderPackageChart(['Cleaning', 'Fumigation', 'Laundry'], [1, 1, 1]); // Placeholder
-                    }
-
-                    if(data.bank) {
-                        const b = data.bank;
-                        ['name','acc','branch','holder'].forEach(k => document.getElementById('bank-'+k).value = b[k==='name'?'bankName':k==='acc'?'accNum':k==='branch'?'branch':'holder']||'');
-                        document.getElementById('card-bank').textContent = b.bankName || '-';
-                        document.getElementById('card-acc').textContent = b.accNum || '-';
-                        document.getElementById('card-branch').textContent = b.branch || '-';
-                        document.getElementById('card-holder').textContent = b.holder || '-';
-                    }
+                // Analytics
+                if(data.analytics) {
+                    document.getElementById('ana-views').textContent = data.analytics.views;
+                    document.getElementById('ana-clicks').textContent = data.analytics.clicks;
+                    renderTrafficChart(data.analytics.sources);
                 }
-            } catch(e) { console.error("Data Load Error:", e); }
-            document.getElementById('loading-overlay').classList.add('hidden');
-        }
 
-        // --- CHARTS ---
-        function updateFilter(range) {
-            document.querySelectorAll('.filter-btn').forEach(b => 
-                b.className = "filter-btn px-3 py-1 rounded text-xs font-bold " + 
-                (b.textContent.toLowerCase().includes(range.replace('d','')) ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-600")
-            );
-
-            let filtered = [];
-            const now = new Date();
-
-            if(range.includes('d')) {
-                const d = range==='7d'?7:30; 
-                const c = new Date(); c.setDate(now.getDate()-d); 
-                filtered = globalHistory.filter(x => new Date(x.date)>=c); 
-            } else {
-                const agg = {}; 
-                globalHistory.forEach(x => { 
-                    const k = x.date.substr(0,7); 
-                    if(!agg[k]) agg[k] = { date: k, revenue: 0 }; 
-                    agg[k].revenue += x.revenue; 
-                }); 
-                filtered = Object.values(agg); 
+                // Bank
+                if(data.bank) {
+                    document.getElementById('card-bank').textContent = data.bank.bankName;
+                    document.getElementById('card-acc').textContent = data.bank.accNum;
+                    document.getElementById('card-branch').textContent = data.bank.branch;
+                    ['name','acc','branch','holder'].forEach(k => document.getElementById('bank-'+k).value = data.bank[k==='name'?'bankName':k==='acc'?'accNum':k==='branch'?'branch':'holder']||'');
+                }
             }
-            renderSalesChart(filtered);
         }
 
-        function renderSalesChart(data) {
-            const labels = data.map(d => d.date); 
-            const sales = data.map(d => d.revenue);
-            
+        function renderCharts(c) {
             if(salesChart) salesChart.destroy();
-            salesChart = new Chart(document.getElementById('chartSales'), { 
-                type: 'line', 
-                data: { labels: labels, datasets: [{ label: 'Sales', data: sales, borderColor: '#2563eb', tension: 0.3, fill: true, backgroundColor: 'rgba(37,99,235,0.1)' }] }, 
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true }, x: { grid: { display: false } } } } 
+            salesChart = new Chart(document.getElementById('chartSales'), {
+                type: 'line',
+                data: { 
+                    labels: c.history.map(d => d.date), 
+                    datasets: [{ label: 'Sales', data: c.history.map(d => d.revenue), borderColor: '#2563eb', tension: 0.3 }] 
+                }
             });
-        }
 
-        function renderPackageChart(labels, data) {
             if(pkgChart) pkgChart.destroy();
             pkgChart = new Chart(document.getElementById('chartPkg'), {
                 type: 'doughnut',
                 data: {
-                    labels: labels,
-                    datasets: [{
-                        data: data,
-                        backgroundColor: ['#1e3a8a', '#3b82f6', '#93c5fd', '#f59e0b', '#10b981'],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    cutout: '70%',
-                    plugins: { legend: { position: 'right', labels: { boxWidth: 10, usePointStyle: true, font: { size: 10 } } } }
+                    labels: c.pkgLabels,
+                    datasets: [{ data: c.pkgData, backgroundColor: ['#1e3a8a', '#3b82f6', '#93c5fd', '#f59e0b'] }]
                 }
             });
         }
 
-        // --- TABLES, INVOICES, CALENDAR ---
-        async function loadTable(sheet) {
-            const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'fetch-table', sheetName: sheet, token: sessionStorage.getItem('dash_token') }) });
-            const data = await res.json();
-            if(data.success) {
-                const target = sheet === 'Customers' ? document.getElementById('cust-body') : document.getElementById('table-body');
-                const head = document.getElementById('table-head');
-                let headers = data.headers; if(sheet === 'Pending Bookings') headers = [...headers, 'Action'];
-                
-                if(sheet !== 'Customers') {
-                    head.innerHTML = headers.map(h => `<th class="px-6 py-3 whitespace-nowrap text-xs font-bold text-gray-500 uppercase">${h}</th>`).join('');
+        function renderTrafficChart(src) {
+            if(trafficChart) trafficChart.destroy();
+            trafficChart = new Chart(document.getElementById('chartTraffic'), {
+                type: 'bar',
+                data: {
+                    labels: src.labels,
+                    datasets: [{ label: 'Sources', data: src.data, backgroundColor: '#1e3a8a' }]
                 }
+            });
+        }
+
+        // TABLES
+        async function loadTable(sheet) {
+            const res = await post({ action: 'fetch-table', sheetName: sheet });
+            if(res.success) {
+                const head = document.getElementById('table-head');
+                const body = document.getElementById('table-body');
+                let headers = res.headers;
                 
-                target.innerHTML = data.rows.map(r => { 
-                    let extra = ''; 
-                    // ONLY PENDING TABLE GETS THE CONFIRM BUTTON
-                    if(sheet === 'Pending Bookings') extra = `<td class="px-6 py-4"><button onclick="confirmBooking('${r[0]}')" class="bg-green-600 text-white px-3 py-1 rounded text-xs font-bold hover:bg-green-700 transition shadow-sm">Confirm</button></td>`; 
-                    return `<tr class="hover:bg-slate-50 border-b border-slate-100 transition">${r.map(c => `<td class="px-6 py-4 whitespace-nowrap text-slate-600 text-sm max-w-xs overflow-hidden text-ellipsis">${c}</td>`).join('')}${extra}</tr>`; 
+                if(sheet === 'Pending Bookings') headers.push('Action');
+                head.innerHTML = headers.map(h => `<th class="px-6 py-3">${h}</th>`).join('');
+                
+                body.innerHTML = res.rows.map(r => {
+                    let action = '';
+                    if(sheet === 'Pending Bookings') action = `<td class="px-6 py-4"><button onclick="confirmBooking('${r[0]}')" class="text-green-600 font-bold border border-green-600 px-2 py-1 rounded hover:bg-green-50">Confirm</button></td>`;
+                    return `<tr class="bg-white border-b hover:bg-gray-50">${r.map(c => `<td class="px-6 py-4 truncate max-w-xs">${c}</td>`).join('')}${action}</tr>`;
                 }).join('');
             }
         }
 
         async function confirmBooking(ref) {
-            if(!confirm(`Confirm ${ref} and Send Emails?`)) return;
-            // Optimistic UI update could happen here, but better to wait for server response
-            try { 
-                const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'confirm-booking', ref: ref, token: sessionStorage.getItem('dash_token') }) }); 
-                const data = await res.json(); 
-                if(data.success) {
-                    alert("Confirmed! Emails Sent to Admin & Customer.");
-                    loadTable('Pending Bookings'); 
-                    loadMasterData(); // Update stats
-                } else {
-                    alert("Error: " + data.error);
-                }
-            } catch(e) { alert("Failed to connect."); }
+            if(confirm('Confirm this booking and send email?')) {
+                const res = await post({ action: 'confirm-booking', ref: ref, token: getToken() });
+                if(res.success) { alert('Confirmed!'); loadTable('Pending Bookings'); loadData(); }
+                else alert(res.error);
+            }
         }
 
+        // INVOICING
         async function previewInvoice() {
-            const ref = document.getElementById('invoice-ref').value;
-            const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'preview-invoice', ref: ref, token: sessionStorage.getItem('dash_token') }) });
-            const data = await res.json();
-            if(data.success) {
-                currentInvoice = data.invoice;
-                document.getElementById('invoice-area').classList.remove('hidden');
-                document.getElementById('btn-save-inv').classList.remove('hidden');
-                document.getElementById('btn-send-inv').classList.add('hidden');
-                document.getElementById('inv-content').innerHTML = `
-                    <div class="flex justify-between mb-8 border-b pb-4">
-                        <div><h1 class="text-3xl font-bold text-blue-900">INVOICE</h1><p class="text-slate-500 mt-1">DRAFT</p></div>
-                        <div class="text-right"><h3 class="font-bold">Ngaoyi Cleaning</h3><p class="text-sm">Gauteng, ZA</p></div>
+            const ref = document.getElementById('inv-ref').value;
+            const res = await post({ action: 'preview-invoice', ref: ref, token: getToken() });
+            if(res.success) {
+                currentInvData = res.invoice;
+                document.getElementById('invoice-preview').classList.remove('hidden');
+                document.getElementById('invoice-html').innerHTML = `
+                    <div class="border-b pb-4 mb-4 flex justify-between">
+                        <h1 class="text-3xl font-bold text-blue-900">INVOICE</h1>
+                        <div class="text-right"><p class="font-bold">Ngaoyi Cleaning</p><p>${res.invoice.date}</p></div>
                     </div>
-                    <div class="grid grid-cols-2 mb-8">
-                        <div><p class="text-xs font-bold text-slate-400 uppercase">Bill To</p><p class="font-bold">${currentInvoice.customer}</p><p class="text-sm text-slate-600">${currentInvoice.email}</p></div>
-                        <div class="text-right"><p class="text-xs font-bold text-slate-400 uppercase">Booking</p><p class="font-bold text-sm">${currentInvoice.ref}</p><p class="text-sm">${currentInvoice.date}</p></div>
-                    </div>
-                    <table class="w-full mb-8"><tr class="bg-slate-50"><th class="text-left p-3">Service</th><th class="text-right p-3">Amount</th></tr><tr><td class="p-3 border-b">${currentInvoice.service}</td><td class="p-3 border-b text-right font-bold">R ${currentInvoice.amount.toFixed(2)}</td></tr></table>
-                    <div class="text-right text-2xl font-bold text-blue-900">Total: R ${currentInvoice.amount.toFixed(2)}</div>
+                    <div class="mb-8"><p class="text-gray-500 text-xs uppercase">Billed To</p><h3 class="font-bold text-xl">${res.invoice.customer}</h3></div>
+                    <table class="w-full mb-8">
+                        <tr class="bg-gray-100"><th class="text-left p-2">Service</th><th class="text-right p-2">Amount</th></tr>
+                        <tr><td class="p-2 border-b">${res.invoice.service}</td><td class="p-2 border-b text-right font-bold">R ${res.invoice.amount}</td></tr>
+                    </table>
+                    <h2 class="text-right text-2xl font-bold text-blue-900">Total: R ${res.invoice.amount}</h2>
                 `;
-            } else alert('Booking not found in Confirmed list.');
+                document.getElementById('btn-save').classList.remove('hidden');
+                document.getElementById('btn-send').classList.add('hidden');
+            } else alert(res.error);
         }
 
         async function saveInvoice() {
-            if(!currentInvoice) return;
-            const btn = document.getElementById('btn-save-inv'); btn.textContent = "Saving...";
-            const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'save-invoice', invoice: currentInvoice, token: sessionStorage.getItem('dash_token') }) });
-            const data = await res.json();
-            if(data.success) {
-                savedInvoiceID = data.invID;
-                btn.textContent = "Saved ✅";
-                btn.classList.add('hidden'); 
-                document.getElementById('btn-send-inv').classList.remove('hidden'); 
-                alert("Invoice Saved: " + savedInvoiceID);
+            const res = await post({ action: 'save-invoice', invoice: currentInvData, token: getToken() });
+            if(res.success) {
+                savedInvID = res.invID;
+                document.getElementById('btn-save').classList.add('hidden');
+                document.getElementById('btn-send').classList.remove('hidden');
+                alert(`Invoice ${res.invID} Saved.`);
             }
         }
 
         async function sendInvoice() {
-            if(!savedInvoiceID || !currentInvoice) return;
-            if(!confirm(`Email invoice ${savedInvoiceID} to ${currentInvoice.email}?`)) return;
-            const btn = document.getElementById('btn-send-inv'); btn.textContent = "Sending...";
-            const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'send-invoice', invoice: currentInvoice, invID: savedInvoiceID, token: sessionStorage.getItem('dash_token') }) });
-            const data = await res.json();
-            if(data.success) { alert("Email Sent!"); btn.textContent = "Sent ✅"; } 
-            else alert("Error sending email: " + (data.error || "Unknown error"));
+            const res = await post({ action: 'send-invoice', invoice: currentInvData, invID: savedInvID, token: getToken() });
+            if(res.success) alert('Email Sent Successfully!');
+            else alert(res.error);
         }
 
+        // HELPERS
+        async function post(data) {
+            try {
+                const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(data) });
+                return await res.json();
+            } catch(e) { return { success: false, error: 'Network Error' }; }
+        }
+        function getToken() { return sessionStorage.getItem('ngaoyi_token'); }
+
         async function loadCalendar() {
-            const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'fetch-calendar', token: sessionStorage.getItem('dash_token') }) });
-            const data = await res.json();
+            const res = await post({ action: 'fetch-calendar', token: getToken() });
             if(calendar) calendar.destroy();
-            var calendarEl = document.getElementById('calendar');
-            calendar = new FullCalendar.Calendar(calendarEl, { initialView: 'dayGridMonth', headerToolbar: { left: 'prev,next today', center: 'title', right: 'dayGridMonth,listWeek' }, events: data.events || [], height: '100%' });
+            calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+                initialView: 'dayGridMonth',
+                events: res.events,
+                height: '100%',
+                headerToolbar: { left: 'prev,next today', center: 'title', right: 'dayGridMonth,listWeek' }
+            });
             calendar.render();
         }
 
-        function detectDevice() {
-            const type = /Mobile|Android|iP(hone|od)/.test(navigator.userAgent) ? 'Mobile' : 'Desktop';
-            document.getElementById('session-device').textContent = `Session: ${type}`;
-        }
-
         document.getElementById('bank-form').addEventListener('submit', async (e) => {
-            e.preventDefault(); const btn = document.getElementById('save-bank-btn'); btn.textContent = "Saving...";
-            const payload = { action: 'update-bank', token: sessionStorage.getItem('dash_token'), bankName: document.getElementById('bank-name').value, accNum: document.getElementById('bank-acc').value, branch: document.getElementById('bank-branch').value, holder: document.getElementById('bank-holder').value };
-            await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) }); btn.textContent = "Saved!"; loadMasterData(); setTimeout(() => btn.textContent = "Save Changes", 2000);
+            e.preventDefault();
+            const data = { action: 'update-bank', token: getToken(), bankName: e.target['bank-name'].value, accNum: e.target['bank-acc'].value, branch: e.target['bank-branch'].value, holder: e.target['bank-holder'].value };
+            await post(data);
+            alert('Bank Details Updated');
         });
     </script>
 </body>
