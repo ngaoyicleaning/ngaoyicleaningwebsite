@@ -18,6 +18,7 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         .bank-card { background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); color: white; }
         #calendar { min-height: 600px; height: 100%; }
+        /* Scrollbar styling */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
@@ -51,7 +52,6 @@
             
             <div class="px-6 mb-2 mt-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Management</div>
             <a href="#" onclick="switchTab('database')" id="nav-database" class="nav-item flex items-center px-6 py-3 text-slate-500 hover:bg-slate-50 transition"><i class="fas fa-database w-5 mr-3"></i> Bookings</a>
-            <a href="#" onclick="switchTab('analytics')" id="nav-analytics" class="nav-item flex items-center px-6 py-3 text-slate-500 hover:bg-slate-50 transition"><i class="fas fa-chart-line w-5 mr-3"></i> Analytics</a>
             <a href="#" onclick="switchTab('customers')" id="nav-customers" class="nav-item flex items-center px-6 py-3 text-slate-500 hover:bg-slate-50 transition"><i class="fas fa-users w-5 mr-3"></i> Customers</a>
             
             <div class="px-6 mb-2 mt-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Finance</div>
@@ -88,31 +88,11 @@
                 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100"><h4 class="font-bold text-slate-800 mb-6">Sales Trend</h4><div class="h-64"><canvas id="chartSales"></canvas></div></div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100"><h4 class="font-bold text-slate-800 mb-6">Package Split</h4><div class="h-64 relative"><canvas id="chartPkg"></canvas></div></div>
-                </div>
-            </div>
-
-            <div id="section-analytics" class="hidden-section animate-fade">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                        <h4 class="font-bold text-slate-800 mb-6">Traffic Sources</h4>
-                        <div class="h-64"><canvas id="chartTraffic"></canvas></div>
-                        <div class="grid grid-cols-3 gap-4 mt-6 text-center border-t pt-6">
-                            <div><h3 class="text-2xl font-bold text-slate-800" id="ana-views">0</h3><p class="text-xs text-slate-500 uppercase tracking-wide">Views</p></div>
-                            <div><h3 class="text-2xl font-bold text-slate-800" id="ana-calls">0</h3><p class="text-xs text-slate-500 uppercase tracking-wide">Calls</p></div>
-                            <div><h3 class="text-2xl font-bold text-slate-800" id="ana-clicks">0</h3><p class="text-xs text-slate-500 uppercase tracking-wide">Clicks</p></div>
-                        </div>
-                    </div>
                     <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                        <div class="flex justify-between items-center mb-4">
-                            <h4 class="font-bold text-slate-800">Active Discounts</h4>
-                            <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-bold">Live</span>
-                        </div>
-                        <div id="discount-list" class="space-y-3 max-h-80 overflow-y-auto pr-2">
-                            <p class="text-slate-400 text-sm text-center py-4">Loading codes...</p>
-                        </div>
-                        <div class="mt-4 pt-4 border-t">
-                            <button onclick="alert('To add codes, edit the Discounts sheet in Google Sheets.')" class="w-full py-2 border border-dashed border-slate-300 text-slate-500 rounded text-sm hover:bg-slate-50">Manage Codes</button>
+                        <h4 class="font-bold text-slate-800 mb-6">Service Split</h4>
+                        <div class="h-64 relative flex items-center justify-center">
+                            <canvas id="chartPkg"></canvas>
+                            <p id="pkg-no-data" class="hidden absolute text-sm text-gray-400">No Data Available</p>
                         </div>
                     </div>
                 </div>
@@ -144,9 +124,10 @@
                 <div class="max-w-lg mx-auto bg-white p-8 rounded-xl shadow-sm border border-slate-200 text-center mb-8">
                     <h3 class="font-bold text-lg mb-4">Create & Manage Invoices</h3>
                     <div class="flex gap-2">
-                        <input type="text" id="invoice-ref" placeholder="Booking Ref (NGY...)" class="flex-1 border rounded px-4 py-2 uppercase">
+                        <input type="text" id="invoice-ref" placeholder="Confirmed Booking Ref (e.g. NGY...)" class="flex-1 border rounded px-4 py-2 uppercase">
                         <button onclick="previewInvoice()" class="bg-blue-900 text-white px-6 py-2 rounded">Preview</button>
                     </div>
+                    <p class="text-xs text-gray-400 mt-2">Note: You can only invoice Confirmed bookings.</p>
                 </div>
                 
                 <div id="invoice-area" class="hidden max-w-4xl mx-auto bg-white p-12 shadow-lg border border-slate-200">
@@ -197,13 +178,11 @@
     </main>
 
     <script>
-        // 🔴 UPDATED API URL
+        // 🔴 API LINK (V6.0 BUSINESS SPECIFIC)
         const API_URL = "https://script.google.com/macros/s/AKfycbz-gZKoEio2R-mXsS6gpGwM0DGdWZvJT_fQceRRtQKbxO4FjuDTtKUt8tnrhr51a9SmIw/exec";
 
-        let salesChart, pkgChart, trafficChart, calendar;
+        let salesChart, pkgChart, calendar;
         let globalHistory = [];
-        let globalPkgLabels = [];
-        let globalPkgData = [];
         let currentInvoice = null;
         let savedInvoiceID = null;
 
@@ -256,47 +235,23 @@
                 const data = await res.json();
                 
                 if(data.success) {
-                    // 1. Stats
                     const s = data.stats;
                     document.getElementById('stat-rev').textContent = `R ${s.revenue.toLocaleString()}`;
                     document.getElementById('stat-pending').textContent = s.pending;
                     document.getElementById('stat-active').textContent = s.active;
                     document.getElementById('stat-completed').textContent = s.completed;
                     
-                    // 2. Charts - Store Data Globally
                     globalHistory = data.charts.history || [];
-                    globalPkgLabels = data.charts.pkgLabels || [];
-                    globalPkgData = data.charts.pkgData || [];
-
-                    // 3. Render Initial Charts
-                    updateFilter('7d'); // Renders Sales Chart
-                    renderPackageChart(); // Renders Package Chart specifically
+                    updateFilter('7d');
                     
-                    // 4. Analytics
-                    if(data.charts.analytics) {
-                        const ana = data.charts.analytics;
-                        document.getElementById('ana-views').textContent = ana.views || 0;
-                        document.getElementById('ana-calls').textContent = ana.calls || 0;
-                        document.getElementById('ana-clicks').textContent = ana.clicks || 0;
-                        // For this version, we will mock the traffic source chart data if not provided explicitly, 
-                        // or use a simple distribution based on views.
-                        renderTrafficChart({ labels: ['Facebook', 'Google', 'Direct'], data: [ana.views*0.6, ana.views*0.3, ana.views*0.1] });
-                    }
-
-                    // 5. Discounts
-                    const dList = document.getElementById('discount-list');
-                    if(data.discounts && data.discounts.length > 0) {
-                        dList.innerHTML = data.discounts.map(d => `
-                            <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-100 mb-2">
-                                <div><p class="font-bold text-blue-900">${d.code}</p><p class="text-xs text-slate-500">${d.percent}</p></div>
-                                <span class="px-2 py-1 bg-green-100 text-green-700 text-xs font-bold rounded">Active</span>
-                            </div>
-                        `).join('');
+                    // Render Package Chart if data exists, else handle empty
+                    if(data.charts.pkgLabels && data.charts.pkgLabels.length > 0) {
+                        renderPackageChart(data.charts.pkgLabels, data.charts.pkgData);
                     } else {
-                        dList.innerHTML = '<p class="text-slate-400 text-sm text-center py-4">No active codes found.</p>';
+                        // Demo data if empty, or hide
+                        renderPackageChart(['Cleaning', 'Fumigation', 'Laundry'], [1, 1, 1]); // Placeholder
                     }
-                    
-                    // 6. Banking
+
                     if(data.bank) {
                         const b = data.bank;
                         ['name','acc','branch','holder'].forEach(k => document.getElementById('bank-'+k).value = b[k==='name'?'bankName':k==='acc'?'accNum':k==='branch'?'branch':'holder']||'');
@@ -348,16 +303,14 @@
             });
         }
 
-        function renderPackageChart() {
+        function renderPackageChart(labels, data) {
             if(pkgChart) pkgChart.destroy();
-            if(globalPkgLabels.length === 0) return;
-
             pkgChart = new Chart(document.getElementById('chartPkg'), {
                 type: 'doughnut',
                 data: {
-                    labels: globalPkgLabels,
+                    labels: labels,
                     datasets: [{
-                        data: globalPkgData,
+                        data: data,
                         backgroundColor: ['#1e3a8a', '#3b82f6', '#93c5fd', '#f59e0b', '#10b981'],
                         borderWidth: 0
                     }]
@@ -367,31 +320,6 @@
                     maintainAspectRatio: false,
                     cutout: '70%',
                     plugins: { legend: { position: 'right', labels: { boxWidth: 10, usePointStyle: true, font: { size: 10 } } } }
-                }
-            });
-        }
-
-        function renderTrafficChart(sourceData) {
-            if(trafficChart) trafficChart.destroy();
-            trafficChart = new Chart(document.getElementById('chartTraffic'), {
-                type: 'bar',
-                data: {
-                    labels: sourceData.labels || ['Facebook', 'Google', 'Direct'],
-                    datasets: [{
-                        label: 'Visitors',
-                        data: sourceData.data || [0,0,0],
-                        backgroundColor: '#2563eb',
-                        borderRadius: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: { beginAtZero: true, grid: { borderDash: [2, 4] } },
-                        x: { grid: { display: false } }
-                    }
                 }
             });
         }
@@ -411,6 +339,7 @@
                 
                 target.innerHTML = data.rows.map(r => { 
                     let extra = ''; 
+                    // ONLY PENDING TABLE GETS THE CONFIRM BUTTON
                     if(sheet === 'Pending Bookings') extra = `<td class="px-6 py-4"><button onclick="confirmBooking('${r[0]}')" class="bg-green-600 text-white px-3 py-1 rounded text-xs font-bold hover:bg-green-700 transition shadow-sm">Confirm</button></td>`; 
                     return `<tr class="hover:bg-slate-50 border-b border-slate-100 transition">${r.map(c => `<td class="px-6 py-4 whitespace-nowrap text-slate-600 text-sm max-w-xs overflow-hidden text-ellipsis">${c}</td>`).join('')}${extra}</tr>`; 
                 }).join('');
@@ -418,8 +347,19 @@
         }
 
         async function confirmBooking(ref) {
-            if(!confirm(`Confirm ${ref}?`)) return;
-            try { const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'confirm-booking', ref: ref, token: sessionStorage.getItem('dash_token') }) }); const data = await res.json(); alert(data.success ? "Confirmed" : data.error); if(data.success) loadTable('Pending Bookings'); } catch(e) { alert("Failed"); }
+            if(!confirm(`Confirm ${ref} and Send Emails?`)) return;
+            // Optimistic UI update could happen here, but better to wait for server response
+            try { 
+                const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'confirm-booking', ref: ref, token: sessionStorage.getItem('dash_token') }) }); 
+                const data = await res.json(); 
+                if(data.success) {
+                    alert("Confirmed! Emails Sent to Admin & Customer.");
+                    loadTable('Pending Bookings'); 
+                    loadMasterData(); // Update stats
+                } else {
+                    alert("Error: " + data.error);
+                }
+            } catch(e) { alert("Failed to connect."); }
         }
 
         async function previewInvoice() {
@@ -443,7 +383,7 @@
                     <table class="w-full mb-8"><tr class="bg-slate-50"><th class="text-left p-3">Service</th><th class="text-right p-3">Amount</th></tr><tr><td class="p-3 border-b">${currentInvoice.service}</td><td class="p-3 border-b text-right font-bold">R ${currentInvoice.amount.toFixed(2)}</td></tr></table>
                     <div class="text-right text-2xl font-bold text-blue-900">Total: R ${currentInvoice.amount.toFixed(2)}</div>
                 `;
-            } else alert('Booking not found');
+            } else alert('Booking not found in Confirmed list.');
         }
 
         async function saveInvoice() {
