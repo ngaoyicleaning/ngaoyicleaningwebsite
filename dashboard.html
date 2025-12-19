@@ -80,7 +80,19 @@
                     <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-green-500"><p class="text-xs font-bold text-slate-400 uppercase">Active</p><h3 class="text-2xl font-bold text-slate-800 mt-1" id="stat-active">0</h3></div>
                     <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-gray-500"><p class="text-xs font-bold text-slate-400 uppercase">Completed</p><h3 class="text-2xl font-bold text-slate-800 mt-1" id="stat-completed">0</h3></div>
                 </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100"><h4 class="font-bold text-slate-800 mb-6">Sales Trend</h4><div class="h-72"><canvas id="chartSales"></canvas></div></div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                        <h4 class="font-bold text-slate-800 mb-6">Sales Trend</h4>
+                        <div class="h-72"><canvas id="chartSales"></canvas></div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                        <h4 class="font-bold text-slate-800 mb-6">Package Split</h4>
+                        <div class="h-72 flex items-center justify-center">
+                            <canvas id="chartPackages"></canvas>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div id="section-discounts" class="hidden-section animate-fade">
@@ -139,7 +151,7 @@
         // 🔴 PASTE YOUR API URL HERE
         const API_URL = "https://script.google.com/macros/s/AKfycbxB3TPaILmxQih9RTZpSd4mmxB7mcSWaBWwPUUwQiLHxk1yKOh2KzP6IONGtjqA3mKeKQ/exec";
 
-        let salesChart = null, trafChart = null;
+        let salesChart = null, trafChart = null, pkgChart = null;
 
         document.addEventListener('DOMContentLoaded', () => {
             if(sessionStorage.getItem('dash_token')) {
@@ -173,11 +185,10 @@
             document.getElementById('section-' + id).classList.remove('hidden-section');
             document.getElementById('page-title').textContent = id.charAt(0).toUpperCase() + id.slice(1);
             
-            // Logic for specific tabs
             if(id === 'database') loadTable('Pending Bookings');
             if(id === 'customers') loadTable('Customers');
             if(id === 'active') loadActiveJobs();
-            if(id === 'discounts') loadDiscounts(); // Added Discount Loader
+            if(id === 'discounts') loadDiscounts();
         }
 
         async function loadMasterData() {
@@ -223,10 +234,9 @@
             setTimeout(() => btn.textContent = "Save Changes", 2000);
         });
 
-        // --- NEW: DISCOUNTS FUNCTIONALITY ---
+        // --- DISCOUNTS ---
         async function loadDiscounts() {
             document.getElementById('loading-overlay').classList.remove('hidden');
-            // Re-using fetch-table action but for 'Discounts' sheet
             const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'fetch-table', sheetName: 'Discounts', token: sessionStorage.getItem('dash_token') }) });
             const data = await res.json();
             
@@ -236,15 +246,12 @@
                     container.innerHTML = '<p class="text-slate-400">No discounts found.</p>';
                 } else {
                     container.innerHTML = data.rows.map(r => {
-                        // MAP: r[0]=Code, r[1]=Percent, r[2]=Status, r[3]=Max, r[4]=Used, r[5]=Expires
                         const code = r[0];
                         const percent = r[1];
-                        const status = r[2]; // Active or Expired
+                        const status = r[2];
                         const max = Number(r[3]) || 1;
                         const used = Number(r[4]) || 0;
                         const expiry = r[5] ? new Date(r[5]).toLocaleDateString() : 'N/A';
-                        
-                        // Calculate usage percent for progress bar
                         const usagePct = Math.min((used / max) * 100, 100);
                         const statusColor = String(status).toLowerCase().includes('active') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700';
 
@@ -257,22 +264,12 @@
                                 </div>
                                 <span class="bg-blue-100 text-blue-700 font-bold px-3 py-1 rounded-lg text-sm">${percent}</span>
                             </div>
-
                             <div class="mb-4">
-                                <div class="flex justify-between text-xs font-bold text-slate-500 mb-1">
-                                    <span>Usage</span>
-                                    <span>${used} / ${max}</span>
-                                </div>
-                                <div class="w-full bg-slate-100 rounded-full h-2.5">
-                                    <div class="bg-blue-600 h-2.5 rounded-full transition-all duration-500" style="width: ${usagePct}%"></div>
-                                </div>
+                                <div class="flex justify-between text-xs font-bold text-slate-500 mb-1"><span>Usage</span><span>${used} / ${max}</span></div>
+                                <div class="w-full bg-slate-100 rounded-full h-2.5"><div class="bg-blue-600 h-2.5 rounded-full transition-all duration-500" style="width: ${usagePct}%"></div></div>
                             </div>
-
                             <div class="flex justify-between items-center border-t border-slate-100 pt-4 mt-2">
-                                <div class="text-xs">
-                                    <p class="text-slate-400">Valid Until</p>
-                                    <p class="font-semibold text-slate-700">${expiry}</p>
-                                </div>
+                                <div class="text-xs"><p class="text-slate-400">Valid Until</p><p class="font-semibold text-slate-700">${expiry}</p></div>
                                 <span class="${statusColor} px-2 py-1 rounded text-xs font-bold uppercase">${status}</span>
                             </div>
                         </div>
@@ -283,7 +280,7 @@
             document.getElementById('loading-overlay').classList.add('hidden');
         }
 
-        // TABLE WITH ACTIONS
+        // --- TABLE ---
         async function loadTable(sheet) {
             document.getElementById('loading-overlay').classList.remove('hidden');
             const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'fetch-table', sheetName: sheet, token: sessionStorage.getItem('dash_token') }) });
@@ -291,7 +288,6 @@
             if(data.success) {
                 const target = sheet === 'Customers' ? document.getElementById('cust-body') : document.getElementById('table-body');
                 
-                // If it's the database tab, setup headers
                 if(sheet !== 'Customers') {
                     const head = document.getElementById('table-head');
                     let headers = data.headers;
@@ -302,7 +298,7 @@
                 target.innerHTML = data.rows.map(r => {
                     let extra = '';
                     if(sheet === 'Pending Bookings') {
-                        const ref = r[0]; // Assuming Col 0 is Ref
+                        const ref = r[0];
                         extra = `
                             <td class="px-6 py-4"><span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-bold">Sent <i class="fas fa-check ml-1"></i></span></td>
                             <td class="px-6 py-4"><button onclick="confirmBooking('${ref}')" class="bg-green-600 text-white px-3 py-1 rounded text-xs font-bold hover:bg-green-700 transition">Confirm</button></td>
@@ -325,7 +321,7 @@
                 if(data.success) {
                     alert("Success! Booking moved to Confirmed.");
                     loadTable('Pending Bookings');
-                    loadMasterData(); // Refresh stats
+                    loadMasterData(); 
                 } else {
                     alert("Error: " + data.error);
                 }
@@ -335,22 +331,59 @@
             document.getElementById('loading-text').textContent = "Syncing...";
         }
 
-        // --- HELPERS (Charts, Notifications, etc are same as before) ---
+        // --- CHARTS & HELPERS ---
         function renderNotifications(items) {
             const list = document.getElementById('notification-feed');
             const badge = document.getElementById('nav-badge');
             if(items.length > 0) { badge.textContent = items.length; badge.classList.remove('hidden'); list.innerHTML = items.map(n => `<div class="p-4 hover:bg-slate-50 flex justify-between items-center transition"><div><p class="font-bold text-slate-800 text-sm">${n.message}</p><p class="text-xs text-slate-400 mt-1">Ref: ${n.id}</p></div><span class="bg-orange-100 text-orange-600 px-2 py-1 rounded text-xs font-bold">${n.time}</span></div>`).join(''); } 
             else { list.innerHTML = '<p class="p-8 text-center text-slate-400">No new alerts</p>'; badge.classList.add('hidden'); }
         }
+
         function renderCharts(c) {
-            if(salesChart) salesChart.destroy(); salesChart = new Chart(document.getElementById('chartSales'), { type: 'line', data: { labels: c.salesLabels, datasets: [{ label: 'Sales', data: c.salesData, borderColor: '#2563eb', tension: 0.3, fill: true, backgroundColor: 'rgba(37,99,235,0.1)' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true }, x: { grid: { display: false } } } } });
-            if(trafChart) trafChart.destroy(); trafChart = new Chart(document.getElementById('chartTraffic'), { type: 'bar', data: { labels: ['Views', 'Clicks', 'Calls'], datasets: [{ label: 'Traffic', data: [c.analytics.views, c.analytics.clicks, c.analytics.calls], backgroundColor: ['#3b82f6', '#8b5cf6', '#10b981'], borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false } } } } });
+            // Sales Chart
+            if(salesChart) salesChart.destroy(); 
+            salesChart = new Chart(document.getElementById('chartSales'), { 
+                type: 'line', 
+                data: { labels: c.salesLabels, datasets: [{ label: 'Sales', data: c.salesData, borderColor: '#2563eb', tension: 0.3, fill: true, backgroundColor: 'rgba(37,99,235,0.1)' }] }, 
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true }, x: { grid: { display: false } } } } 
+            });
+
+            // Package Split Chart (NEW)
+            if(pkgChart) pkgChart.destroy();
+            pkgChart = new Chart(document.getElementById('chartPackages'), {
+                type: 'doughnut',
+                data: {
+                    labels: c.pkgLabels,
+                    datasets: [{
+                        data: c.pkgData,
+                        backgroundColor: ['#1e3a8a', '#3b82f6', '#10b981', '#f59e0b', '#64748b'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { usePointStyle: true, font: { size: 10 } } }
+                    }
+                }
+            });
+
+            // Traffic Chart
+            if(trafChart) trafChart.destroy(); 
+            trafChart = new Chart(document.getElementById('chartTraffic'), { 
+                type: 'bar', 
+                data: { labels: ['Views', 'Clicks', 'Calls'], datasets: [{ label: 'Traffic', data: [c.analytics.views, c.analytics.clicks, c.analytics.calls], backgroundColor: ['#3b82f6', '#8b5cf6', '#10b981'], borderRadius: 4 }] }, 
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false } } } } 
+            });
         }
+
         async function loadActiveJobs() {
             const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'fetch-table', sheetName: 'Active Jobs', token: sessionStorage.getItem('dash_token') }) });
             const data = await res.json();
             if(data.success) { document.getElementById('active-jobs-grid').innerHTML = data.rows.map(r => `<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden"><div class="absolute top-0 left-0 w-1.5 h-full bg-blue-600"></div><div class="flex justify-between items-start mb-4"><span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded uppercase">Active</span><span class="text-gray-400 text-xs font-mono">${r[0]}</span></div><h4 class="font-bold text-lg text-gray-800 mb-1">${r[2]}</h4><p class="text-sm text-gray-500 mb-4">${r[4]}</p><div class="flex items-center gap-3 pt-4 border-t border-slate-100"><i class="fas fa-user text-slate-400"></i><p class="text-sm font-bold text-slate-700">${r[6] || 'Unassigned'}</p></div></div>`).join(''); }
         }
+
         async function generateInvoice() {
             const ref = document.getElementById('invoice-ref').value;
             const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'fetch-invoice', ref: ref, token: sessionStorage.getItem('dash_token') }) });
