@@ -86,6 +86,7 @@
                     <button onclick="updateFilter('7d')" class="filter-btn px-3 py-1 bg-blue-100 text-blue-700 rounded text-xs font-bold">7 Days</button>
                     <button onclick="updateFilter('30d')" class="filter-btn px-3 py-1 bg-slate-100 text-slate-600 rounded text-xs font-bold">30 Days</button>
                     <button onclick="updateFilter('month')" class="filter-btn px-3 py-1 bg-slate-100 text-slate-600 rounded text-xs font-bold">Monthly</button>
+                    <button onclick="updateFilter('year')" class="filter-btn px-3 py-1 bg-slate-100 text-slate-600 rounded text-xs font-bold">Yearly</button>
                 </div>
                 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -309,22 +310,68 @@
 
         // --- CHARTS ---
         function updateFilter(range) {
-            document.querySelectorAll('.filter-btn').forEach(b => b.className = "filter-btn px-3 py-1 rounded text-xs font-bold " + (b.textContent.toLowerCase().includes(range.replace('d','')) ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-600"));
-            let filtered = [], now = new Date();
-            if(range.includes('d')) { const d = range==='7d'?7:30; const c = new Date(); c.setDate(now.getDate()-d); filtered = globalHistory.filter(x => new Date(x.date)>=c); }
-            else { const agg={}; globalHistory.forEach(x => { const k=x.date.substr(0,7); if(!agg[k]) agg[k]={date:k, revenue:0}; agg[k].revenue+=x.revenue; }); filtered=Object.values(agg); }
+            // Update button styling
+            document.querySelectorAll('.filter-btn').forEach(b => 
+                b.className = "filter-btn px-3 py-1 rounded text-xs font-bold " + 
+                (b.textContent.toLowerCase().includes(range.replace('d','')) ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-600")
+            );
+
+            let filtered = [];
+            const now = new Date();
+
+            if(range.includes('d')) {
+                // Day filtering (7d, 30d)
+                const d = range==='7d'?7:30; 
+                const c = new Date(); 
+                c.setDate(now.getDate()-d); 
+                filtered = globalHistory.filter(x => new Date(x.date)>=c); 
+            }
+            else {
+                // Aggregation (Monthly or Yearly)
+                const agg = {}; 
+                globalHistory.forEach(x => { 
+                    // If range is 'year', use first 4 chars (YYYY). Else use 7 (YYYY-MM)
+                    const k = range === 'year' ? x.date.substr(0,4) : x.date.substr(0,7); 
+                    if(!agg[k]) agg[k] = { date: k, revenue: 0 }; 
+                    agg[k].revenue += x.revenue; 
+                }); 
+                filtered = Object.values(agg); 
+            }
+            
             renderMainCharts({ history: filtered });
         }
 
         function renderMainCharts(c) {
             // Sales Line Chart
             if(c.history) {
-                const labels = c.history.map(d => d.date); const sales = c.history.map(d => d.revenue);
+                const labels = c.history.map(d => d.date); 
+                const sales = c.history.map(d => d.revenue);
+                
                 if(salesChart) salesChart.destroy();
-                salesChart = new Chart(document.getElementById('chartSales'), { type: 'line', data: { labels: labels, datasets: [{ label: 'Sales', data: sales, borderColor: '#2563eb', tension: 0.3, fill: true, backgroundColor: 'rgba(37,99,235,0.1)' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true }, x: { grid: { display: false } } } } });
+                salesChart = new Chart(document.getElementById('chartSales'), { 
+                    type: 'line', 
+                    data: { 
+                        labels: labels, 
+                        datasets: [{ 
+                            label: 'Sales', 
+                            data: sales, 
+                            borderColor: '#2563eb', 
+                            tension: 0.3, 
+                            fill: true, 
+                            backgroundColor: 'rgba(37,99,235,0.1)' 
+                        }] 
+                    }, 
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        plugins: { legend: { display: false } }, 
+                        scales: { 
+                            y: { beginAtZero: true }, 
+                            x: { grid: { display: false } } 
+                        } 
+                    } 
+                });
             }
-            // Logic for Package chart is handled if data is available (usually only on full reload)
-            // If you want to persist the package chart, you should store the pkgData globally like globalHistory
         }
 
         function renderTrafficChart(sourceData) {
