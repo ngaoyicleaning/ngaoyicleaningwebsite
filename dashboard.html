@@ -17,6 +17,8 @@
         .animate-fade { animation: fadeIn 0.3s ease-in; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         .bank-card { background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); color: white; }
+        /* Fix Calendar Height */
+        #calendar { min-height: 600px; height: 100%; }
     </style>
 </head>
 <body class="text-slate-800 h-screen flex overflow-hidden" onclick="resetTimer()" onkeypress="resetTimer()">
@@ -30,39 +32,29 @@
 
     <div id="login-screen" class="fixed inset-0 z-50 bg-slate-900 flex items-center justify-center p-4">
         <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-sm">
-            <div class="text-center mb-8">
-                <div class="w-14 h-14 bg-blue-900 rounded-xl flex items-center justify-center text-white font-bold mx-auto mb-4 text-2xl">NC</div>
-                <h2 class="text-2xl font-bold text-slate-800">Admin Portal</h2>
-            </div>
+            <h2 class="text-2xl font-bold text-center mb-6">Ngaoyi Admin</h2>
             <form id="login-form" class="space-y-5">
-                <input type="text" id="username" class="w-full px-4 py-3 border rounded-lg outline-none focus:border-blue-900 transition" placeholder="Username">
-                <input type="password" id="password" class="w-full px-4 py-3 border rounded-lg outline-none focus:border-blue-900 transition" placeholder="Password">
-                <button type="submit" id="login-btn" class="w-full bg-blue-900 text-white py-3 rounded-lg font-bold hover:bg-blue-800 transition">Sign In</button>
+                <input type="text" id="username" class="w-full px-4 py-3 border rounded-lg" placeholder="Username">
+                <input type="password" id="password" class="w-full px-4 py-3 border rounded-lg" placeholder="Password">
+                <button type="submit" class="w-full bg-blue-900 text-white py-3 rounded-lg font-bold">Sign In</button>
             </form>
         </div>
     </div>
 
     <aside class="w-64 bg-white border-r border-slate-200 flex-col hidden md:flex z-20">
-        <div class="h-16 flex items-center px-6 border-b border-slate-100">
-            <div class="w-8 h-8 bg-blue-900 rounded flex items-center justify-center text-white font-bold text-xs mr-3">NC</div>
-            <span class="font-bold text-lg text-slate-800">Ngaoyi Admin</span>
-        </div>
+        <div class="h-16 flex items-center px-6 border-b"><span class="font-bold text-lg text-slate-800">Ngaoyi Admin</span></div>
         <nav class="flex-1 py-6 space-y-1 overflow-y-auto">
             <a href="#" onclick="switchTab('overview')" id="nav-overview" class="nav-item active flex items-center px-6 py-3 text-slate-500 hover:bg-slate-50 transition"><i class="fas fa-home w-5 mr-3"></i> Overview</a>
             <a href="#" onclick="switchTab('calendar')" id="nav-calendar" class="nav-item flex items-center px-6 py-3 text-slate-500 hover:bg-slate-50 transition"><i class="fas fa-calendar-alt w-5 mr-3"></i> Calendar</a>
-            
             <div class="px-6 mb-2 mt-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Management</div>
             <a href="#" onclick="switchTab('database')" id="nav-database" class="nav-item flex items-center px-6 py-3 text-slate-500 hover:bg-slate-50 transition"><i class="fas fa-database w-5 mr-3"></i> Bookings</a>
             <a href="#" onclick="switchTab('analytics')" id="nav-analytics" class="nav-item flex items-center px-6 py-3 text-slate-500 hover:bg-slate-50 transition"><i class="fas fa-chart-line w-5 mr-3"></i> Analytics</a>
             <a href="#" onclick="switchTab('customers')" id="nav-customers" class="nav-item flex items-center px-6 py-3 text-slate-500 hover:bg-slate-50 transition"><i class="fas fa-users w-5 mr-3"></i> Customers</a>
-            
             <div class="px-6 mb-2 mt-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Finance</div>
             <a href="#" onclick="switchTab('banking')" id="nav-banking" class="nav-item flex items-center px-6 py-3 text-slate-500 hover:bg-slate-50 transition"><i class="fas fa-university w-5 mr-3"></i> Banking</a>
             <a href="#" onclick="switchTab('invoices')" id="nav-invoices" class="nav-item flex items-center px-6 py-3 text-slate-500 hover:bg-slate-50 transition"><i class="fas fa-file-invoice w-5 mr-3"></i> Invoices</a>
         </nav>
-        <div class="p-4 border-t border-slate-100">
-            <button onclick="logout()" class="w-full py-2 text-sm text-red-600 hover:bg-slate-50 rounded-lg transition font-medium">Sign Out</button>
-        </div>
+        <div class="p-4 border-t"><button onclick="logout()" class="w-full py-2 text-sm text-red-600">Sign Out</button></div>
     </aside>
 
     <main class="flex-1 flex flex-col h-screen overflow-hidden">
@@ -97,116 +89,96 @@
             <div id="section-analytics" class="hidden-section animate-fade">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                        <h4 class="font-bold text-slate-800 mb-6">Traffic Sources</h4>
-                        <div class="h-64"><canvas id="chartTraffic"></canvas></div>
+                        <h4 class="font-bold text-slate-800 mb-6">Traffic Sources</h4><div class="h-64"><canvas id="chartTraffic"></canvas></div>
                         <div class="grid grid-cols-3 gap-4 mt-6 text-center">
-                            <div><h3 class="text-2xl font-bold text-slate-800" id="ana-views">0</h3><p class="text-xs text-slate-500">Views</p></div>
-                            <div><h3 class="text-2xl font-bold text-slate-800" id="ana-calls">0</h3><p class="text-xs text-slate-500">Calls</p></div>
-                            <div><h3 class="text-2xl font-bold text-slate-800" id="ana-clicks">0</h3><p class="text-xs text-slate-500">Clicks</p></div>
+                            <div><h3 class="text-2xl font-bold" id="ana-views">0</h3><p class="text-xs">Views</p></div>
+                            <div><h3 class="text-2xl font-bold" id="ana-calls">0</h3><p class="text-xs">Calls</p></div>
+                            <div><h3 class="text-2xl font-bold" id="ana-clicks">0</h3><p class="text-xs">Clicks</p></div>
                         </div>
                     </div>
-                    
                     <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                        <div class="flex justify-between items-center mb-4">
-                            <h4 class="font-bold text-slate-800">Active Discounts</h4>
-                            <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">Live</span>
-                        </div>
-                        <div id="discount-list" class="space-y-3 max-h-80 overflow-y-auto pr-2">
-                            <p class="text-slate-400 text-sm text-center py-4">No active codes.</p>
-                        </div>
+                        <h4 class="font-bold text-slate-800 mb-4">Active Discounts</h4>
+                        <div id="discount-list" class="space-y-3 max-h-80 overflow-y-auto pr-2"><p class="text-slate-400 text-sm text-center">No active codes.</p></div>
                     </div>
                 </div>
             </div>
 
-            <div id="section-calendar" class="hidden-section animate-fade h-full"><div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 h-full"><div id='calendar' class="h-full"></div></div></div>
+            <div id="section-calendar" class="hidden-section animate-fade h-full">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 h-full">
+                    <div id='calendar'></div>
+                </div>
+            </div>
 
             <div id="section-database" class="hidden-section space-y-4 animate-fade">
                 <div class="flex gap-2">
-                    <button onclick="loadTable('Pending Bookings')" class="px-4 py-2 rounded bg-white shadow-sm text-sm font-bold text-slate-600 border hover:bg-slate-50">Pending</button>
-                    <button onclick="loadTable('Confirmed Bookings')" class="px-4 py-2 rounded bg-white shadow-sm text-sm font-bold text-slate-600 border hover:bg-slate-50">Confirmed</button>
-                    <button onclick="loadTable('Completed Jobs')" class="px-4 py-2 rounded bg-white shadow-sm text-sm font-bold text-slate-600 border hover:bg-slate-50">History</button>
+                    <button onclick="loadTable('Pending Bookings')" class="px-4 py-2 rounded bg-white shadow-sm border text-sm font-bold">Pending</button>
+                    <button onclick="loadTable('Confirmed Bookings')" class="px-4 py-2 rounded bg-white shadow-sm border text-sm font-bold">Confirmed</button>
+                    <button onclick="loadTable('Completed Jobs')" class="px-4 py-2 rounded bg-white shadow-sm border text-sm font-bold">History</button>
                 </div>
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"><div class="overflow-x-auto max-h-[70vh]"><table class="w-full text-sm text-left"><thead class="bg-slate-50 text-slate-500 border-b sticky top-0"><tr id="table-head"></tr></thead><tbody id="table-body" class="divide-y divide-slate-100"></tbody></table></div></div>
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"><div class="overflow-x-auto max-h-[70vh]"><table class="w-full text-sm text-left"><thead class="bg-slate-50 border-b sticky top-0"><tr id="table-head"></tr></thead><tbody id="table-body" class="divide-y divide-slate-100"></tbody></table></div></div>
             </div>
 
-            <div id="section-banking" class="hidden-section animate-fade">
-                <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
-                    <div class="bank-card p-8 rounded-2xl shadow-xl flex flex-col justify-between h-64 relative overflow-hidden">
-                        <div class="flex justify-between items-start"><h3 class="text-lg font-bold tracking-wider">Business Account</h3><i class="fas fa-university text-2xl opacity-80"></i></div>
-                        <div class="space-y-4"><div><p class="text-xs opacity-75 uppercase">Account Number</p><p class="text-2xl font-mono tracking-widest" id="card-acc">....</p></div><div class="flex justify-between"><div><p class="text-xs opacity-75 uppercase">Bank</p><p class="font-bold" id="card-bank">-</p></div><div><p class="text-xs opacity-75 uppercase">Branch</p><p class="font-bold" id="card-branch">-</p></div></div></div>
-                        <div class="border-t border-white/20 pt-4 mt-2"><p class="text-xs opacity-75 uppercase">Holder</p><p class="font-medium" id="card-holder">-</p></div>
+            <div id="section-invoices" class="hidden-section animate-fade">
+                <div class="max-w-lg mx-auto bg-white p-8 rounded-xl shadow-sm border border-slate-200 text-center mb-8">
+                    <h3 class="font-bold text-lg mb-4">Create & Manage Invoices</h3>
+                    <div class="flex gap-2">
+                        <input type="text" id="invoice-ref" placeholder="Booking Ref (NGY...)" class="flex-1 border rounded px-4 py-2 uppercase">
+                        <button onclick="previewInvoice()" class="bg-blue-900 text-white px-6 py-2 rounded">Preview</button>
                     </div>
-                    <div class="bg-white p-8 rounded-xl shadow-sm border border-slate-200">
-                        <h3 class="font-bold text-lg text-slate-800 mb-6">Update Details</h3>
-                        <form id="bank-form" class="space-y-5">
-                            <div class="grid grid-cols-2 gap-4"><input type="text" id="bank-name" class="w-full px-3 py-2 border rounded-lg text-sm" placeholder="Bank Name"><input type="text" id="bank-branch" class="w-full px-3 py-2 border rounded-lg text-sm" placeholder="Branch Code"></div>
-                            <input type="text" id="bank-acc" class="w-full px-3 py-2 border rounded-lg text-sm" placeholder="Account Number">
-                            <input type="text" id="bank-holder" class="w-full px-3 py-2 border rounded-lg text-sm" placeholder="Account Holder">
-                            <button type="submit" id="save-bank-btn" class="w-full bg-blue-900 text-white py-3 rounded-lg font-bold hover:bg-blue-800 transition">Save Changes</button>
-                        </form>
+                </div>
+                
+                <div id="invoice-area" class="hidden max-w-4xl mx-auto bg-white p-12 shadow-lg border border-slate-200">
+                    <div id="inv-content"></div>
+                    
+                    <div class="mt-8 flex justify-center gap-4 no-print">
+                        <button onclick="saveInvoice()" id="btn-save-inv" class="bg-green-600 text-white px-6 py-2 rounded font-bold hover:bg-green-700">Save Invoice</button>
+                        <button onclick="sendInvoice()" id="btn-send-inv" class="hidden bg-blue-600 text-white px-6 py-2 rounded font-bold hover:bg-blue-700"><i class="fas fa-envelope mr-2"></i> Email to Customer</button>
+                        <button onclick="window.print()" class="bg-gray-200 text-gray-800 px-6 py-2 rounded font-bold hover:bg-gray-300">Print PDF</button>
                     </div>
                 </div>
             </div>
 
             <div id="section-customers" class="hidden-section animate-fade"><div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"><table class="w-full text-sm text-left"><tbody id="cust-body" class="divide-y divide-slate-100"></tbody></table></div></div>
-            <div id="section-invoices" class="hidden-section animate-fade"><div class="max-w-lg mx-auto bg-white p-8 rounded-xl shadow-sm border border-slate-200 text-center"><input type="text" id="invoice-ref" placeholder="Ref" class="border rounded px-4 py-2 uppercase"><button onclick="generateInvoice()" class="bg-blue-900 text-white px-6 py-2 rounded ml-2">Find</button></div><div id="invoice-preview" class="hidden mt-8 bg-white p-12 shadow-lg max-w-4xl mx-auto print:block"><div id="inv-content"></div><button onclick="window.print()" class="mt-8 text-blue-600 underline no-print block mx-auto">Print</button></div></div>
+            <div id="section-banking" class="hidden-section animate-fade"><div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8"><div class="bank-card p-8 rounded-2xl shadow-xl flex flex-col justify-between h-64"><div class="flex justify-between items-start"><h3 class="text-lg font-bold">Business Account</h3><i class="fas fa-university text-2xl"></i></div><div class="space-y-4"><div><p class="text-xs opacity-75">ACCOUNT</p><p class="text-2xl font-mono" id="card-acc">....</p></div><div class="flex justify-between"><div><p class="text-xs opacity-75">BANK</p><p class="font-bold" id="card-bank">-</p></div><div><p class="text-xs opacity-75">BRANCH</p><p class="font-bold" id="card-branch">-</p></div></div></div><div class="border-t border-white/20 pt-4 mt-2"><p class="text-xs opacity-75">HOLDER</p><p class="font-medium" id="card-holder">-</p></div></div><div class="bg-white p-8 rounded-xl shadow-sm border"><h3 class="font-bold text-lg mb-6">Update Details</h3><form id="bank-form" class="space-y-5"><div class="grid grid-cols-2 gap-4"><input type="text" id="bank-name" class="w-full px-3 py-2 border rounded" placeholder="Bank"><input type="text" id="bank-branch" class="w-full px-3 py-2 border rounded" placeholder="Branch"></div><input type="text" id="bank-acc" class="w-full px-3 py-2 border rounded" placeholder="Account No"><input type="text" id="bank-holder" class="w-full px-3 py-2 border rounded" placeholder="Holder"><button type="submit" id="save-bank-btn" class="w-full bg-blue-900 text-white py-3 rounded font-bold">Save Changes</button></form></div></div></div>
 
         </div>
     </main>
 
     <script>
-        // 🔴 PASTE YOUR SCRIPT URL HERE
+        // 🔴 PASTE YOUR API URL HERE
         const API_URL = "https://script.google.com/macros/s/AKfycbz-gZKoEio2R-mXsS6gpGwM0DGdWZvJT_fQceRRtQKbxO4FjuDTtKUt8tnrhr51a9SmIw/exec";
 
-        let salesChart, pkgChart, trafChart, calendar;
+        let salesChart, pkgChart, calendar;
         let globalHistory = [];
-        let logoutTimer;
+        let currentInvoice = null; // Store invoice data for saving
+        let savedInvoiceID = null;
 
-        // --- INIT ---
+        // --- AUTH & INIT ---
         document.addEventListener('DOMContentLoaded', () => {
             detectDevice();
-            if(sessionStorage.getItem('dash_token')) {
-                document.getElementById('login-screen').classList.add('hidden');
-                loadMasterData();
-                resetTimer();
-            }
+            if(sessionStorage.getItem('dash_token')) { document.getElementById('login-screen').classList.add('hidden'); loadMasterData(); resetTimer(); }
         });
-
-        // --- AUTO LOGOUT (10 MINS) ---
-        function resetTimer() {
-            clearTimeout(logoutTimer);
-            if(sessionStorage.getItem('dash_token')) {
-                logoutTimer = setTimeout(logout, 600000); // 10 Minutes = 600,000 ms
-            }
-        }
-
-        // --- AUTH ---
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('login-btn'); btn.textContent = "Verifying...";
             try {
                 const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'login', username: document.getElementById('username').value, password: document.getElementById('password').value }) });
                 const data = await res.json();
                 if(data.success) { sessionStorage.setItem('dash_token', data.token); document.getElementById('login-screen').classList.add('hidden'); loadMasterData(); resetTimer(); }
                 else alert(data.error);
             } catch(e) { alert("Login Error"); }
-            btn.textContent = "Sign In";
         });
         function logout() { sessionStorage.clear(); location.reload(); }
+        let logoutTimer;
+        function resetTimer() { clearTimeout(logoutTimer); if(sessionStorage.getItem('dash_token')) logoutTimer = setTimeout(logout, 600000); }
 
-        // --- NAVIGATION ---
         function switchTab(id) {
             document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
             document.getElementById('nav-' + id).classList.add('active');
             document.querySelectorAll('[id^="section-"]').forEach(e => e.classList.add('hidden-section'));
             document.getElementById('section-' + id).classList.remove('hidden-section');
-            document.getElementById('page-title').textContent = id.charAt(0).toUpperCase() + id.slice(1);
-            if(id === 'database') loadTable('Pending Bookings');
-            if(id === 'customers') loadTable('Customers');
-            if(id === 'calendar') loadCalendar();
+            if(id==='database') loadTable('Pending Bookings'); if(id==='customers') loadTable('Customers'); if(id==='calendar') loadCalendar();
         }
 
-        // --- MASTER LOAD ---
         async function loadMasterData() {
             document.getElementById('loading-overlay').classList.remove('hidden');
             try {
@@ -222,83 +194,105 @@
                     globalHistory = data.charts.history;
                     updateFilter('7d');
                     renderCharts(data.charts);
-                    renderDiscounts(data.discounts);
-
-                    document.getElementById('ana-views').textContent = data.charts.analytics.views;
-                    document.getElementById('ana-calls').textContent = data.charts.analytics.calls;
-                    document.getElementById('ana-clicks').textContent = data.charts.analytics.clicks;
-
+                    
                     if(data.bank) {
                         const b = data.bank;
                         ['name','acc','branch','holder'].forEach(k => document.getElementById('bank-'+k).value = b[k==='name'?'bankName':k==='acc'?'accNum':k==='branch'?'branch':'holder']||'');
                         document.getElementById('card-bank').textContent = b.bankName || '-';
-                        document.getElementById('card-acc').textContent = b.accNum || '....';
+                        document.getElementById('card-acc').textContent = b.accNum || '-';
                         document.getElementById('card-branch').textContent = b.branch || '-';
                         document.getElementById('card-holder').textContent = b.holder || '-';
                     }
                 }
-            } catch(e) { console.error(e); }
+            } catch(e) {}
             document.getElementById('loading-overlay').classList.add('hidden');
         }
 
-        // --- HELPERS ---
-        function detectDevice() {
-            const ua = navigator.userAgent;
-            const type = /Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua) ? 'Mobile' : 'Desktop';
-            document.getElementById('session-device').textContent = `Session: ${type}`;
+        // --- INVOICE LOGIC ---
+        async function previewInvoice() {
+            const ref = document.getElementById('invoice-ref').value;
+            const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'preview-invoice', ref: ref, token: sessionStorage.getItem('dash_token') }) });
+            const data = await res.json();
+            if(data.success) {
+                currentInvoice = data.invoice;
+                document.getElementById('invoice-area').classList.remove('hidden');
+                document.getElementById('btn-save-inv').classList.remove('hidden');
+                document.getElementById('btn-send-inv').classList.add('hidden');
+                document.getElementById('inv-content').innerHTML = `
+                    <div class="flex justify-between mb-8 border-b pb-4">
+                        <div><h1 class="text-3xl font-bold text-blue-900">INVOICE</h1><p class="text-slate-500 mt-1">DRAFT</p></div>
+                        <div class="text-right"><h3 class="font-bold">Ngaoyi Cleaning</h3><p class="text-sm">Gauteng, ZA</p></div>
+                    </div>
+                    <div class="grid grid-cols-2 mb-8">
+                        <div><p class="text-xs font-bold text-slate-400 uppercase">Bill To</p><p class="font-bold">${currentInvoice.customer}</p><p class="text-sm text-slate-600">${currentInvoice.email}</p></div>
+                        <div class="text-right"><p class="text-xs font-bold text-slate-400 uppercase">Booking</p><p class="font-bold text-sm">${currentInvoice.ref}</p><p class="text-sm">${currentInvoice.date}</p></div>
+                    </div>
+                    <table class="w-full mb-8"><tr class="bg-slate-50"><th class="text-left p-3">Service</th><th class="text-right p-3">Amount</th></tr><tr><td class="p-3 border-b">${currentInvoice.service}</td><td class="p-3 border-b text-right font-bold">R ${currentInvoice.amount.toFixed(2)}</td></tr></table>
+                    <div class="text-right text-2xl font-bold text-blue-900">Total: R ${currentInvoice.amount.toFixed(2)}</div>
+                `;
+            } else alert('Booking not found');
         }
 
-        function renderDiscounts(list) {
-            const container = document.getElementById('discount-list');
-            if(!list || list.length === 0) return;
-            container.innerHTML = list.map(d => `
-                <div class="flex justify-between items-center p-3 bg-slate-50 rounded border border-slate-100">
-                    <div>
-                        <p class="font-bold text-slate-800 text-sm">${d.code}</p>
-                        <p class="text-xs text-slate-500">${d.percent}% Off</p>
-                    </div>
-                    <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded font-bold">${d.used} Uses</span>
-                </div>
-            `).join('');
+        async function saveInvoice() {
+            if(!currentInvoice) return;
+            const btn = document.getElementById('btn-save-inv'); btn.textContent = "Saving...";
+            const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'save-invoice', invoice: currentInvoice, token: sessionStorage.getItem('dash_token') }) });
+            const data = await res.json();
+            if(data.success) {
+                savedInvoiceID = data.invID;
+                btn.textContent = "Saved ✅";
+                btn.classList.add('hidden'); // Hide Save
+                document.getElementById('btn-send-inv').classList.remove('hidden'); // Show Email
+                alert("Invoice Saved: " + savedInvoiceID);
+            }
+        }
+
+        async function sendInvoice() {
+            if(!savedInvoiceID || !currentInvoice) return;
+            if(!confirm(`Email invoice ${savedInvoiceID} to ${currentInvoice.email}?`)) return;
+            
+            const btn = document.getElementById('btn-send-inv'); btn.textContent = "Sending...";
+            const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'send-invoice', invoice: currentInvoice, invID: savedInvoiceID, token: sessionStorage.getItem('dash_token') }) });
+            const data = await res.json();
+            if(data.success) { alert("Email Sent!"); btn.textContent = "Sent ✅"; } 
+            else alert("Error sending email");
+        }
+
+        // --- CALENDAR & HELPERS ---
+        async function loadCalendar() {
+            const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'fetch-calendar', token: sessionStorage.getItem('dash_token') }) });
+            const data = await res.json();
+            if(calendar) calendar.destroy();
+            var calendarEl = document.getElementById('calendar');
+            calendar = new FullCalendar.Calendar(calendarEl, { initialView: 'dayGridMonth', headerToolbar: { left: 'prev,next today', center: 'title', right: 'dayGridMonth,listWeek' }, events: data.events || [], height: '100%' });
+            calendar.render();
+        }
+
+        function detectDevice() {
+            const type = /Mobile|Android|iP(hone|od)/.test(navigator.userAgent) ? 'Mobile' : 'Desktop';
+            document.getElementById('session-device').textContent = `Session: ${type}`;
         }
 
         function updateFilter(range) {
             document.querySelectorAll('.filter-btn').forEach(b => b.className = "filter-btn px-3 py-1 rounded text-xs font-bold " + (b.textContent.toLowerCase().includes(range.replace('d','')) ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-600"));
             let filtered = [], now = new Date();
             if(range.includes('d')) { const d = range==='7d'?7:30; const c = new Date(); c.setDate(now.getDate()-d); filtered = globalHistory.filter(x => new Date(x.date)>=c); }
-            else if(range==='month') { const agg={}; globalHistory.forEach(x => { const k=x.date.substr(0,7); if(!agg[k]) agg[k]={date:k, revenue:0}; agg[k].revenue+=x.revenue; }); filtered=Object.values(agg); }
+            else { const agg={}; globalHistory.forEach(x => { const k=x.date.substr(0,7); if(!agg[k]) agg[k]={date:k, revenue:0}; agg[k].revenue+=x.revenue; }); filtered=Object.values(agg); }
             renderCharts({ history: filtered });
         }
 
         function renderCharts(c) {
-            const labels = (c.history || []).map(d => d.date); const sales = (c.history || []).map(d => d.revenue);
+            const labels = (c.history||[]).map(d => d.date); const sales = (c.history||[]).map(d => d.revenue);
             if(salesChart) salesChart.destroy();
             salesChart = new Chart(document.getElementById('chartSales'), { type: 'line', data: { labels: labels, datasets: [{ label: 'Sales', data: sales, borderColor: '#2563eb', tension: 0.3, fill: true, backgroundColor: 'rgba(37,99,235,0.1)' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true }, x: { grid: { display: false } } } } });
             
             if(c.pkgLabels) {
                 if(pkgChart) pkgChart.destroy();
-                pkgChart = new Chart(document.getElementById('chartPkg'), { type: 'doughnut', data: { labels: c.pkgLabels, datasets: [{ data: c.pkgData, backgroundColor: ['#1e3a8a', '#3b82f6', '#93c5fd', '#f59e0b', '#10b981', '#f472b6'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'right', labels: { boxWidth: 10, usePointStyle: true, font: { size: 10 } } } } } });
+                pkgChart = new Chart(document.getElementById('chartPkg'), { type: 'doughnut', data: { labels: c.pkgLabels, datasets: [{ data: c.pkgData, backgroundColor: ['#1e3a8a', '#3b82f6', '#93c5fd', '#f59e0b', '#10b981'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'right', labels: { boxWidth: 10, usePointStyle: true, font: { size: 10 } } } } } });
             }
-            if(c.analytics && trafChart) { /* Update traffic logic if needed */ }
-            if(c.analytics && !trafChart) {
-                trafChart = new Chart(document.getElementById('chartTraffic'), { type: 'bar', data: { labels: ['Views', 'Clicks', 'Calls'], datasets: [{ label: 'Traffic', data: [c.analytics.views, c.analytics.clicks, c.analytics.calls], backgroundColor: ['#3b82f6', '#8b5cf6', '#10b981'], borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false } } } } });
-            }
-        }
-
-        // --- COMMON ACTIONS ---
-        async function loadCalendar() {
-            document.getElementById('loading-overlay').classList.remove('hidden');
-            const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'fetch-calendar', token: sessionStorage.getItem('dash_token') }) });
-            const data = await res.json();
-            if(calendar) calendar.destroy();
-            var calendarEl = document.getElementById('calendar');
-            calendar = new FullCalendar.Calendar(calendarEl, { initialView: 'dayGridMonth', headerToolbar: { left: 'prev,next today', center: 'title', right: 'dayGridMonth,listWeek' }, events: data.events || [], height: '100%', eventClick: function(info) { alert("Job: " + info.event.title + "\nAddress: " + info.event.extendedProps.description); } });
-            calendar.render();
-            document.getElementById('loading-overlay').classList.add('hidden');
         }
 
         async function loadTable(sheet) {
-            document.getElementById('loading-overlay').classList.remove('hidden');
             const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'fetch-table', sheetName: sheet, token: sessionStorage.getItem('dash_token') }) });
             const data = await res.json();
             if(data.success) {
@@ -308,14 +302,11 @@
                 if(sheet !== 'Customers') head.innerHTML = headers.map(h => `<th class="px-6 py-3 whitespace-nowrap text-xs font-bold text-gray-500 uppercase">${h}</th>`).join('');
                 target.innerHTML = data.rows.map(r => { let extra = ''; if(sheet === 'Pending Bookings') extra = `<td class="px-6 py-4"><button onclick="confirmBooking('${r[0]}')" class="bg-green-600 text-white px-3 py-1 rounded text-xs font-bold hover:bg-green-700 transition shadow-sm">Confirm</button></td>`; return `<tr class="hover:bg-slate-50 border-b border-slate-100 transition">${r.map(c => `<td class="px-6 py-4 whitespace-nowrap text-slate-600 text-sm max-w-xs overflow-hidden text-ellipsis">${c}</td>`).join('')}${extra}</tr>`; }).join('');
             }
-            document.getElementById('loading-overlay').classList.add('hidden');
         }
 
         async function confirmBooking(ref) {
             if(!confirm(`Confirm ${ref}?`)) return;
-            document.getElementById('loading-overlay').classList.remove('hidden');
             try { const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'confirm-booking', ref: ref, token: sessionStorage.getItem('dash_token') }) }); const data = await res.json(); alert(data.success ? "Confirmed" : data.error); if(data.success) loadTable('Pending Bookings'); } catch(e) { alert("Failed"); }
-            document.getElementById('loading-overlay').classList.add('hidden');
         }
 
         document.getElementById('bank-form').addEventListener('submit', async (e) => {
@@ -323,13 +314,6 @@
             const payload = { action: 'update-bank', token: sessionStorage.getItem('dash_token'), bankName: document.getElementById('bank-name').value, accNum: document.getElementById('bank-acc').value, branch: document.getElementById('bank-branch').value, holder: document.getElementById('bank-holder').value };
             await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) }); btn.textContent = "Saved!"; loadMasterData(); setTimeout(() => btn.textContent = "Save Changes", 2000);
         });
-
-        async function generateInvoice() {
-            const ref = document.getElementById('invoice-ref').value;
-            const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'fetch-invoice', ref: ref, token: sessionStorage.getItem('dash_token') }) });
-            const data = await res.json();
-            if(data.success) { const i = data.invoice; document.getElementById('inv-content').innerHTML = `<div class="flex justify-between mb-8 border-b pb-4"><div><h1 class="text-3xl font-bold text-blue-900">INVOICE</h1><p class="text-slate-500 mt-1">#${i.ref}</p></div><div class="text-right"><h3 class="font-bold">Ngaoyi Cleaning</h3><p class="text-sm">Gauteng, ZA</p></div></div><div class="grid grid-cols-2 mb-8"><div><p class="text-xs font-bold text-slate-400 uppercase">Bill To</p><p class="font-bold">${i.customer}</p><p class="text-sm text-slate-600">${i.email}</p></div><div class="text-right"><p class="text-xs font-bold text-slate-400 uppercase">Details</p><p class="text-sm">Date: ${i.date}</p><p class="text-sm uppercase font-bold text-green-600">${i.status}</p></div></div><table class="w-full mb-8"><tr class="bg-slate-50"><th class="text-left p-3 text-sm">Service</th><th class="text-right p-3 text-sm">Amount</th></tr><tr><td class="p-3 border-b">${i.service}</td><td class="p-3 border-b text-right font-bold">R ${i.amount.toFixed(2)}</td></tr></table><div class="text-right text-2xl font-bold text-blue-900">Total: R ${i.amount.toFixed(2)}</div>`; document.getElementById('invoice-preview').classList.remove('hidden'); } else alert('Invoice not found');
-        }
     </script>
 </body>
 </html>
