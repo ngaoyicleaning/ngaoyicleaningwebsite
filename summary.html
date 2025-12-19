@@ -37,7 +37,6 @@
 
         <div class="grid md:grid-cols-3 gap-8">
             <div class="md:col-span-2 space-y-6">
-                
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                     <h2 class="text-lg font-bold border-b pb-3 mb-4 flex items-center gap-2"><i class="fas fa-user text-blue-600"></i> Customer</h2>
                     <div class="grid sm:grid-cols-2 gap-4 text-sm">
@@ -82,12 +81,13 @@
                         <p id="discount-msg" class="text-xs mt-2 hidden"></p>
                     </div>
 
-                    <label class="flex items-start gap-3 mb-6 cursor-pointer">
+                    <label class="flex items-start gap-3 mb-6 cursor-pointer group">
                         <input type="checkbox" id="terms" class="mt-1">
-                        <span class="text-sm text-gray-500">I agree to the <a href="#" class="text-blue-600 underline">Terms & Conditions</a></span>
+                        <span class="text-sm text-gray-600 group-hover:text-gray-900 transition">I agree to the Terms & Conditions</span>
                     </label>
 
-                    <button id="pay-btn" disabled class="w-full bg-blue-900 text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-blue-800 disabled:opacity-50 disabled:shadow-none transition flex justify-center items-center gap-2">
+                    <button id="pay-btn" disabled 
+                        class="w-full bg-blue-900 text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-blue-800 disabled:opacity-50 transition flex justify-center items-center gap-2">
                         <i class="fas fa-lock text-sm"></i> Pay Securely
                     </button>
                     
@@ -98,22 +98,14 @@
     </main>
 
     <script>
-        // ==========================================
-        // ⚙️ CONFIGURATION
-        // ==========================================
+        // CONFIG
         const CONFIG = {
             API_URL: "https://script.google.com/macros/s/AKfycby8SYFa8xRg2DSQIGuLv2v_7QgR93cZW384-UkbwMdQXS9fHIdmt0fRn2dlkiznaPo4/exec"
         };
 
-        // ==========================================
-        // 📦 STATE MANAGEMENT
-        // ==========================================
         let bookingData = {};
         let appliedCode = "";
 
-        // ==========================================
-        // 🚀 INITIALIZATION
-        // ==========================================
         document.addEventListener("DOMContentLoaded", () => {
             loadLocalStorage();
             if(bookingData.email) {
@@ -122,7 +114,6 @@
             }
         });
 
-        // 1. Load Data
         function loadLocalStorage() {
             try {
                 const raw = localStorage.getItem('bookingData');
@@ -134,7 +125,6 @@
                 bookingData = JSON.parse(raw);
                 bookingData.addons = JSON.parse(localStorage.getItem('bookingAddons') || '{}');
 
-                // UI Populate
                 setText('sum-name', bookingData.fullName);
                 setText('sum-email', bookingData.email);
                 setText('sum-phone', bookingData.phone);
@@ -147,7 +137,6 @@
             } catch(e) { console.error(e); }
         }
 
-        // 2. Pricing Logic (Mirror Backend)
         function calculatePricing() {
             const prices = {
                 'weekly': { '1-bedroom': 240, '2-bedroom': 320, '3-bedroom': 380, '4-bedroom': 440 },
@@ -167,20 +156,17 @@
             let subtotal = base;
             let html = `<div class="flex justify-between"><span>Base Service</span><span class="font-medium">R${base.toFixed(2)}</span></div>`;
 
-            // Materials
             if(bookingData.materialsOption === 'we_supply' && type === 'once_off') {
                 subtotal += 150;
                 html += `<div class="flex justify-between"><span>Materials Supply</span><span class="font-medium">R150.00</span></div>`;
             }
 
-            // Emergency
             if(bookingData.isEmergency && type !== 'emergency') {
                 const sur = base * 0.5;
                 subtotal += sur;
                 html += `<div class="flex justify-between text-orange-600"><span>Emergency Fee</span><span class="font-medium">R${sur.toFixed(2)}</span></div>`;
             }
 
-            // Addons
             if(bookingData.addons) {
                 Object.values(bookingData.addons).forEach(a => {
                     if(a.total && parseFloat(a.total) > 0) {
@@ -191,7 +177,6 @@
                 });
             }
 
-            // --- DISCOUNT LOGIC (UPDATED) ---
             let discountAmt = 0;
             let discountPercent = 0;
 
@@ -200,7 +185,6 @@
             if(appliedCode === 'NGAOYI20') { discountPercent = 20; discountAmt = subtotal * 0.20; }
 
             if(discountAmt > 0) {
-                // ADDED: Explicit percentage display
                 html += `<div class="flex justify-between text-green-600 font-bold border-t pt-2 mt-2">
                             <span>Discount (${discountPercent}% Off)</span>
                             <span>- R${discountAmt.toFixed(2)}</span>
@@ -212,9 +196,7 @@
             document.getElementById('display-total').textContent = `R ${total.toFixed(2)}`;
         }
 
-        // 3. Listeners
         function setupListeners() {
-            // Apply Discount
             document.getElementById('apply-btn').addEventListener('click', () => {
                 const code = document.getElementById('discount-code').value.toUpperCase().trim();
                 const msg = document.getElementById('discount-msg');
@@ -240,12 +222,10 @@
                 }
             });
 
-            // Terms
             document.getElementById('terms').addEventListener('change', (e) => {
                 document.getElementById('pay-btn').disabled = !e.target.checked;
             });
 
-            // Pay Button
             document.getElementById('pay-btn').addEventListener('click', async () => {
                 const btn = document.getElementById('pay-btn');
                 btn.disabled = true;
@@ -299,7 +279,6 @@
             });
         }
 
-        // Utils
         function setText(id, txt) { document.getElementById(id).textContent = txt || '-'; }
         function formatStr(s) { return s ? s.replace(/_/g, ' ').replace(/-/g, ' ').toUpperCase() : ''; }
         
