@@ -6,12 +6,10 @@
     <title>Book Cleaning Service | Ngaoyi Cleaning</title>
     <meta name="description" content="Book professional cleaning services online. Choose your service, schedule, and add-ons for a spotless clean.">
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="/assets/css/styles.css" rel="stylesheet">
     
-    <!-- Tailwind Configuration -->
     <script>
         tailwind.config = {
             theme: {
@@ -34,7 +32,6 @@
     <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
 </head>
 <body class="font-sans text-gray-700 bg-white">
-    <!-- Navigation -->
     <header class="sticky top-0 z-40 bg-white shadow-md">
         <nav class="container mx-auto px-4 py-3">
             <div class="flex justify-between items-center">
@@ -49,7 +46,6 @@
                     </div>
                 </div>
                 
-                <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-6">
                     <a href="/" class="text-gray-700 hover:text-primary font-medium transition-colors duration-200">Home</a>
                     <a href="/services.html" class="text-gray-700 hover:text-primary font-medium transition-colors duration-200">Services</a>
@@ -58,13 +54,11 @@
                     <a href="/booking.html" class="bg-gradient-to-r from-primary to-accent text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg transition-all duration-200">Book Now</a>
                 </div>
                 
-                <!-- Mobile Menu Button -->
                 <button id="mobile-menu-toggle" class="md:hidden text-primary text-2xl" aria-label="Toggle menu">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
             
-            <!-- Mobile Menu -->
             <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-4">
                 <a href="/" class="block text-gray-700 font-medium hover:text-primary transition-colors duration-200">Home</a>
                 <a href="/services.html" class="block text-gray-700 font-medium hover:text-primary transition-colors duration-200">Services</a>
@@ -76,7 +70,6 @@
     </header>
 
     <main class="py-8">
-        <!-- Progress Bar -->
         <div class="container mx-auto px-4 mb-8">
             <div class="flex items-center justify-center">
                 <div class="flex items-center">
@@ -94,14 +87,12 @@
             </div>
         </div>
 
-        <!-- Booking Form -->
         <section class="py-8">
             <div class="container mx-auto px-4 max-w-4xl">
                 <h1 class="text-3xl font-bold text-primary mb-2">Book Your Cleaning Service</h1>
                 <p class="text-gray-600 mb-8">Fill in your details and select your preferred service</p>
                 
                 <form id="booking-form" class="bg-white rounded-xl shadow-lg p-6 md:p-8">
-                    <!-- Personal Information -->
                     <div class="mb-8">
                         <h2 class="text-xl font-semibold text-primary mb-4 pb-2 border-b">Personal Information</h2>
                         <div class="grid md:grid-cols-2 gap-6">
@@ -129,7 +120,6 @@
                         </div>
                     </div>
 
-                    <!-- Service Selection -->
                     <div class="mb-8">
                         <h2 class="text-xl font-semibold text-primary mb-4 pb-2 border-b">Service Details</h2>
                         
@@ -148,29 +138,18 @@
                             </select>
                         </div>
 
-                        <div class="grid md:grid-cols-2 gap-6 mb-6">
-                            <div>
-                                <label for="property-size" class="block text-gray-700 font-medium mb-2">Property Size *</label>
-                                <select id="property-size" required
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition bg-white">
-                                    <option value="">Select property size</option>
-                                    <option value="1-bed">1-Bedroom</option>
-                                    <option value="2-bed">2-Bedroom</option>
-                                    <option value="3-bed">3-Bedroom</option>
-                                    <option value="4-bed">4-Bedroom</option>
-                                    <option value="5+bed">5+ Bedroom</option>
-                                    <option value="office">Office/Commercial</option>
-                                </select>
-                            </div>
-                            
-                            <div>
-                                <label for="materials" class="block text-gray-700 font-medium mb-2">Cleaning Materials</label>
-                                <select id="materials"
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition bg-white">
-                                    <option value="customer-supply">I will supply materials</option>
-                                    <option value="we-supply">We supply materials (+R150)</option>
-                                </select>
-                            </div>
+                        <div class="mb-6">
+                            <label for="property-size" class="block text-gray-700 font-medium mb-2">Property Size *</label>
+                            <select id="property-size" required
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition bg-white">
+                                <option value="">Select property size</option>
+                                <option value="1-bed">1-Bedroom</option>
+                                <option value="2-bed">2-Bedroom</option>
+                                <option value="3-bed">3-Bedroom</option>
+                                <option value="4-bed">4-Bedroom</option>
+                                <option value="5+bed">5+ Bedroom</option>
+                                <option value="office">Office/Commercial</option>
+                            </select>
                         </div>
 
                         <div class="grid md:grid-cols-2 gap-6">
@@ -193,7 +172,6 @@
                         </div>
                     </div>
 
-                    <!-- Special Instructions -->
                     <div class="mb-8">
                         <label for="instructions" class="block text-gray-700 font-medium mb-2">Special Instructions</label>
                         <textarea id="instructions" rows="3"
@@ -201,7 +179,6 @@
                                   placeholder="Any special requests, pet information, access instructions, or specific areas to focus on..."></textarea>
                     </div>
 
-                    <!-- Price Summary -->
                     <div class="bg-gray-50 p-6 rounded-lg mb-8">
                         <h3 class="text-lg font-semibold text-primary mb-4">Price Estimate</h3>
                         <div class="space-y-2">
@@ -209,8 +186,8 @@
                                 <span class="text-gray-600">Base Service:</span>
                                 <span id="base-price" class="font-semibold">R 0</span>
                             </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Materials:</span>
+                            <div class="flex justify-between text-gray-400">
+                                <span>Materials (Customer Supplies):</span>
                                 <span id="materials-price" class="font-semibold">R 0</span>
                             </div>
                             <div class="flex justify-between">
@@ -226,7 +203,6 @@
                         </div>
                     </div>
 
-                    <!-- Next Step Button -->
                     <div class="flex justify-end">
                         <button type="button" id="next-to-addons"
                                 class="bg-gradient-to-r from-primary to-accent text-white px-8 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -236,7 +212,6 @@
                     </div>
                 </form>
 
-                <!-- Live Price Calculation Script -->
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
                         // Set minimum date
@@ -260,7 +235,7 @@
                         // Form elements
                         const serviceType = document.getElementById('service-type');
                         const propertySize = document.getElementById('property-size');
-                        const materials = document.getElementById('materials');
+                        // Materials element removed from DOM
                         const nextButton = document.getElementById('next-to-addons');
 
                         // Price display elements
@@ -272,21 +247,15 @@
                         function calculatePrice() {
                             const service = serviceType.value;
                             const size = propertySize.value;
-                            const materialsOption = materials.value;
                             const isEmergency = service === 'emergency';
                             
                             let basePrice = 0;
-                            let materialsPrice = 0;
+                            let materialsPrice = 0; // Always 0 now
                             let emergencySurcharge = 0;
 
                             // Calculate base price
                             if (service && size && pricing[service] && pricing[service][size]) {
                                 basePrice = pricing[service][size];
-                            }
-
-                            // Calculate materials price
-                            if (materialsOption === 'we-supply') {
-                                materialsPrice = 150;
                             }
 
                             // Calculate emergency surcharge (50% of base for emergency service)
@@ -315,19 +284,19 @@
                                 address: document.getElementById('address').value,
                                 serviceType: service,
                                 propertySize: size,
-                                materialsOption: materialsOption,
+                                materialsOption: 'customer-supply', // Hardcoded default
                                 cleaningDate: dateField.value,
                                 timeSlot: document.getElementById('time-slot').value,
                                 instructions: document.getElementById('instructions').value,
                                 basePrice: basePrice,
-                                materialsPrice: materialsPrice,
+                                materialsPrice: 0,
                                 emergencySurcharge: emergencySurcharge,
                                 subtotal: subtotal
                             }));
                         }
 
                         // Add event listeners
-                        [serviceType, propertySize, materials, dateField].forEach(el => {
+                        [serviceType, propertySize, dateField].forEach(el => {
                             if (el) el.addEventListener('change', calculatePrice);
                         });
 
@@ -368,7 +337,6 @@
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="bg-black text-white py-8">
         <div class="container mx-auto px-4">
             <div class="text-center">
@@ -382,7 +350,6 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
     <script src="/assets/js/site.js"></script>
 </body>
 </html>
