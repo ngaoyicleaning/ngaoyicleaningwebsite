@@ -19,7 +19,7 @@
                         'secondary': '#000000',
                         'accent': '#00c6ff',
                         'light-gray': '#e9ecef',
-                        'success': '#10b981' // Green for completed steps
+                        'success': '#10b981'
                     },
                     fontFamily: {
                         'sans': ['Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif']
@@ -88,7 +88,7 @@
                                     <h3 class="font-semibold text-primary">Window Cleaning</h3>
                                     <p class="text-sm text-gray-600">Interior and accessible exterior windows</p>
                                 </div>
-                                <div class="text-primary font-bold">R 150</div>
+                                <div class="text-primary font-bold" data-price-display="window_cleaning">R 150</div>
                             </div>
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center space-x-2">
@@ -106,7 +106,7 @@
                                     <h3 class="font-semibold text-primary">Oven Cleaning</h3>
                                     <p class="text-sm text-gray-600">Deep clean of oven interior and exterior</p>
                                 </div>
-                                <div class="text-primary font-bold">R 180</div>
+                                <div class="text-primary font-bold" data-price-display="oven_cleaning">R 180</div>
                             </div>
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center space-x-2">
@@ -124,7 +124,7 @@
                                     <h3 class="font-semibold text-primary">Fridge Cleaning</h3>
                                     <p class="text-sm text-gray-600">Interior deep clean and organization</p>
                                 </div>
-                                <div class="text-primary font-bold">R 100</div>
+                                <div class="text-primary font-bold" data-price-display="fridge_cleaning">R 100</div>
                             </div>
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center space-x-2">
@@ -142,7 +142,7 @@
                                     <h3 class="font-semibold text-primary">Laundry Service</h3>
                                     <p class="text-sm text-gray-600">Wash, dry, and fold laundry</p>
                                 </div>
-                                <div class="text-primary font-bold">R 80/hr</div>
+                                <div class="text-primary font-bold" data-price-display="laundry_service">R 80/hr</div>
                             </div>
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center space-x-2">
@@ -163,7 +163,7 @@
                                     <h3 class="font-semibold text-primary">Carpet Cleaning</h3>
                                     <p class="text-sm text-gray-600">Deep clean for carpets and rugs</p>
                                 </div>
-                                <div class="text-primary font-bold">R 200/room</div>
+                                <div class="text-primary font-bold" data-price-display="carpet_cleaning">R 200/room</div>
                             </div>
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center space-x-2">
@@ -181,7 +181,7 @@
                                     <h3 class="font-semibold text-primary">Blind Cleaning</h3>
                                     <p class="text-sm text-gray-600">Clean window blinds and curtains</p>
                                 </div>
-                                <div class="text-primary font-bold">R 120</div>
+                                <div class="text-primary font-bold" data-price-display="blind_cleaning">R 120</div>
                             </div>
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center space-x-2">
@@ -197,7 +197,8 @@
                     <div class="bg-gray-50 p-6 rounded-lg mb-8">
                         <h3 class="text-lg font-semibold text-primary mb-4">Current Price Summary</h3>
                         <div class="space-y-2" id="price-summary">
-                            </div>
+                            <p class="text-gray-500">Loading estimate...</p>
+                        </div>
                     </div>
 
                     <div class="flex justify-between">
@@ -215,6 +216,9 @@
     </main>
 
     <script>
+        // 🔴 PASTE YOUR WEB APP URL BETWEEN THE QUOTES BELOW
+        const API_URL = 'https://script.google.com/macros/s/AKfycbwzpCsuco5PBE5BxaxQi4mXLPjtaUfS1JaHSe3ZXogQWkTK9Gzz3EeR7JDxDLmWg6aTAQ/exec'; 
+
         document.addEventListener('DOMContentLoaded', function() {
             // 1. Safe Load of Previous Data
             let bookingData = {};
@@ -222,8 +226,8 @@
                 bookingData = JSON.parse(localStorage.getItem('bookingData') || '{}');
             } catch (e) { console.error("Data Load Error", e); }
 
-            // 🔴 KEYS MATCH BACKEND (Google Sheet)
-            const addonPrices = {
+            // Default Prices (Fallback)
+            let addonPrices = {
                 'window_cleaning': 150,
                 'oven_cleaning': 180,
                 'fridge_cleaning': 100,
@@ -242,19 +246,65 @@
                 blind_cleaning: { quantity: 0, total: 0 }
             };
 
+            // 🟢 2. FETCH PRICES FROM SHEET
+            async function fetchAddonPrices() {
+                if (!API_URL || API_URL.includes('PASTE_YOUR')) return;
+                
+                try {
+                    const response = await fetch(API_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'get-pricing' })
+                    });
+                    const data = await response.json();
+                    
+                    if (data.success && data.pricing && data.pricing['Addon']) {
+                        const sheetAddons = data.pricing['Addon'];
+                        
+                        // Update Internal Prices and UI Text
+                        Object.keys(addonPrices).forEach(key => {
+                            if (sheetAddons[key]) {
+                                // Update logic price
+                                const newPrice = Number(sheetAddons[key].basePrice);
+                                addonPrices[key] = newPrice;
+
+                                // Update UI display text
+                                const displayEl = document.querySelector(`[data-price-display="${key}"]`);
+                                if (displayEl) {
+                                    // Keep suffix if it exists (like "/hr" or "/room")
+                                    let suffix = '';
+                                    if (key === 'laundry_service') suffix = '/hr';
+                                    if (key === 'carpet_cleaning') suffix = '/room';
+                                    displayEl.textContent = `R ${newPrice}${suffix}`;
+                                }
+                            }
+                        });
+                        console.log("Add-on prices synced from sheet");
+                        // Recalculate totals with new prices
+                        recalculateAllTotals();
+                    }
+                } catch (e) {
+                    console.error("Using default addon prices:", e);
+                }
+            }
+
             // Load saved add-ons if any
             const savedAddons = JSON.parse(localStorage.getItem('bookingAddons') || '{}');
             if (Object.keys(savedAddons).length > 0) {
-                // Merge saved data carefully to match new keys
                 Object.keys(savedAddons).forEach(k => {
-                    if (addons[k]) addons[k] = savedAddons[k];
+                    if (addons[k]) addons[k].quantity = savedAddons[k].quantity;
+                });
+            }
+
+            // Recalculate everything (useful after fetching new prices)
+            function recalculateAllTotals() {
+                Object.keys(addons).forEach(k => {
+                    addons[k].total = addons[k].quantity * addonPrices[k];
                 });
                 updateAddonsDisplay();
             }
 
             // Update price summary
             function updatePriceSummary() {
-                // 🔴 FORCE NUMBERS TO PREVENT "R350150" ERROR
                 const basePrice = Number(bookingData.basePrice || 0);
                 const materialsPrice = Number(bookingData.materialsPrice || 0);
                 const emergencySurcharge = Number(bookingData.emergencySurcharge || 0);
@@ -342,8 +392,9 @@
                 window.location.href = '/summary.html';
             });
 
-            // Initial update
-            updatePriceSummary();
+            // Start Process
+            fetchAddonPrices(); // Fetch fresh prices
+            recalculateAllTotals(); // Calculate with defaults first, then update after fetch
         });
     </script>
 
