@@ -234,7 +234,25 @@
                         const emergencySurchargeEl = document.getElementById('emergency-surcharge');
                         const subtotalEl = document.getElementById('subtotal');
 
-                        // Fallback Pricing (Commercial & 5+ Bed Removed)
+                        // 🟢 MAPPER: TRANSLATE WEBSITE CODES TO SHEET NAMES
+                        const serviceMap = {
+                            'weekly': 'Weekly Recurring',
+                            'biweekly': 'Bi-weekly Recurring',
+                            'monthly': 'Monthly Recurring',
+                            'once-off': 'Once-Off Cleaning',
+                            'deep': 'Deep Cleaning',
+                            'emergency': 'Emergency Service'
+                        };
+
+                        const sizeMap = {
+                            '1-bed': '1-Bedroom',
+                            '2-bed': '2-Bedroom',
+                            '3-bed': '3-Bedroom',
+                            '4-bed': '4-Bedroom',
+                            'office': 'Office/Commercial'
+                        };
+
+                        // Fallback Pricing (Uses website codes structure for safety)
                         let pricing = {
                             'weekly': { '1-bed': 240, '2-bed': 320, '3-bed': 380, '4-bed': 440, 'office': 600 },
                             'biweekly': { '1-bed': 300, '2-bed': 400, '3-bed': 470, '4-bed': 540, 'office': 700 },
@@ -244,6 +262,7 @@
                             'emergency': { '1-bed': 525, '2-bed': 675, '3-bed': 825, '4-bed': 975, 'office': 1275 }
                         };
                         
+                        // FETCH: GET REAL PRICES FROM SHEET
                         async function fetchPrices() {
                             try {
                                 basePriceEl.textContent = 'Loading...';
@@ -253,11 +272,16 @@
                                 });
                                 const data = await response.json();
                                 if (data.success) {
-                                    pricing = data.pricing;
+                                    // We need to merge sheet data into our pricing logic
+                                    // The sheet returns keys like "Weekly Recurring", we need to map our codes to that
+                                    window.sheetPricing = data.pricing; // Store globally
+                                    console.log("Prices synced with Google Sheet");
                                     calculatePrice();
                                 }
                             } catch (e) {
                                 console.error("Using fallback prices:", e);
+                                // If sync fails, we still use the hardcoded `pricing` object above
+                                calculatePrice();
                             }
                         }
 
@@ -266,19 +290,36 @@
                         let currentSurcharge = 0;
 
                         function calculatePrice() {
-                            const service = serviceType.value;
-                            const size = propertySize.value;
-                            const isEmergency = service === 'emergency';
+                            const codeService = serviceType.value;
+                            const codeSize = propertySize.value;
+                            const isEmergency = codeService === 'emergency';
                             
                             currentBasePrice = 0;
                             let materialsPrice = 0; 
                             currentSurcharge = 0;
 
-                            if (service && size && pricing[service] && pricing[service][size]) {
-                                const priceData = pricing[service][size];
-                                currentBasePrice = typeof priceData === 'number' ? priceData : Number(priceData.basePrice);
+                            // 1. Try to find price in SHEET DATA (if loaded)
+                            let foundPrice = false;
+                            if (window.sheetPricing) {
+                                const sheetServiceName = serviceMap[codeService];
+                                const sheetSizeName = sizeMap[codeSize];
+
+                                if(sheetServiceName && sheetSizeName && 
+                                   window.sheetPricing[sheetServiceName] && 
+                                   window.sheetPricing[sheetServiceName][sheetSizeName]) {
+                                    
+                                    const pData = window.sheetPricing[sheetServiceName][sheetSizeName];
+                                    currentBasePrice = Number(pData.basePrice || pData);
+                                    foundPrice = true;
+                                }
                             }
 
+                            // 2. If not found in Sheet, use Fallback Hardcoded
+                            if (!foundPrice && pricing[codeService] && pricing[codeService][codeSize]) {
+                                currentBasePrice = pricing[codeService][codeSize];
+                            }
+
+                            // Calculations
                             if (isEmergency) {
                                 currentSurcharge = Math.round(currentBasePrice * 0.5);
                             }
@@ -290,8 +331,14 @@
                             emergencySurchargeEl.textContent = `R ${currentSurcharge}`;
                             subtotalEl.textContent = `R ${currentSubtotal}`;
 
-                            const isValid = service && size && dateField.value && currentBasePrice > 0;
+                            const isValid = codeService && codeSize && dateField.value && currentBasePrice > 0;
                             nextButton.disabled = !isValid;
+                            
+                            if(isValid) {
+                                nextButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                            } else {
+                                nextButton.classList.add('opacity-50', 'cursor-not-allowed');
+                            }
                         }
 
                         [serviceType, propertySize, dateField].forEach(el => {
@@ -304,7 +351,6 @@
                         });
 
                         fetchPrices();
-                        calculatePrice();
 
                         nextButton.addEventListener('click', function() {
                             const requiredFields = ['full-name', 'email', 'phone', 'address', 'service-type', 'property-size', 'cleaning-date', 'time-slot'];
