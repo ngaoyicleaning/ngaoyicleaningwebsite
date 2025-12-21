@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ngaoyi Intelligence Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .ai-bubble { background: #1e293b; border-left: 4px solid #3b82f6; }
+        .loader { border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid #3b82f6; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden">
+
+    <div id="login-screen" class="fixed inset-0 z-50 bg-slate-900 flex items-center justify-center p-4">
+        <div class="glass p-8 rounded-2xl w-full max-w-sm text-center">
+            <div class="mb-6">
+                <i class="fas fa-brain text-4xl text-blue-500 mb-2"></i>
+                <h1 class="text-2xl font-bold tracking-tight">Ngaoyi Intelligence</h1>
+            </div>
+            <form id="login-form" class="space-y-4">
+                <input type="text" id="username" placeholder="Username" class="w-full bg-slate-800 border border-slate-700 p-3 rounded text-white focus:outline-none focus:border-blue-500 transition">
+                <input type="password" id="password" placeholder="Password" class="w-full bg-slate-800 border border-slate-700 p-3 rounded text-white focus:outline-none focus:border-blue-500 transition">
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded font-bold transition">Access Portal</button>
+            </form>
+            <button onclick="runSetup()" class="mt-4 text-xs text-slate-500 hover:text-slate-300">First time? Run System Setup</button>
+        </div>
+    </div>
+
+    <div id="app-content" class="flex-1 flex flex-col hidden">
+        
+        <header class="h-16 border-b border-slate-800 flex items-center justify-between px-6 bg-slate-900/50">
+            <div class="flex items-center gap-3">
+                <i class="fas fa-chart-network text-blue-500"></i>
+                <span class="font-bold text-lg tracking-wide">Daily Report</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <input type="date" id="report-date" class="bg-slate-800 border border-slate-700 text-sm rounded px-3 py-1 text-white">
+                <button onclick="logout()" class="text-sm text-red-400 hover:text-red-300">Logout</button>
+            </div>
+        </header>
+
+        <div class="flex-1 flex overflow-hidden">
+            
+            <div class="flex-1 overflow-y-auto p-6 space-y-6">
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="glass p-6 rounded-xl">
+                        <p class="text-slate-400 text-xs font-bold uppercase tracking-widest">Revenue</p>
+                        <h2 class="text-3xl font-bold mt-2 text-white" id="stat-rev">R 0.00</h2>
+                    </div>
+                    <div class="glass p-6 rounded-xl">
+                        <p class="text-slate-400 text-xs font-bold uppercase tracking-widest">Jobs Completed</p>
+                        <h2 class="text-3xl font-bold mt-2 text-white" id="stat-jobs">0</h2>
+                    </div>
+                    <div class="glass p-6 rounded-xl">
+                        <p class="text-slate-400 text-xs font-bold uppercase tracking-widest">Pending Quotes</p>
+                        <h2 class="text-3xl font-bold mt-2 text-orange-400" id="stat-pending">0</h2>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="glass p-6 rounded-xl">
+                        <h3 class="font-bold mb-4 text-sm text-slate-300">Service Breakdown</h3>
+                        <div class="h-48"><canvas id="chartServices"></canvas></div>
+                    </div>
+                    <div class="glass p-6 rounded-xl">
+                        <h3 class="font-bold mb-4 text-sm text-slate-300">Job List</h3>
+                        <div class="overflow-y-auto h-48">
+                            <table class="w-full text-sm text-left text-slate-400">
+                                <thead class="text-xs uppercase bg-slate-800/50 sticky top-0">
+                                    <tr><th class="px-4 py-2">Time</th><th class="px-4 py-2">Customer</th><th class="px-4 py-2 text-right">Amt</th></tr>
+                                </thead>
+                                <tbody id="job-list-body" class="divide-y divide-slate-800">
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-96 border-l border-slate-800 bg-slate-900/50 flex flex-col">
+                <div class="p-4 border-b border-slate-800">
+                    <h3 class="font-bold flex items-center gap-2"><i class="fas fa-robot text-blue-500"></i> Ngaoyi AI Analyst</h3>
+                </div>
+                
+                <div class="flex-1 overflow-y-auto p-4 space-y-4" id="ai-chat-area">
+                    <div class="ai-bubble p-4 rounded text-sm text-slate-300 leading-relaxed">
+                        Initializing data stream...<br>Waiting for report data...
+                    </div>
+                </div>
+
+                <div class="p-4 border-t border-slate-800">
+                    <form id="ai-form" class="flex gap-2">
+                        <input type="text" id="ai-input" placeholder="Ask about today's performance..." class="flex-1 bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white px-4 rounded transition"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // 🔴 PASTE YOUR DEPLOYMENT URL HERE
+        const API_URL = "https://script.google.com/macros/s/AKfycbyg9MM0sZriynS-haeRWNnZHkZN70C8p2nLAA4bcCtrm38WmnbEMBZUPEhLph5q1LOW/exec";
+
+        let serviceChart;
+
+        // AUTH & INIT
+        document.addEventListener('DOMContentLoaded', () => {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('report-date').value = today;
+            
+            if(sessionStorage.getItem('report_token')) {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('app-content').classList.remove('hidden');
+                fetchReport(today);
+            }
+        });
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const res = await post({ action: 'login', username: e.target.username.value, password: e.target.password.value });
+            if(res.success) {
+                sessionStorage.setItem('report_token', res.token);
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('app-content').classList.remove('hidden');
+                fetchReport(document.getElementById('report-date').value);
+            } else alert(res.error);
+        });
+
+        document.getElementById('report-date').addEventListener('change', (e) => {
+            fetchReport(e.target.value);
+        });
+
+        async function fetchReport(date) {
+            addChatMessage("System", "Fetching data for " + date + "...", true);
+            
+            const res = await post({ action: 'fetch-daily-report', date: date });
+            
+            if(res.success) {
+                // Update KPI
+                document.getElementById('stat-rev').textContent = `R ${res.stats.revenue.toLocaleString()}`;
+                document.getElementById('stat-jobs').textContent = res.stats.jobs;
+                document.getElementById('stat-pending').textContent = res.stats.pending;
+
+                // Update Table
+                const tbody = document.getElementById('job-list-body');
+                if(res.jobs.length === 0) tbody.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-slate-600">No jobs found for this date.</td></tr>`;
+                else {
+                    tbody.innerHTML = res.jobs.map(j => `
+                        <tr>
+                            <td class="px-4 py-2">${j.time}</td>
+                            <td class="px-4 py-2 text-white">${j.customer} <br><span class="text-xs text-slate-500">${j.service}</span></td>
+                            <td class="px-4 py-2 text-right font-mono text-green-400">R${j.amount}</td>
+                        </tr>
+                    `).join('');
+                }
+
+                // Update Charts
+                renderChart(res.stats.services);
+
+                // AI Response
+                addChatMessage("Ngaoyi AI", res.analysis);
+            }
+        }
+
+        // CHART
+        function renderChart(data) {
+            if(serviceChart) serviceChart.destroy();
+            const labels = Object.keys(data);
+            const vals = Object.values(data);
+            
+            serviceChart = new Chart(document.getElementById('chartServices'), {
+                type: 'doughnut',
+                data: {
+                    labels: labels.length ? labels : ['No Data'],
+                    datasets: [{
+                        data: vals.length ? vals : [1],
+                        backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'right', labels: { color: '#94a3b8', font: { size: 10 } } } }
+                }
+            });
+        }
+
+        // AI CHAT
+        document.getElementById('ai-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const input = document.getElementById('ai-input');
+            const q = input.value;
+            if(!q) return;
+
+            addChatMessage("You", q);
+            input.value = '';
+            
+            // Simulate typing delay
+            setTimeout(async () => {
+                const res = await post({ action: 'ask-ai', question: q });
+                if(res.success) addChatMessage("Ngaoyi AI", res.answer);
+            }, 600);
+        });
+
+        function addChatMessage(sender, text, isSystem = false) {
+            const area = document.getElementById('ai-chat-area');
+            const div = document.createElement('div');
+            
+            if(isSystem) {
+                div.className = "text-xs text-center text-slate-500 my-2 italic";
+                div.textContent = text;
+            } else if (sender === "You") {
+                div.className = "bg-slate-700 p-3 rounded-lg rounded-br-none self-end text-sm text-white mb-2 ml-8 border border-slate-600";
+                div.innerHTML = text;
+            } else {
+                div.className = "ai-bubble p-3 rounded-lg rounded-bl-none text-sm text-slate-300 mb-2 mr-4 bg-slate-800";
+                div.innerHTML = `<strong class="text-blue-400 block mb-1 text-xs uppercase tracking-wide"><i class="fas fa-robot"></i> Ngaoyi AI</strong>${text.replace(/\n/g, '<br>')}`;
+            }
+            
+            // Clear initial message if needed
+            if(area.children.length > 0 && area.children[0].textContent.includes('Initializing')) area.innerHTML = '';
+            
+            area.appendChild(div);
+            area.scrollTop = area.scrollHeight;
+        }
+
+        // SYSTEM
+        async function runSetup() {
+            if(!confirm("Create necessary sheets in Google Drive?")) return;
+            const res = await post({ action: 'setup-system' });
+            alert(res.message);
+        }
+
+        async function post(data) {
+            try {
+                const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(data) });
+                return await res.json();
+            } catch(e) { return { success: false, error: "Connection Failed" }; }
+        }
+
+        function logout() { sessionStorage.removeItem('report_token'); location.reload(); }
+    </script>
+</body>
+</html>
