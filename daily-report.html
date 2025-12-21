@@ -3,126 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ngaoyi Intelligence Portal</title>
+    <title>Ngaoyi v10.0 Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
-        .mono { font-family: 'JetBrains Mono', monospace; }
-        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-        .ai-bubble { background: #1e293b; border-left: 4px solid #3b82f6; }
-        .loader { border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid #3b82f6; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+        .sidebar { background: #0f172a; color: white; }
+        .nav-item { opacity: 0.7; transition: 0.3s; cursor: pointer; }
+        .nav-item:hover, .nav-item.active { opacity: 1; background: rgba(255,255,255,0.1); border-left: 4px solid #3b82f6; }
+        .hidden-section { display: none; }
+        .notif-badge { position: absolute; top: -5px; right: -5px; background: red; color: white; font-size: 10px; padding: 2px 6px; rounded-full; }
     </style>
 </head>
-<body class="h-screen flex flex-col overflow-hidden">
+<body class="h-screen flex overflow-hidden">
 
-    <div id="login-screen" class="fixed inset-0 z-50 bg-slate-900 flex items-center justify-center p-4">
-        <div class="glass p-8 rounded-2xl w-full max-w-sm text-center">
-            <div class="mb-6">
-                <i class="fas fa-brain text-4xl text-blue-500 mb-2"></i>
-                <h1 class="text-2xl font-bold tracking-tight">Ngaoyi Intelligence</h1>
-            </div>
+    <div id="login-screen" class="fixed inset-0 z-50 bg-slate-900 flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg shadow-xl w-96 text-center">
+            <h1 class="text-2xl font-bold text-center mb-6">Ngaoyi Admin v10</h1>
             <form id="login-form" class="space-y-4">
-                <input type="text" id="username" placeholder="Username" class="w-full bg-slate-800 border border-slate-700 p-3 rounded text-white focus:outline-none focus:border-blue-500 transition">
-                <input type="password" id="password" placeholder="Password" class="w-full bg-slate-800 border border-slate-700 p-3 rounded text-white focus:outline-none focus:border-blue-500 transition">
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded font-bold transition">Access Portal</button>
+                <input type="text" id="username" placeholder="Username" class="w-full border p-2 rounded">
+                <input type="password" id="password" placeholder="Password" class="w-full border p-2 rounded">
+                <button type="submit" class="w-full bg-blue-900 text-white py-2 rounded font-bold">Login</button>
             </form>
-            <button onclick="runSetup()" class="mt-4 text-xs text-slate-500 hover:text-slate-300">First time? Run System Setup</button>
+            <button onclick="runSetup()" class="text-xs text-gray-500 mt-4 hover:underline">System Setup (First Time)</button>
         </div>
     </div>
 
-    <div id="app-content" class="flex-1 flex flex-col hidden">
-        
-        <header class="h-16 border-b border-slate-800 flex items-center justify-between px-6 bg-slate-900/50">
-            <div class="flex items-center gap-3">
-                <i class="fas fa-chart-network text-blue-500"></i>
-                <span class="font-bold text-lg tracking-wide">Daily Report</span>
-            </div>
-            <div class="flex items-center gap-4">
-                <input type="date" id="report-date" class="bg-slate-800 border border-slate-700 text-sm rounded px-3 py-1 text-white">
-                <button onclick="logout()" class="text-sm text-red-400 hover:text-red-300">Logout</button>
+    <aside class="sidebar w-64 hidden md:flex flex-col z-10">
+        <div class="h-16 flex items-center px-6 font-bold text-xl border-b border-slate-700">Ngaoyi Cleaning</div>
+        <nav class="flex-1 py-4 space-y-1">
+            <a onclick="switchTab('overview')" id="nav-overview" class="nav-item active flex items-center px-6 py-3"><i class="fas fa-tachometer-alt w-6"></i> Overview</a>
+            <a onclick="switchTab('database')" id="nav-database" class="nav-item flex items-center px-6 py-3"><i class="fas fa-list w-6"></i> Bookings</a>
+            <a onclick="switchTab('calendar')" id="nav-calendar" class="nav-item flex items-center px-6 py-3"><i class="fas fa-calendar w-6"></i> Calendar</a>
+            <a onclick="switchTab('invoices')" id="nav-invoices" class="nav-item flex items-center px-6 py-3"><i class="fas fa-file-invoice-dollar w-6"></i> Invoices</a>
+            <a onclick="switchTab('reports')" id="nav-reports" class="nav-item flex items-center px-6 py-3"><i class="fas fa-file-contract w-6"></i> Reports</a>
+            <a onclick="switchTab('banking')" id="nav-banking" class="nav-item flex items-center px-6 py-3"><i class="fas fa-university w-6"></i> Banking</a>
+        </nav>
+        <div class="p-4"><button onclick="logout()" class="w-full bg-red-600 py-2 rounded text-sm hover:bg-red-700">Logout</button></div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-screen overflow-hidden">
+        <header class="h-16 bg-white border-b flex items-center justify-between px-8">
+            <h2 class="font-bold text-xl" id="page-title">Overview</h2>
+            <div class="flex gap-4">
+                <div class="relative">
+                    <button class="text-slate-600 text-xl"><i class="fas fa-bell"></i></button>
+                    <span id="notif-count" class="notif-badge hidden">0</span>
+                </div>
+                <button onclick="loadData()" class="text-blue-900 hover:text-blue-700 text-sm font-bold"><i class="fas fa-sync"></i> Refresh</button>
             </div>
         </header>
 
-        <div class="flex-1 flex overflow-hidden">
+        <div class="flex-1 overflow-y-auto p-8">
             
-            <div class="flex-1 overflow-y-auto p-6 space-y-6">
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="glass p-6 rounded-xl">
-                        <p class="text-slate-400 text-xs font-bold uppercase tracking-widest">Revenue</p>
-                        <h2 class="text-3xl font-bold mt-2 text-white" id="stat-rev">R 0.00</h2>
-                    </div>
-                    <div class="glass p-6 rounded-xl">
-                        <p class="text-slate-400 text-xs font-bold uppercase tracking-widest">Jobs Completed</p>
-                        <h2 class="text-3xl font-bold mt-2 text-white" id="stat-jobs">0</h2>
-                    </div>
-                    <div class="glass p-6 rounded-xl">
-                        <p class="text-slate-400 text-xs font-bold uppercase tracking-widest">Pending Quotes</p>
-                        <h2 class="text-3xl font-bold mt-2 text-orange-400" id="stat-pending">0</h2>
-                    </div>
+            <div id="section-overview" class="space-y-6">
+                <div id="notif-panel" class="hidden bg-orange-50 border-l-4 border-orange-500 p-4 rounded shadow mb-6">
+                    <h4 class="font-bold text-orange-700">Action Required</h4>
+                    <ul id="notif-list" class="mt-2 space-y-1 text-sm text-orange-800"></ul>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="glass p-6 rounded-xl">
-                        <h3 class="font-bold mb-4 text-sm text-slate-300">Service Breakdown</h3>
-                        <div class="h-48"><canvas id="chartServices"></canvas></div>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="bg-white p-6 rounded shadow border-t-4 border-blue-600"><p class="text-gray-500 text-xs font-bold uppercase">Revenue</p><h3 class="text-2xl font-bold mt-1" id="stat-rev">R 0.00</h3></div>
+                    <div class="bg-white p-6 rounded shadow border-t-4 border-yellow-500"><p class="text-gray-500 text-xs font-bold uppercase">Pending</p><h3 class="text-2xl font-bold mt-1" id="stat-pending">0</h3></div>
+                    <div class="bg-white p-6 rounded shadow border-t-4 border-green-500"><p class="text-gray-500 text-xs font-bold uppercase">Active</p><h3 class="text-2xl font-bold mt-1" id="stat-active">0</h3></div>
+                    <div class="bg-white p-6 rounded shadow border-t-4 border-gray-500"><p class="text-gray-500 text-xs font-bold uppercase">Completed</p><h3 class="text-2xl font-bold mt-1" id="stat-completed">0</h3></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded shadow"><h4 class="font-bold mb-4">Sales Trend</h4><div class="h-64"><canvas id="chartSales"></canvas></div></div>
+                    <div class="bg-white p-6 rounded shadow"><h4 class="font-bold mb-4">Service Breakdown</h4><div class="h-64"><canvas id="chartPkg"></canvas></div></div>
+                </div>
+            </div>
+
+            <div id="section-database" class="hidden-section space-y-4">
+                <div class="flex gap-2">
+                    <button onclick="loadTable('Pending Bookings')" class="px-4 py-2 bg-white border rounded font-bold hover:bg-gray-50">Pending</button>
+                    <button onclick="loadTable('Confirmed Bookings')" class="px-4 py-2 bg-white border rounded font-bold hover:bg-gray-50">Confirmed</button>
+                    <button onclick="loadTable('Completed Jobs')" class="px-4 py-2 bg-white border rounded font-bold hover:bg-gray-50">History</button>
+                </div>
+                <div class="bg-white rounded shadow overflow-hidden">
+                    <div class="overflow-x-auto max-h-[70vh]"><table class="w-full text-sm text-left"><thead class="bg-gray-50 border-b sticky top-0"><tr id="table-head"></tr></thead><tbody id="table-body" class="divide-y"></tbody></table></div>
+                </div>
+            </div>
+
+            <div id="section-calendar" class="hidden-section h-full">
+                <div class="bg-white p-4 rounded shadow h-full" id="calendar"></div>
+            </div>
+
+            <div id="section-invoices" class="hidden-section">
+                <div class="max-w-xl mx-auto bg-white p-8 rounded shadow text-center">
+                    <h3 class="text-lg font-bold mb-4">Invoice Generator</h3>
+                    <div class="flex gap-2">
+                        <input type="text" id="inv-ref" placeholder="Booking Ref (e.g. NGY...)" class="flex-1 border p-2 rounded uppercase">
+                        <button onclick="previewInvoice()" class="bg-blue-900 text-white px-6 py-2 rounded font-bold">Preview</button>
                     </div>
-                    <div class="glass p-6 rounded-xl">
-                        <h3 class="font-bold mb-4 text-sm text-slate-300">Job List</h3>
-                        <div class="overflow-y-auto h-48">
-                            <table class="w-full text-sm text-left text-slate-400">
-                                <thead class="text-xs uppercase bg-slate-800/50 sticky top-0">
-                                    <tr><th class="px-4 py-2">Time</th><th class="px-4 py-2">Customer</th><th class="px-4 py-2 text-right">Amt</th></tr>
-                                </thead>
-                                <tbody id="job-list-body" class="divide-y divide-slate-800">
-                                    </tbody>
-                            </table>
-                        </div>
+                </div>
+                <div id="invoice-preview" class="hidden mt-8 max-w-3xl mx-auto bg-white p-12 shadow-lg border">
+                    <div id="invoice-html"></div>
+                    <div class="mt-8 flex justify-center gap-4">
+                        <button onclick="saveInvoice()" id="btn-save" class="bg-green-600 text-white px-6 py-2 rounded">Save Invoice</button>
+                        <button onclick="sendInvoice()" id="btn-send" class="hidden bg-blue-600 text-white px-6 py-2 rounded">Email Customer</button>
                     </div>
                 </div>
             </div>
 
-            <div class="w-96 border-l border-slate-800 bg-slate-900/50 flex flex-col">
-                <div class="p-4 border-b border-slate-800">
-                    <h3 class="font-bold flex items-center gap-2"><i class="fas fa-robot text-blue-500"></i> Ngaoyi AI Analyst</h3>
-                </div>
-                
-                <div class="flex-1 overflow-y-auto p-4 space-y-4" id="ai-chat-area">
-                    <div class="ai-bubble p-4 rounded text-sm text-slate-300 leading-relaxed">
-                        Initializing data stream...<br>Waiting for report data...
+            <div id="section-reports" class="hidden-section">
+                <div class="bg-white p-6 rounded shadow mb-6 flex justify-between items-center">
+                    <div><h3 class="font-bold text-xl">Reports</h3></div>
+                    <div class="flex gap-2">
+                        <button onclick="generateReport('daily')" class="bg-slate-100 hover:bg-slate-200 px-4 py-2 rounded text-sm font-bold">Daily</button>
+                        <button onclick="generateReport('monthly')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 px-4 py-2 rounded text-sm font-bold">Monthly</button>
                     </div>
                 </div>
+                <div class="bg-white rounded shadow overflow-hidden">
+                    <table class="w-full text-sm text-left"><thead class="bg-gray-50 border-b"><tr><th class="px-6 py-3">Date</th><th class="px-6 py-3">Type</th><th class="px-6 py-3">Period</th><th class="px-6 py-3">Revenue</th></tr></thead><tbody id="report-body" class="divide-y"></tbody></table>
+                </div>
+            </div>
 
-                <div class="p-4 border-t border-slate-800">
-                    <form id="ai-form" class="flex gap-2">
-                        <input type="text" id="ai-input" placeholder="Ask about today's performance..." class="flex-1 bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
-                        <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white px-4 rounded transition"><i class="fas fa-paper-plane"></i></button>
-                    </form>
+            <div id="section-banking" class="hidden-section">
+                <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div class="bank-card p-8 rounded-xl shadow-lg flex flex-col justify-between h-56">
+                        <div><p class="text-sm opacity-80">Business Account</p><p class="text-2xl font-mono mt-2" id="card-acc">....</p></div>
+                        <div class="flex justify-between text-sm"><div><p class="opacity-80">Bank</p><p class="font-bold" id="card-bank">-</p></div><div><p class="opacity-80">Branch</p><p class="font-bold" id="card-branch">-</p></div></div>
+                    </div>
+                    <div class="bg-white p-6 rounded shadow">
+                        <h3 class="font-bold mb-4">Update Details</h3>
+                        <form id="bank-form" class="space-y-4">
+                            <input id="bank-name" placeholder="Bank Name" class="w-full border p-2 rounded">
+                            <input id="bank-acc" placeholder="Account Number" class="w-full border p-2 rounded">
+                            <input id="bank-branch" placeholder="Branch Code" class="w-full border p-2 rounded">
+                            <input id="bank-holder" placeholder="Account Holder" class="w-full border p-2 rounded">
+                            <button type="submit" class="w-full bg-blue-900 text-white py-2 rounded font-bold">Save Changes</button>
+                        </form>
+                    </div>
                 </div>
             </div>
 
         </div>
-    </div>
+    </main>
 
     <script>
-        // 🔴 PASTE YOUR DEPLOYMENT URL HERE
+        // 🔴 UPDATE WITH YOUR NEW v10 URL
         const API_URL = "https://script.google.com/macros/s/AKfycbyg9MM0sZriynS-haeRWNnZHkZN70C8p2nLAA4bcCtrm38WmnbEMBZUPEhLph5q1LOW/exec";
 
-        let serviceChart;
+        let salesChart, pkgChart, calendar;
+        let currentInvData = null, savedInvID = null;
 
         // AUTH & INIT
         document.addEventListener('DOMContentLoaded', () => {
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('report-date').value = today;
-            
-            if(sessionStorage.getItem('report_token')) {
+            if(sessionStorage.getItem('v10_token')) {
                 document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('app-content').classList.remove('hidden');
-                fetchReport(today);
+                loadData();
             }
         });
 
@@ -130,127 +164,153 @@
             e.preventDefault();
             const res = await post({ action: 'login', username: e.target.username.value, password: e.target.password.value });
             if(res.success) {
-                sessionStorage.setItem('report_token', res.token);
+                sessionStorage.setItem('v10_token', res.token);
                 document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('app-content').classList.remove('hidden');
-                fetchReport(document.getElementById('report-date').value);
+                loadData();
             } else alert(res.error);
         });
-
-        document.getElementById('report-date').addEventListener('change', (e) => {
-            fetchReport(e.target.value);
-        });
-
-        async function fetchReport(date) {
-            addChatMessage("System", "Fetching data for " + date + "...", true);
-            
-            const res = await post({ action: 'fetch-daily-report', date: date });
-            
-            if(res.success) {
-                // Update KPI
-                document.getElementById('stat-rev').textContent = `R ${res.stats.revenue.toLocaleString()}`;
-                document.getElementById('stat-jobs').textContent = res.stats.jobs;
-                document.getElementById('stat-pending').textContent = res.stats.pending;
-
-                // Update Table
-                const tbody = document.getElementById('job-list-body');
-                if(res.jobs.length === 0) tbody.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-slate-600">No jobs found for this date.</td></tr>`;
-                else {
-                    tbody.innerHTML = res.jobs.map(j => `
-                        <tr>
-                            <td class="px-4 py-2">${j.time}</td>
-                            <td class="px-4 py-2 text-white">${j.customer} <br><span class="text-xs text-slate-500">${j.service}</span></td>
-                            <td class="px-4 py-2 text-right font-mono text-green-400">R${j.amount}</td>
-                        </tr>
-                    `).join('');
-                }
-
-                // Update Charts
-                renderChart(res.stats.services);
-
-                // AI Response
-                addChatMessage("Ngaoyi AI", res.analysis);
-            }
-        }
-
-        // CHART
-        function renderChart(data) {
-            if(serviceChart) serviceChart.destroy();
-            const labels = Object.keys(data);
-            const vals = Object.values(data);
-            
-            serviceChart = new Chart(document.getElementById('chartServices'), {
-                type: 'doughnut',
-                data: {
-                    labels: labels.length ? labels : ['No Data'],
-                    datasets: [{
-                        data: vals.length ? vals : [1],
-                        backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { position: 'right', labels: { color: '#94a3b8', font: { size: 10 } } } }
-                }
-            });
-        }
-
-        // AI CHAT
-        document.getElementById('ai-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const input = document.getElementById('ai-input');
-            const q = input.value;
-            if(!q) return;
-
-            addChatMessage("You", q);
-            input.value = '';
-            
-            // Simulate typing delay
-            setTimeout(async () => {
-                const res = await post({ action: 'ask-ai', question: q });
-                if(res.success) addChatMessage("Ngaoyi AI", res.answer);
-            }, 600);
-        });
-
-        function addChatMessage(sender, text, isSystem = false) {
-            const area = document.getElementById('ai-chat-area');
-            const div = document.createElement('div');
-            
-            if(isSystem) {
-                div.className = "text-xs text-center text-slate-500 my-2 italic";
-                div.textContent = text;
-            } else if (sender === "You") {
-                div.className = "bg-slate-700 p-3 rounded-lg rounded-br-none self-end text-sm text-white mb-2 ml-8 border border-slate-600";
-                div.innerHTML = text;
-            } else {
-                div.className = "ai-bubble p-3 rounded-lg rounded-bl-none text-sm text-slate-300 mb-2 mr-4 bg-slate-800";
-                div.innerHTML = `<strong class="text-blue-400 block mb-1 text-xs uppercase tracking-wide"><i class="fas fa-robot"></i> Ngaoyi AI</strong>${text.replace(/\n/g, '<br>')}`;
-            }
-            
-            // Clear initial message if needed
-            if(area.children.length > 0 && area.children[0].textContent.includes('Initializing')) area.innerHTML = '';
-            
-            area.appendChild(div);
-            area.scrollTop = area.scrollHeight;
-        }
-
-        // SYSTEM
+        
         async function runSetup() {
-            if(!confirm("Create necessary sheets in Google Drive?")) return;
+            if(!confirm("Create missing sheets?")) return;
             const res = await post({ action: 'setup-system' });
             alert(res.message);
         }
 
-        async function post(data) {
-            try {
-                const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(data) });
-                return await res.json();
-            } catch(e) { return { success: false, error: "Connection Failed" }; }
+        function logout() { sessionStorage.removeItem('v10_token'); location.reload(); }
+
+        // NAV
+        function switchTab(id) {
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('nav-'+id).classList.add('active');
+            document.querySelectorAll('[id^="section-"]').forEach(el => el.classList.add('hidden-section'));
+            document.getElementById('section-'+id).classList.remove('hidden-section');
+            if(id === 'database') loadTable('Pending Bookings');
+            if(id === 'reports') loadTable('Reports_Log');
+            if(id === 'calendar') loadCalendar();
         }
 
-        function logout() { sessionStorage.removeItem('report_token'); location.reload(); }
+        // DATA
+        async function loadData() {
+            const data = await post({ action: 'fetch-dashboard-data', token: getToken() });
+            if(data.success) {
+                const s = data.stats;
+                document.getElementById('stat-rev').textContent = `R ${s.revenue.toLocaleString()}`;
+                document.getElementById('stat-pending').textContent = s.pending;
+                document.getElementById('stat-active').textContent = s.active;
+                document.getElementById('stat-completed').textContent = s.completed;
+
+                const notifs = data.notifications;
+                const panel = document.getElementById('notif-panel');
+                const badge = document.getElementById('notif-count');
+                const list = document.getElementById('notif-list');
+                
+                if(notifs.length > 0) {
+                    panel.classList.remove('hidden'); badge.classList.remove('hidden'); badge.textContent = notifs.length;
+                    list.innerHTML = notifs.map(n => `<li class="flex justify-between border-b border-orange-200 pb-1"><span><strong>${n.title}:</strong> ${n.message}</span><span class="text-xs uppercase font-bold">${n.time}</span></li>`).join('');
+                } else { panel.classList.add('hidden'); badge.classList.add('hidden'); }
+
+                renderCharts(data.charts);
+                
+                if(data.bank) {
+                    document.getElementById('card-bank').textContent = data.bank.bankName;
+                    document.getElementById('card-acc').textContent = data.bank.accNum;
+                    document.getElementById('card-branch').textContent = data.bank.branch;
+                    ['name','acc','branch','holder'].forEach(k => document.getElementById('bank-'+k).value = data.bank[k==='name'?'bankName':k==='acc'?'accNum':k==='branch'?'branch':'holder']||'');
+                }
+            }
+        }
+
+        function renderCharts(c) {
+            if(salesChart) salesChart.destroy();
+            salesChart = new Chart(document.getElementById('chartSales'), { type: 'line', data: { labels: c.history.map(d => d.date), datasets: [{ label: 'Revenue', data: c.history.map(d => d.revenue), borderColor: '#2563eb', tension: 0.3 }] } });
+
+            if(pkgChart) pkgChart.destroy();
+            pkgChart = new Chart(document.getElementById('chartPkg'), { type: 'doughnut', data: { labels: c.pkgLabels, datasets: [{ data: c.pkgData, backgroundColor: ['#1e3a8a', '#3b82f6', '#93c5fd', '#f59e0b'] }] } });
+        }
+
+        // TABLES
+        async function loadTable(sheet) {
+            const res = await post({ action: 'fetch-table', sheetName: sheet });
+            if(res.success) {
+                const target = sheet === 'Reports_Log' ? document.getElementById('report-body') : document.getElementById('table-body');
+                const head = document.getElementById('table-head');
+                
+                if(sheet !== 'Reports_Log') {
+                    let headers = res.headers;
+                    if(sheet === 'Pending Bookings') headers.push('Action');
+                    if(sheet === 'Confirmed Bookings') headers.push('Action');
+                    
+                    head.innerHTML = headers.map(h => `<th class="px-6 py-3">${h}</th>`).join('');
+                    
+                    target.innerHTML = res.rows.map(r => {
+                        let action = '';
+                        if(sheet === 'Pending Bookings') action = `<td class="px-6 py-4"><button onclick="confirmBooking('${r[0]}')" class="bg-green-600 text-white px-3 py-1 rounded text-xs font-bold hover:bg-green-700">Confirm</button></td>`;
+                        if(sheet === 'Confirmed Bookings') action = `<td class="px-6 py-4"><button onclick="completeJob('${r[0]}')" class="bg-gray-600 text-white px-3 py-1 rounded text-xs font-bold hover:bg-gray-700">Complete</button></td>`;
+                        
+                        return `<tr class="bg-white hover:bg-gray-50">${r.map(c => `<td class="px-6 py-4 truncate max-w-xs">${c}</td>`).join('')}${action}</tr>`;
+                    }).join('');
+                } else {
+                    target.innerHTML = res.rows.map(r => `<tr class="bg-white hover:bg-gray-50"><td class="px-6 py-4">${r[0]}</td><td class="px-6 py-4 uppercase font-bold text-xs">${r[1]}</td><td class="px-6 py-4">${r[2]}</td><td class="px-6 py-4 font-mono">R ${r[3]}</td></tr>`).join('');
+                }
+            }
+        }
+
+        async function generateReport(type) {
+            if(!confirm(`Generate ${type} report?`)) return;
+            const res = await post({ action: 'generate-report', type: type, token: getToken() });
+            if(res.success) { alert(res.message); loadTable('Reports_Log'); }
+        }
+
+        // ACTIONS
+        async function confirmBooking(ref) {
+            if(!confirm(`Confirm ${ref}?`)) return;
+            const res = await post({ action: 'confirm-booking', ref: ref, token: getToken() });
+            if(res.success) { alert('Confirmed!'); loadTable('Pending Bookings'); loadData(); } else alert(res.error);
+        }
+
+        async function completeJob(ref) {
+            if(!confirm(`Mark ${ref} as Completed?`)) return;
+            const res = await post({ action: 'complete-job', ref: ref, token: getToken() });
+            if(res.success) { alert('Marked Completed!'); loadTable('Confirmed Bookings'); loadData(); } else alert(res.error);
+        }
+
+        // INVOICES
+        async function previewInvoice() {
+            const ref = document.getElementById('inv-ref').value;
+            const res = await post({ action: 'preview-invoice', ref: ref, token: getToken() });
+            if(res.success) {
+                currentInvData = res.invoice;
+                document.getElementById('invoice-preview').classList.remove('hidden');
+                document.getElementById('invoice-html').innerHTML = `<div class="border-b pb-4 mb-4 flex justify-between"><h1 class="text-3xl font-bold text-blue-900">INVOICE</h1><div class="text-right"><p class="font-bold">Ngaoyi Cleaning</p></div></div><div class="mb-8"><p class="text-gray-500 text-xs uppercase">Billed To</p><h3 class="font-bold text-xl">${res.invoice.customer}</h3></div><table class="w-full mb-8"><tr class="bg-gray-100"><th class="text-left p-2">Service</th><th class="text-right p-2">Amount</th></tr><tr><td class="p-2 border-b">${res.invoice.service}</td><td class="p-2 border-b text-right font-bold">R ${res.invoice.amount}</td></tr></table><h2 class="text-right text-2xl font-bold text-blue-900">Total: R ${res.invoice.amount}</h2>`;
+                document.getElementById('btn-save').classList.remove('hidden'); document.getElementById('btn-send').classList.add('hidden');
+            } else alert(res.error);
+        }
+
+        async function saveInvoice() {
+            const res = await post({ action: 'save-invoice', invoice: currentInvData, token: getToken() });
+            if(res.success) { savedInvID = res.invID; document.getElementById('btn-save').classList.add('hidden'); document.getElementById('btn-send').classList.remove('hidden'); alert(`Saved: ${res.invID}`); }
+        }
+
+        async function sendInvoice() {
+            const res = await post({ action: 'send-invoice', invoice: currentInvData, invID: savedInvID, token: getToken() });
+            if(res.success) alert('Sent!'); else alert(res.error);
+        }
+
+        async function loadCalendar() {
+            const res = await post({ action: 'fetch-calendar', token: getToken() });
+            if(calendar) calendar.destroy();
+            calendar = new FullCalendar.Calendar(document.getElementById('calendar'), { initialView: 'dayGridMonth', events: res.events, height: '100%' });
+            calendar.render();
+        }
+
+        async function post(data) { try { return await (await fetch(API_URL, { method: 'POST', body: JSON.stringify(data) })).json(); } catch(e) { return { success: false, error: 'Network Error' }; } }
+        function getToken() { return sessionStorage.getItem('v10_token'); }
+        
+        document.getElementById('bank-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = { action: 'update-bank', token: getToken(), bankName: e.target['bank-name'].value, accNum: e.target['bank-acc'].value, branch: e.target['bank-branch'].value, holder: e.target['bank-holder'].value };
+            await post(data); alert('Updated');
+        });
     </script>
 </body>
 </html>
