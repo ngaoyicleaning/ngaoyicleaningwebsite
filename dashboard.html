@@ -3,31 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ngaoyi Intelligence Dashboard</title>
+    <title>Ngaoyi Admin Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
         
+        /* Sidebar & Nav */
         .sidebar { background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%); color: white; }
         .nav-item { display: flex; align-items: center; padding: 12px 24px; color: #94a3b8; transition: all 0.3s ease; border-left: 4px solid transparent; cursor: pointer; }
         .nav-item:hover, .nav-item.active { background: rgba(255,255,255,0.05); color: #fff; border-left-color: #3b82f6; }
-        
+        .nav-item i { width: 24px; margin-right: 12px; }
+
+        /* UI Elements */
         .hidden-section { display: none !important; }
         .card { background: white; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .web-frame { width: 100%; height: calc(100vh - 140px); border: none; border-radius: 12px; }
         
+        /* Intelligence Cards */
+        .intel-card { position: relative; overflow: hidden; padding: 24px; border-radius: 12px; background: white; border: 1px solid #e2e8f0; }
+        .intel-card::after { content: ''; position: absolute; top: 0; right: 0; width: 80px; height: 80px; background: linear-gradient(135deg, transparent 50%, rgba(59, 130, 246, 0.05) 50%); }
+
+        /* Toast Notifications */
         #toast-container { position: fixed; top: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; }
         .toast { background: white; border-left: 4px solid #3b82f6; padding: 16px 20px; border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); transform: translateX(120%); transition: transform 0.4s ease; display: flex; align-items: center; gap: 12px; min-width: 320px; font-weight: 500; }
         .toast.show { transform: translateX(0); }
         .toast.success { border-left-color: #10b981; }
         .toast.error { border-left-color: #ef4444; }
-
-        /* Embedded Browser Frames */
-        .web-frame { width: 100%; height: calc(100vh - 140px); border: none; border-radius: 12px; }
-        .intel-card { position: relative; overflow: hidden; padding: 24px; border-radius: 12px; background: white; border: 1px solid #e2e8f0; }
-        .intel-card::after { content: ''; position: absolute; top: 0; right: 0; width: 80px; height: 80px; background: linear-gradient(135deg, transparent 50%, rgba(59, 130, 246, 0.05) 50%); }
     </style>
 </head>
 <body class="h-screen flex overflow-hidden">
@@ -40,34 +45,52 @@
             <h1 class="text-2xl font-bold text-slate-800 mb-2">Ngaoyi Admin</h1>
             <p class="text-slate-500 text-sm mb-8">Secure Access</p>
             <form id="login-form" class="space-y-4">
-                <input type="text" id="username" placeholder="Username" class="w-full p-3 border border-slate-200 rounded-lg focus:outline-none focus:border-blue-500">
-                <input type="password" id="password" placeholder="Password" class="w-full p-3 border border-slate-200 rounded-lg focus:outline-none focus:border-blue-500">
+                <input type="text" id="username" placeholder="Username" class="w-full p-3 border border-slate-200 rounded-lg focus:outline-none focus:border-blue-500 transition">
+                <input type="password" id="password" placeholder="Password" class="w-full p-3 border border-slate-200 rounded-lg focus:outline-none focus:border-blue-500 transition">
                 <button type="submit" class="w-full bg-blue-900 hover:bg-blue-800 text-white py-3 rounded-lg font-bold transition shadow-lg mt-2">Login</button>
             </form>
         </div>
     </div>
 
     <aside class="sidebar w-64 hidden md:flex flex-col z-10 shadow-xl">
-        <div class="h-20 flex items-center px-6 border-b border-slate-700/50"><i class="fas fa-broom text-blue-400 mr-3 text-xl"></i><span class="font-bold text-xl tracking-wide">Ngaoyi</span></div>
+        <div class="h-20 flex items-center px-6 border-b border-slate-700/50">
+            <i class="fas fa-broom text-blue-400 mr-3 text-xl"></i>
+            <span class="font-bold text-xl tracking-wide">Ngaoyi</span>
+        </div>
         <nav class="flex-1 py-6 space-y-1 overflow-y-auto">
-            <a onclick="switchTab('overview')" id="nav-overview" class="nav-item active"><i class="fas fa-tachometer-alt mr-3"></i> Overview</a>
-            <a onclick="switchTab('intelligence')" id="nav-intelligence" class="nav-item"><i class="fas fa-brain mr-3"></i> Intelligence</a>
-            <a onclick="switchTab('database')" id="nav-database" class="nav-item"><i class="fas fa-list-check mr-3"></i> Bookings</a>
-            <a onclick="switchTab('prices')" id="nav-prices" class="nav-item"><i class="fas fa-tags mr-3"></i> Price List</a>
-            <a onclick="switchTab('calendar')" id="nav-calendar" class="nav-item"><i class="fas fa-calendar-day mr-3"></i> Calendar</a>
-            <a onclick="switchTab('invoices')" id="nav-invoices" class="nav-item"><i class="fas fa-file-invoice-dollar mr-3"></i> Invoices</a>
-            <a onclick="switchTab('yoco')" id="nav-yoco" class="nav-item"><i class="fas fa-credit-card mr-3"></i> Yoco Portal</a>
-            <a onclick="switchTab('banking')" id="nav-banking" class="nav-item"><i class="fas fa-university mr-3"></i> Banking</a>
+            <a onclick="switchTab('overview')" id="nav-overview" class="nav-item active"><i class="fas fa-tachometer-alt"></i> Overview</a>
+            <a onclick="switchTab('intelligence')" id="nav-intelligence" class="nav-item"><i class="fas fa-brain"></i> Intelligence</a>
+            <a onclick="switchTab('database')" id="nav-database" class="nav-item"><i class="fas fa-list-check"></i> Bookings</a>
+            <a onclick="switchTab('prices')" id="nav-prices" class="nav-item"><i class="fas fa-tags"></i> Price List</a>
+            <a onclick="switchTab('calendar')" id="nav-calendar" class="nav-item"><i class="fas fa-calendar-day"></i> Calendar</a>
+            <a onclick="switchTab('invoices')" id="nav-invoices" class="nav-item"><i class="fas fa-file-invoice-dollar"></i> Invoices</a>
+            <a onclick="switchTab('yoco')" id="nav-yoco" class="nav-item"><i class="fas fa-credit-card"></i> Yoco Portal</a>
+            <a onclick="switchTab('banking')" id="nav-banking" class="nav-item"><i class="fas fa-university"></i> Banking</a>
         </nav>
-        <div class="p-4 border-t border-slate-700/50"><button onclick="logout()" class="w-full py-2 text-slate-400 hover:text-white text-sm font-semibold transition"><i class="fas fa-sign-out-alt mr-2"></i> Sign Out</button></div>
+        <div class="p-4 border-t border-slate-700/50">
+            <button onclick="logout()" class="w-full py-2 text-slate-400 hover:text-white text-sm font-semibold transition"><i class="fas fa-sign-out-alt mr-2"></i> Sign Out</button>
+        </div>
     </aside>
 
     <main class="flex-1 flex flex-col h-screen overflow-hidden">
         <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-8 z-20 shadow-sm">
-            <div><h2 class="font-bold text-2xl text-slate-800" id="page-title">Overview</h2><div class="flex items-center gap-2 mt-1"><span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span><p class="text-xs text-slate-500 font-medium" id="last-updated">System Online</p></div></div>
+            <div>
+                <h2 class="font-bold text-2xl text-slate-800" id="page-title">Overview</h2>
+                <div class="flex items-center gap-2 mt-1">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                    <p class="text-xs text-slate-500 font-medium" id="last-updated">System Online</p>
+                </div>
+            </div>
             <div class="flex gap-4 items-center">
-                <div class="relative cursor-pointer group" onclick="toggleNotifPanel()"><div class="w-10 h-10 bg-slate-100 group-hover:bg-slate-200 rounded-full flex items-center justify-center transition text-slate-600"><i class="fas fa-bell"></i></div><span id="notif-count" class="absolute top-0 right-0 w-3 h-3 bg-red-500 border-2 border-white rounded-full hidden"></span></div>
-                <button onclick="loadDeepData()" class="bg-slate-900 text-white hover:bg-slate-800 px-5 py-2.5 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-lg shadow-slate-900/20"><i class="fas fa-sync-alt"></i> Deep Sync</button>
+                <div class="relative cursor-pointer group" onclick="toggleNotifPanel()">
+                    <div class="w-10 h-10 bg-slate-100 group-hover:bg-slate-200 rounded-full flex items-center justify-center transition text-slate-600">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <span id="notif-count" class="absolute top-0 right-0 w-3 h-3 bg-red-500 border-2 border-white rounded-full hidden"></span>
+                </div>
+                <button onclick="loadDeepData()" class="bg-slate-900 text-white hover:bg-slate-800 px-5 py-2.5 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-lg shadow-slate-900/20">
+                    <i class="fas fa-sync-alt"></i> Deep Sync
+                </button>
             </div>
         </header>
 
@@ -83,30 +106,34 @@
                     <div class="card p-6 border-l-4 border-l-blue-600"><p class="text-slate-400 text-xs font-bold uppercase tracking-wider">Total Revenue</p><h3 class="text-3xl font-bold text-slate-800 mt-2" id="stat-rev">R 0.00</h3></div>
                     <div class="card p-6 border-l-4 border-l-orange-500"><p class="text-slate-400 text-xs font-bold uppercase tracking-wider">Pending Jobs</p><h3 class="text-3xl font-bold text-slate-800 mt-2" id="stat-pending">0</h3></div>
                     <div class="card p-6 border-l-4 border-l-green-500"><p class="text-slate-400 text-xs font-bold uppercase tracking-wider">Active Jobs</p><h3 class="text-3xl font-bold text-slate-800 mt-2" id="stat-active">0</h3></div>
-                    <div class="card p-6 border-l-4 border-l-purple-500"><p class="text-slate-400 text-xs font-bold uppercase tracking-wider">Total Customers</p><h3 class="text-3xl font-bold text-slate-800 mt-2" id="stat-customers">0</h3></div>
+                    <div class="card p-6 border-l-4 border-l-slate-500"><p class="text-slate-400 text-xs font-bold uppercase tracking-wider">Completed</p><h3 class="text-3xl font-bold text-slate-800 mt-2" id="stat-completed">0</h3></div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div class="lg:col-span-2 card p-6">
                         <div class="flex justify-between items-center mb-6">
-                            <h4 class="font-bold text-slate-800">Top Customers</h4>
+                            <h4 class="font-bold text-slate-800">Top Customers (Completed)</h4>
                             <span class="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-xs font-bold">By Revenue</span>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-sm text-left">
-                                <thead class="bg-slate-50 text-slate-500 uppercase text-xs font-bold"><tr><th class="px-6 py-3 rounded-l-lg">Customer</th><th class="px-6 py-3">Area</th><th class="px-6 py-3 text-right rounded-r-lg">Spent</th></tr></thead>
-                                <tbody id="top-customers-body" class="divide-y divide-slate-50"><tr><td colspan="3" class="p-4 text-center text-slate-400"><i class="fas fa-spinner fa-spin mr-2"></i> Analyzing...</td></tr></tbody>
+                                <thead class="bg-slate-50 text-slate-500 uppercase text-xs font-bold">
+                                    <tr><th class="px-6 py-3 rounded-l-lg">Customer</th><th class="px-6 py-3">Status</th><th class="px-6 py-3 text-right rounded-r-lg">Total Spent</th></tr>
+                                </thead>
+                                <tbody id="top-customers-body" class="divide-y divide-slate-50">
+                                    <tr><td colspan="3" class="p-4 text-center text-slate-400"><i class="fas fa-spinner fa-spin mr-2"></i> Analyzing...</td></tr>
+                                </tbody>
                             </table>
                         </div>
                     </div>
                     <div class="card p-6">
-                        <h4 class="font-bold text-slate-800 mb-6">Service Split (All Time)</h4>
+                        <h4 class="font-bold text-slate-800 mb-6">Service Split</h4>
                         <div class="h-64 relative"><canvas id="chartPkg"></canvas></div>
                     </div>
                 </div>
 
                 <div class="card p-6">
-                    <h4 class="font-bold text-slate-800 mb-6">Sales Trend (Confirmed & Completed)</h4>
+                    <h4 class="font-bold text-slate-800 mb-6">Sales Trend (Active & Completed)</h4>
                     <div class="h-64"><canvas id="chartSales"></canvas></div>
                 </div>
             </div>
@@ -115,28 +142,34 @@
                 <div class="card p-4 flex flex-wrap gap-4 items-center justify-between">
                     <div class="flex items-center gap-2 text-slate-700"><i class="fas fa-filter text-blue-500"></i><span class="font-bold">Report Filters</span></div>
                     <div class="flex gap-3">
-                        <select id="filter-quarter" onchange="filterReports()" class="bg-slate-50 border border-slate-200 rounded px-3 py-2 text-sm font-semibold text-slate-600 outline-none"><option value="all">All Quarters</option><option value="1">Q1</option><option value="2">Q2</option><option value="3">Q3</option><option value="4">Q4</option></select>
+                        <select id="filter-quarter" onchange="filterReports()" class="bg-slate-50 border border-slate-200 rounded px-3 py-2 text-sm font-semibold text-slate-600 outline-none"><option value="all">All Quarters</option><option value="1">Q1 (Jan-Mar)</option><option value="2">Q2 (Apr-Jun)</option><option value="3">Q3 (Jul-Sep)</option><option value="4">Q4 (Oct-Dec)</option></select>
                         <select id="filter-month" onchange="filterReports()" class="bg-slate-50 border border-slate-200 rounded px-3 py-2 text-sm font-semibold text-slate-600 outline-none"><option value="all">All Months</option><option value="0">Jan</option><option value="1">Feb</option><option value="2">Mar</option><option value="3">Apr</option><option value="4">May</option><option value="5">Jun</option><option value="6">Jul</option><option value="7">Aug</option><option value="8">Sep</option><option value="9">Oct</option><option value="10">Nov</option><option value="11">Dec</option></select>
+                        <button onclick="generateEmailReport()" class="bg-blue-100 text-blue-700 px-4 py-2 rounded text-sm font-bold hover:bg-blue-200 transition"><i class="fas fa-envelope mr-1"></i> Email Report</button>
                     </div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="intel-card"><p class="text-slate-400 text-xs font-bold uppercase">Filtered Revenue</p><h3 class="text-3xl font-bold text-slate-800 mt-2" id="report-revenue">R 0.00</h3></div>
-                    <div class="intel-card"><p class="text-slate-400 text-xs font-bold uppercase">Average Order Value</p><h3 class="text-3xl font-bold text-slate-800 mt-2" id="report-avg">R 0.00</h3><p class="text-slate-400 text-xs mt-2">Revenue / Orders</p></div>
-                    <div class="intel-card"><p class="text-slate-400 text-xs font-bold uppercase">Orders Count</p><h3 class="text-3xl font-bold text-slate-800 mt-2" id="report-count">0</h3></div>
+                    <div class="intel-card"><p class="text-slate-400 text-xs font-bold uppercase">Conversion Rate</p><h3 class="text-3xl font-bold text-slate-800 mt-2" id="report-conversion">0%</h3><p class="text-slate-400 text-xs mt-2">Active vs Total Requests</p></div>
+                    <div class="intel-card"><p class="text-slate-400 text-xs font-bold uppercase">Avg Order Value</p><h3 class="text-3xl font-bold text-slate-800 mt-2" id="report-avg">R 0.00</h3><p class="text-slate-400 text-xs mt-2">Revenue / Orders</p></div>
                 </div>
-                <div class="card overflow-hidden"><div class="overflow-x-auto max-h-96"><table class="w-full text-sm text-left"><thead class="bg-white text-slate-500 uppercase text-xs font-bold sticky top-0 border-b"><tr><th class="px-6 py-3">Date</th><th class="px-6 py-3 text-right">Amount</th></tr></thead><tbody id="report-table-body" class="divide-y divide-slate-100 text-slate-600"></tbody></table></div></div>
+                <div class="card overflow-hidden"><div class="overflow-x-auto max-h-96"><table class="w-full text-sm text-left"><thead class="bg-white text-slate-500 uppercase text-xs font-bold sticky top-0 border-b"><tr><th class="px-6 py-3">Date</th><th class="px-6 py-3">Status</th><th class="px-6 py-3 text-right">Amount</th></tr></thead><tbody id="report-table-body" class="divide-y divide-slate-100 text-slate-600"></tbody></table></div></div>
             </div>
 
             <div id="section-database" class="hidden-section space-y-4">
                 <div class="flex gap-2">
-                    <button onclick="loadTable('Pending Bookings')" class="px-4 py-2 bg-white border border-slate-200 rounded shadow-sm text-sm font-bold hover:bg-slate-50 text-slate-600">Pending</button>
-                    <button onclick="loadTable('Confirmed Bookings')" class="px-4 py-2 bg-white border border-slate-200 rounded shadow-sm text-sm font-bold hover:bg-slate-50 text-slate-600">Confirmed</button>
-                    <button onclick="loadTable('Completed Jobs')" class="px-4 py-2 bg-white border border-slate-200 rounded shadow-sm text-sm font-bold hover:bg-slate-50 text-slate-600">History</button>
+                    <button onclick="loadTable('Pending Bookings')" class="px-4 py-2 bg-white border border-slate-200 rounded shadow-sm text-sm font-bold hover:bg-slate-50 text-slate-600 transition">Pending</button>
+                    <button onclick="loadTable('Confirmed Bookings')" class="px-4 py-2 bg-white border border-slate-200 rounded shadow-sm text-sm font-bold hover:bg-slate-50 text-slate-600 transition">Confirmed</button>
+                    <button onclick="loadTable('Completed Jobs')" class="px-4 py-2 bg-white border border-slate-200 rounded shadow-sm text-sm font-bold hover:bg-slate-50 text-slate-600 transition">History</button>
                 </div>
                 <div class="card overflow-hidden"><div class="overflow-x-auto max-h-[70vh]"><table class="w-full text-sm text-left"><thead class="bg-slate-50 border-b sticky top-0 text-slate-500 uppercase text-xs font-bold"><tr id="table-head"></tr></thead><tbody id="table-body" class="divide-y divide-slate-100 text-slate-600"></tbody></table></div></div>
             </div>
 
-            <div id="section-prices" class="hidden-section"><div class="card overflow-hidden"><div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50"><h3 class="font-bold text-lg text-slate-800">Current Price List</h3><button onclick="loadPrices()" class="bg-white border border-slate-300 text-slate-600 px-3 py-1 rounded text-xs font-bold hover:bg-slate-50">Refresh</button></div><div class="overflow-x-auto"><table class="w-full text-sm text-left"><thead class="bg-white text-slate-500 uppercase text-xs font-bold border-b"><tr><th class="px-6 py-4">Category</th><th class="px-6 py-4">Item/Size</th><th class="px-6 py-4 text-right">Price</th></tr></thead><tbody id="price-table-body" class="divide-y divide-slate-100 text-slate-600"></tbody></table></div></div></div>
+            <div id="section-prices" class="hidden-section">
+                <div class="card overflow-hidden">
+                    <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50"><h3 class="font-bold text-lg text-slate-800">Current Price List</h3><button onclick="loadPrices()" class="bg-white border border-slate-300 text-slate-600 px-3 py-1 rounded text-xs font-bold hover:bg-slate-50">Refresh</button></div>
+                    <div class="overflow-x-auto"><table class="w-full text-sm text-left"><thead class="bg-white text-slate-500 uppercase text-xs font-bold border-b"><tr><th class="px-6 py-4">Category</th><th class="px-6 py-4">Item/Size</th><th class="px-6 py-4 text-right">Price</th></tr></thead><tbody id="price-table-body" class="divide-y divide-slate-100 text-slate-600"></tbody></table></div>
+                </div>
+            </div>
 
             <div id="section-yoco" class="hidden-section h-full"><div class="card h-full flex flex-col p-0 overflow-hidden"><div class="p-4 border-b bg-slate-50 flex justify-between items-center"><h3 class="font-bold text-lg text-slate-700"><i class="fas fa-credit-card mr-2 text-blue-500"></i> Yoco Payments</h3><a href="https://portal.yoco.co.za/" target="_blank" class="text-blue-600 text-sm hover:underline font-bold">Open New Tab</a></div><div class="flex-1 bg-slate-100 relative"><iframe src="https://portal.yoco.co.za/" class="web-frame"></iframe></div></div></div>
             <div id="section-calendar" class="hidden-section h-full"><div class="card h-full flex flex-col p-0 overflow-hidden"><div class="p-4 border-b bg-slate-50 flex justify-between items-center"><h3 class="font-bold text-lg text-slate-700"><i class="fas fa-calendar-day mr-2 text-blue-500"></i> Google Calendar</h3><a href="https://calendar.google.com/calendar/r" target="_blank" class="text-blue-600 text-sm hover:underline font-bold">Open New Tab</a></div><div class="flex-1 bg-slate-100 relative"><iframe src="https://calendar.google.com/calendar/embed?src=en.sa%23holiday%40group.v.calendar.google.com&ctz=Africa%2FJohannesburg" class="web-frame"></iframe></div></div></div>
@@ -151,44 +184,44 @@
     </main>
 
     <script>
+        // 🔴 API URL (Using the last known good endpoint from your script)
         const API_URL = "https://script.google.com/macros/s/AKfycbyg9MM0sZriynS-haeRWNnZHkZN70C8p2nLAA4bcCtrm38WmnbEMBZUPEhLph5q1LOW/exec";
+        
         let salesChart, pkgChart;
-        let masterData = []; // Combined jobs for deep analysis
+        let masterData = []; // Combined active & completed data
         let currentInvData = null, savedInvID = null;
 
-        // AUTH & INIT
+        // --- AUTH & INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', () => { if(sessionStorage.getItem('ngaoyi_admin_token')) { document.getElementById('login-screen').classList.add('hidden'); loadDeepData(); } });
         document.getElementById('login-form').addEventListener('submit', async (e) => { e.preventDefault(); showToast("Authenticating...", 'info'); const res = await post({ action: 'login', username: e.target.username.value, password: e.target.password.value }); if(res.success) { sessionStorage.setItem('ngaoyi_admin_token', res.token); document.getElementById('login-screen').classList.add('hidden'); loadDeepData(); } else showToast(res.error, 'error'); });
         function logout() { sessionStorage.removeItem('ngaoyi_admin_token'); location.reload(); }
 
-        // --- DEEP SYNC ENGINE (Replaces simple loadData) ---
+        // --- DEEP SYNC DATA ENGINE ---
         async function loadDeepData() {
-            showToast("Deep Sync: Fetching Tables...", 'info');
+            showToast("Deep Sync: Fetching All Data...", 'info');
             document.getElementById('last-updated').textContent = "Downloading...";
 
-            // 1. Fetch Confirmed & Completed Jobs
+            // Fetch Confirmed, Completed, and Dashboard Metadata
             const [confirmedRes, completedRes, dashboardRes] = await Promise.all([
                 post({ action: 'fetch-table', sheetName: 'Confirmed Bookings' }),
                 post({ action: 'fetch-table', sheetName: 'Completed Jobs' }),
-                post({ action: 'fetch-dashboard-data', token: getToken() }) // Get Pending count & Bank
+                post({ action: 'fetch-dashboard-data', token: getToken() })
             ]);
 
             if(confirmedRes.success && completedRes.success) {
                 document.getElementById('last-updated').textContent = "System Online";
-                
-                // 2. Normalize and Merge Data
-                // Confirmed Structure: [Ref, Date, Customer, ..., Service(8), ..., Price(10/12)]
-                // Completed Structure: [Ref, Date, Customer, Service, Amount, Status]
                 
                 masterData = [];
                 let serviceCounts = {};
                 let totalRev = 0;
                 let customers = new Set();
 
+                // MERGE FUNCTION
                 const processRow = (row, isCompleted) => {
+                    // Confirmed: Price at index 12 or 10. Completed: Price at index 4.
                     const priceStr = isCompleted ? String(row[4]||0) : String(row[12]||row[10]||0);
                     const price = parseFloat(priceStr.replace(/[^0-9.]/g, '')) || 0;
-                    const date = row[1]; // Assuming Date is col index 1
+                    const date = row[1];
                     const name = row[2];
                     const service = isCompleted ? row[3] : row[8];
                     
@@ -200,40 +233,84 @@
                     }
                 };
 
+                // Merge
                 confirmedRes.rows.forEach(r => processRow(r, false));
                 completedRes.rows.forEach(r => processRow(r, true));
 
-                // 3. Update Stats
+                // Update Stats
                 document.getElementById('stat-rev').textContent = formatCurrency(totalRev);
                 document.getElementById('stat-pending').textContent = dashboardRes.stats.pending;
                 document.getElementById('stat-active').textContent = confirmedRes.rows.length;
-                document.getElementById('stat-customers').textContent = customers.size;
+                document.getElementById('stat-completed').textContent = completedRes.rows.length;
 
-                // 4. Update Charts
+                // Notifications
+                const notifs = dashboardRes.notifications || [];
+                const badge = document.getElementById('notif-count');
+                if(notifs.length > 0) {
+                    badge.classList.remove('hidden');
+                    document.getElementById('notif-list').innerHTML = notifs.map(n => `<li class="p-3 bg-blue-50 border-l-4 border-blue-500 rounded-r text-sm mb-2"><p class="font-bold text-blue-900">${n.title}</p><p class="text-slate-600">${n.message}</p></li>`).join('');
+                } else {
+                    badge.classList.add('hidden');
+                    document.getElementById('notif-list').innerHTML = '<li class="text-center text-slate-400 text-sm py-4">All caught up!</li>';
+                }
+
+                // Update Visuals
                 renderCharts(masterData, serviceCounts);
-                
-                // 5. Update Intel & Top Customers
-                filterReports();
-                loadTopCustomers(confirmedRes.rows); // Pass confirmed rows for detailed address data
+                filterReports(); // Update Intelligence
+                loadTopCustomers(completedRes.rows); // Update Top Customers (Completed only)
 
-                // 6. Bank
+                // Bank Prefill
                 if(dashboardRes.bank) { ['name','acc','branch','holder'].forEach(k => document.getElementById('bank-'+k).value = dashboardRes.bank[k==='name'?'bankName':k==='acc'?'accNum':k==='branch'?'branch':'holder']||''); }
 
-                showToast("Deep Sync Complete", 'success');
+                showToast("Sync Complete", 'success');
             } else {
                 showToast("Sync Failed", 'error');
             }
         }
 
-        // INTELLIGENCE & FILTER
+        // --- TOP CUSTOMERS (From Completed Jobs) ---
+        function loadTopCustomers(rows) {
+            const tbody = document.getElementById('top-customers-body');
+            const map = {};
+            
+            rows.forEach(r => {
+                const name = r[2] || 'Unknown';
+                // Completed jobs sheet doesn't store address in backend script, we use a placeholder or check logic
+                const address = 'Verified Completed Job'; 
+                const priceStr = String(r[4]||0).replace(/[^0-9.]/g, '');
+                const price = parseFloat(priceStr) || 0;
+                
+                if(!map[name]) map[name] = { name, address, total: 0 };
+                map[name].total += price;
+            });
+
+            const sorted = Object.values(map).sort((a,b) => b.total - a.total).slice(0, 5);
+
+            if(sorted.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-slate-400">No completed history.</td></tr>`;
+            } else {
+                tbody.innerHTML = sorted.map((c, i) => `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="px-6 py-3 text-sm font-bold text-slate-700 flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold">${i+1}</span>
+                            ${c.name}
+                        </td>
+                        <td class="px-6 py-3 text-xs text-slate-500 italic">${c.address}</td>
+                        <td class="px-6 py-3 text-right font-mono font-bold text-slate-800">${formatCurrency(c.total)}</td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        // --- INTELLIGENCE LOGIC ---
         function filterReports() {
             const qFilter = document.getElementById('filter-quarter').value;
             const mFilter = document.getElementById('filter-month').value;
-            
             let filteredRev = 0, filteredCount = 0;
             let filteredRows = [];
 
             masterData.forEach(item => {
+                if (!item.date) return;
                 const d = new Date(item.date);
                 const month = d.getMonth(); 
                 const quarter = Math.floor(month / 3) + 1;
@@ -250,63 +327,48 @@
             });
 
             document.getElementById('report-revenue').textContent = formatCurrency(filteredRev);
-            document.getElementById('report-count').textContent = filteredCount;
             
+            // Conversion Rate: Active+Completed / Total (Pending+Active+Completed)
+            const active = parseInt(document.getElementById('stat-active').textContent) || 0;
+            const completed = parseInt(document.getElementById('stat-completed').textContent) || 0;
+            const pending = parseInt(document.getElementById('stat-pending').textContent) || 0;
+            const total = active + completed + pending;
+            const conversion = total > 0 ? (((active + completed) / total) * 100).toFixed(1) : 0;
+            document.getElementById('report-conversion').textContent = conversion + "%";
+
+            // Avg Order Value
             const avg = filteredCount > 0 ? filteredRev / filteredCount : 0;
             document.getElementById('report-avg').textContent = formatCurrency(avg);
 
-            // Populate Table
+            // Table
             const tbody = document.getElementById('report-table-body');
-            // Sort by Date
+            // Sort Descending
             filteredRows.sort((a,b) => new Date(b.date) - new Date(a.date));
             
             if(filteredRows.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="2" class="p-4 text-center text-slate-400">No data found.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="3" class="p-4 text-center text-slate-400">No data found.</td></tr>';
             } else {
                 tbody.innerHTML = filteredRows.slice(0, 50).map(h => `
                     <tr class="hover:bg-slate-50 border-b border-slate-50">
-                        <td class="px-6 py-3 font-mono text-slate-500 text-xs">${h.date}</td>
+                        <td class="px-6 py-3 font-mono text-slate-500 text-xs">${new Date(h.date).toLocaleDateString()}</td>
+                        <td class="px-6 py-3"><span class="px-2 py-1 rounded text-[10px] font-bold ${h.isCompleted?'bg-slate-200 text-slate-700':'bg-green-100 text-green-700'}">${h.isCompleted?'COMPLETED':'ACTIVE'}</span></td>
                         <td class="px-6 py-3 text-right font-bold text-slate-700">R ${h.price.toLocaleString()}</td>
                     </tr>
                 `).join('');
             }
         }
 
-        // TOP CUSTOMERS
-        function loadTopCustomers(rows) {
-            const tbody = document.getElementById('top-customers-body');
-            const map = {};
-            
-            rows.forEach(r => {
-                const name = r[2] || 'Unknown';
-                const address = r[5] || 'Unknown Area';
-                const priceStr = String(r[10]||r[12]||0).replace(/[^0-9.]/g, '');
-                const price = parseFloat(priceStr) || 0;
-                
-                if(!map[name]) map[name] = { name, address, total: 0 };
-                map[name].total += price;
-            });
-
-            const sorted = Object.values(map).sort((a,b) => b.total - a.total).slice(0, 5);
-            tbody.innerHTML = sorted.map(c => `
-                <tr class="hover:bg-slate-50">
-                    <td class="px-6 py-3 text-sm font-bold text-slate-700">${c.name}</td>
-                    <td class="px-6 py-3 text-xs text-slate-500">${c.address.substring(0,20)}...</td>
-                    <td class="px-6 py-3 text-right font-mono font-bold text-slate-800">${formatCurrency(c.total)}</td>
-                </tr>
-            `).join('');
-        }
-
-        // CHARTS
+        // --- CHARTS ---
         function renderCharts(data, services) {
-            // Aggregate History for Line Chart
+            // Aggregate history by date
             const historyMap = {};
             data.forEach(d => {
-                if(!historyMap[d.date]) historyMap[d.date] = 0;
-                historyMap[d.date] += d.price;
+                const dateKey = new Date(d.date).toLocaleDateString('en-CA'); // YYYY-MM-DD
+                if(!historyMap[dateKey]) historyMap[dateKey] = 0;
+                historyMap[dateKey] += d.price;
             });
-            // Sort Dates
-            const dates = Object.keys(historyMap).sort((a,b) => new Date(a) - new Date(b));
+            
+            const dates = Object.keys(historyMap).sort();
             const revenues = dates.map(d => historyMap[d]);
 
             if(salesChart) salesChart.destroy();
@@ -324,21 +386,41 @@
             });
         }
 
-        // UTILS & ACTIONS (Keep existing invoice/table logic)
-        async function loadTable(sheet) { showToast(`Loading ${sheet}...`, 'info'); const res = await post({ action: 'fetch-table', sheetName: sheet }); if(res.success) { const head = document.getElementById('table-head'); const body = document.getElementById('table-body'); let headers = res.headers; if(sheet === 'Pending Bookings' || sheet === 'Confirmed Bookings') headers.push('Action'); head.innerHTML = headers.map(h => `<th class="px-6 py-4 whitespace-nowrap">${h}</th>`).join(''); body.innerHTML = res.rows.map(r => { let action = ''; if(sheet === 'Pending Bookings') action = `<td class="px-6 py-4"><button onclick="confirmBooking('${r[0]}')" class="bg-green-600 text-white px-3 py-1 rounded text-xs font-bold hover:bg-green-700 shadow-sm transition">Confirm</button></td>`; if(sheet === 'Confirmed Bookings') action = `<td class="px-6 py-4"><button onclick="completeJob('${r[0]}')" class="bg-slate-700 text-white px-3 py-1 rounded text-xs font-bold hover:bg-slate-800 shadow-sm transition">Complete</button></td>`; return `<tr class="bg-white hover:bg-slate-50 transition border-b border-slate-50">${r.map(c => `<td class="px-6 py-4 whitespace-nowrap overflow-hidden text-ellipsis max-w-xs text-slate-600 text-sm">${c}</td>`).join('')}${action}</tr>`; }).join(''); } else showToast("Failed to load table", 'error'); }
+        // --- UTILS & ACTIONS ---
+        async function loadTable(sheet) {
+            showToast(`Loading ${sheet}...`, 'info');
+            const res = await post({ action: 'fetch-table', sheetName: sheet });
+            if(res.success) {
+                const head = document.getElementById('table-head');
+                const body = document.getElementById('table-body');
+                let headers = res.headers;
+                if(sheet === 'Pending Bookings' || sheet === 'Confirmed Bookings') headers.push('Action');
+                head.innerHTML = headers.map(h => `<th class="px-6 py-4 whitespace-nowrap">${h}</th>`).join('');
+                body.innerHTML = res.rows.map(r => {
+                    let action = '';
+                    if(sheet === 'Pending Bookings') action = `<td class="px-6 py-4"><button onclick="confirmBooking('${r[0]}')" class="bg-green-600 text-white px-3 py-1 rounded text-xs font-bold hover:bg-green-700 shadow-sm transition">Confirm</button></td>`;
+                    if(sheet === 'Confirmed Bookings') action = `<td class="px-6 py-4"><button onclick="completeJob('${r[0]}')" class="bg-slate-700 text-white px-3 py-1 rounded text-xs font-bold hover:bg-slate-800 shadow-sm transition">Complete</button></td>`;
+                    return `<tr class="bg-white hover:bg-slate-50 transition border-b border-slate-50">${r.map(c => `<td class="px-6 py-4 whitespace-nowrap overflow-hidden text-ellipsis max-w-xs text-slate-600 text-sm">${c}</td>`).join('')}${action}</tr>`;
+                }).join('');
+            } else showToast("Failed to load table", 'error');
+        }
+
         async function loadPrices() { showToast("Fetching Prices...", 'info'); const res = await post({ action: 'fetch-table', sheetName: 'Pricing' }); const tbody = document.getElementById('price-table-body'); if(res.success && res.rows.length > 0) { tbody.innerHTML = res.rows.map(r => `<tr class="hover:bg-slate-50 border-b border-slate-50"><td class="px-6 py-3 font-bold text-slate-700">${r[0]||'-'}</td><td class="px-6 py-3 text-slate-600">${r[1]||'-'}</td><td class="px-6 py-3 text-right font-mono text-blue-600 font-bold">R ${r[2]||'0'}</td></tr>`).join(''); showToast("Prices Updated", 'success'); } else { tbody.innerHTML = `<tr><td colspan="3" class="p-6 text-center text-slate-400">No pricing sheet found.</td></tr>`; } }
         async function confirmBooking(ref) { if(!confirm(`Confirm ${ref}?`)) return; showToast("Processing...", 'info'); const res = await post({ action: 'confirm-booking', ref: ref, token: getToken() }); if(res.success) { showToast('Booking Confirmed!', 'success'); loadTable('Pending Bookings'); loadDeepData(); } else showToast(res.error, 'error'); }
         async function completeJob(ref) { if(!confirm(`Mark ${ref} Completed?`)) return; showToast("Updating...", 'info'); const res = await post({ action: 'complete-job', ref: ref, token: getToken() }); if(res.success) { showToast('Job Completed', 'success'); loadTable('Confirmed Bookings'); loadDeepData(); } else showToast(res.error, 'error'); }
         async function previewInvoice() { const ref = document.getElementById('inv-ref').value; if(!ref) return showToast("Enter Ref", 'error'); showToast("Searching...", 'info'); const res = await post({ action: 'preview-invoice', ref: ref, token: getToken() }); if(res.success) { currentInvData = res.invoice; document.getElementById('invoice-preview').classList.remove('hidden'); document.getElementById('invoice-html').innerHTML = `<div class="flex justify-between border-b pb-4 mb-4"><div><h1 class="text-2xl font-bold text-blue-900">INVOICE</h1><p class="text-xs text-slate-400">DRAFT</p></div><div class="text-right"><h3 class="font-bold">Ngaoyi Cleaning</h3></div></div><div class="mb-6"><p class="text-xs uppercase font-bold text-slate-400">Bill To</p><p class="text-lg font-bold">${res.invoice.customer}</p><p class="text-sm text-slate-500">${res.invoice.email}</p></div><table class="w-full mb-6"><tr class="bg-slate-50"><th class="text-left p-3 text-sm">Service</th><th class="text-right p-3 text-sm">Amount</th></tr><tr><td class="p-3 border-b text-sm">${res.invoice.service}</td><td class="p-3 border-b text-right font-bold text-sm">R ${res.invoice.amount}</td></tr></table><div class="text-right text-xl font-bold text-blue-900">Total: R ${res.invoice.amount}</div>`; document.getElementById('btn-save').classList.remove('hidden'); document.getElementById('btn-send').classList.add('hidden'); } else showToast(res.error, 'error'); }
         async function saveInvoice() { const res = await post({ action: 'save-invoice', invoice: currentInvData, token: getToken() }); if(res.success) { savedInvID = res.invID; document.getElementById('btn-save').classList.add('hidden'); document.getElementById('btn-send').classList.remove('hidden'); showToast(`Saved: ${res.invID}`, 'success'); } }
         async function sendInvoice() { showToast("Sending Email...", 'info'); const res = await post({ action: 'send-invoice', invoice: currentInvData, invID: savedInvID, token: getToken() }); if(res.success) showToast('Email Sent!', 'success'); else showToast(res.error, 'error'); }
+        async function generateEmailReport() { if(!confirm("Send Intelligence Report via Email?")) return; const type = document.getElementById('filter-quarter').value !== 'all' ? 'quarterly' : 'monthly'; showToast("Generating Report...", 'info'); const res = await post({ action: 'generate-report', type: type, token: getToken() }); if(res.success) showToast("Report Sent to Admin Email", 'success'); else showToast(res.error, 'error'); }
 
-        function switchTab(id) { document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active')); document.getElementById('nav-'+id).classList.add('active'); document.querySelectorAll('[id^="section-"]').forEach(el => el.classList.add('hidden-section')); document.getElementById('section-'+id).classList.remove('hidden-section'); document.getElementById('page-title').textContent = id.charAt(0).toUpperCase() + id.slice(1); if(id === 'database') loadTable('Pending Bookings'); if(id === 'prices') loadPrices(); }
+        // HELPERS
+        function switchTab(id) { document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active')); document.getElementById('nav-'+id).classList.add('active'); document.querySelectorAll('[id^="section-"]').forEach(el => el.classList.add('hidden-section')); document.getElementById('section-'+id).classList.remove('hidden-section'); document.getElementById('page-title').textContent = id.charAt(0).toUpperCase() + id.slice(1); if(id === 'database') loadTable('Pending Bookings'); if(id === 'prices') loadPrices(); if(id === 'calendar') loadCalendar(); }
         function showToast(msg, type='info') { const c=document.getElementById('toast-container'); const t=document.createElement('div'); t.className=`toast ${type}`; t.innerHTML=`<i class="fas fa-${type==='success'?'check-circle text-green-500':type==='error'?'exclamation-circle text-red-500':'info-circle text-blue-500'}"></i> <span class="text-sm">${msg}</span>`; c.appendChild(t); setTimeout(()=>t.classList.add('show'),10); setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300)},3000); }
         function toggleNotifPanel() { document.getElementById('notif-panel').classList.toggle('hidden'); }
         function formatCurrency(val) { return 'R ' + val.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}); }
         function getToken() { return sessionStorage.getItem('ngaoyi_admin_token'); }
         async function post(data) { try { return await (await fetch(API_URL, { method: 'POST', body: JSON.stringify(data) })).json(); } catch(e) { return { success: false, error: 'Connection Error' }; } }
+        async function loadCalendar() { const res = await post({ action: 'fetch-calendar', token: getToken() }); if(calendar) calendar.destroy(); calendar = new FullCalendar.Calendar(document.getElementById('calendar'), { initialView: 'dayGridMonth', events: res.events, height: '100%', headerToolbar: { left: 'prev,next today', center: 'title', right: 'dayGridMonth,listWeek' } }); calendar.render(); }
         document.getElementById('bank-form').addEventListener('submit', async (e) => { e.preventDefault(); const data = { action: 'update-bank', token: getToken(), bankName: e.target['bank-name'].value, accNum: e.target['bank-acc'].value, branch: e.target['bank-branch'].value, holder: e.target['bank-holder'].value }; await post(data); showToast('Bank Details Updated', 'success'); });
     </script>
 </body>
