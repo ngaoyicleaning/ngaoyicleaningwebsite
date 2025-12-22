@@ -16,36 +16,36 @@
         .nav-item:hover, .nav-item.active { opacity: 1; background: rgba(255,255,255,0.05); border-left-color: #3b82f6; }
         .hidden-section { display: none; }
         
-        /* Custom Toast Notification */
+        /* Toast Notifications */
         #toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
-        .toast { background: white; border-left: 4px solid #3b82f6; padding: 16px 24px; border-radius: 4px; shadow: 0 4px 6px rgba(0,0,0,0.1); transform: translateX(100%); transition: transform 0.3s ease-out; display: flex; align-items: center; gap: 12px; min-width: 300px; }
+        .toast { background: white; border-left: 4px solid #3b82f6; padding: 16px 24px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transform: translateX(100%); transition: transform 0.3s ease-out; display: flex; align-items: center; gap: 12px; min-width: 300px; }
         .toast.show { transform: translateX(0); }
         .toast.success { border-left-color: #10b981; }
         .toast.error { border-left-color: #ef4444; }
 
-        /* Intelligence Card Styles */
+        /* Intelligence Cards */
         .intel-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; position: relative; overflow: hidden; }
         .intel-card::after { content: ''; position: absolute; top: 0; right: 0; width: 60px; height: 60px; background: linear-gradient(135deg, transparent 50%, rgba(59, 130, 246, 0.1) 50%); border-radius: 0 12px 0 50%; }
         
         /* Yoco Frame */
-        .yoco-frame { width: 100%; height: calc(100vh - 80px); border: none; border-radius: 8px; }
+        .yoco-frame { width: 100%; height: calc(100vh - 120px); border: none; border-radius: 8px; }
     </style>
 </head>
-<body class="h-screen flex overflow-hidden">
+<body class="h-screen flex overflow-hidden text-slate-800">
 
     <div id="toast-container"></div>
 
     <div id="login-screen" class="fixed inset-0 z-50 bg-slate-900 flex items-center justify-center">
         <div class="bg-white p-8 rounded-xl shadow-2xl w-96 text-center">
-            <div class="mb-6 inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 text-blue-600 mb-4">
+            <div class="mb-6 inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 text-blue-600">
                 <i class="fas fa-shield-alt text-2xl"></i>
             </div>
             <h1 class="text-2xl font-bold text-slate-800">Ngaoyi Admin</h1>
-            <p class="text-slate-500 text-sm mb-6">Secure Intelligence Access</p>
+            <p class="text-slate-500 text-sm mb-6">Secure Access</p>
             <form id="login-form" class="space-y-4">
-                <input type="text" id="username" placeholder="Username" class="w-full border border-slate-300 p-3 rounded-lg focus:outline-none focus:border-blue-500 transition">
-                <input type="password" id="password" placeholder="Password" class="w-full border border-slate-300 p-3 rounded-lg focus:outline-none focus:border-blue-500 transition">
-                <button type="submit" class="w-full bg-blue-900 hover:bg-blue-800 text-white py-3 rounded-lg font-bold transition shadow-lg">Access Dashboard</button>
+                <input type="text" id="username" placeholder="Username" class="w-full border border-slate-300 p-3 rounded-lg focus:outline-none focus:border-blue-500">
+                <input type="password" id="password" placeholder="Password" class="w-full border border-slate-300 p-3 rounded-lg focus:outline-none focus:border-blue-500">
+                <button type="submit" class="w-full bg-blue-900 hover:bg-blue-800 text-white py-3 rounded-lg font-bold transition shadow-lg">Login</button>
             </form>
         </div>
     </div>
@@ -55,16 +55,17 @@
             <span class="text-blue-400 mr-2"><i class="fas fa-broom"></i></span> Ngaoyi
         </div>
         <nav class="flex-1 py-6 space-y-2">
-            <a onclick="switchTab('overview')" id="nav-overview" class="nav-item active flex items-center px-6 py-3 text-sm font-medium"><i class="fas fa-home w-6 opacity-70"></i> Overview</a>
-            <a onclick="switchTab('reports')" id="nav-reports" class="nav-item flex items-center px-6 py-3 text-sm font-medium"><i class="fas fa-chart-line w-6 opacity-70"></i> Intelligence</a>
-            <a onclick="switchTab('database')" id="nav-database" class="nav-item flex items-center px-6 py-3 text-sm font-medium"><i class="fas fa-database w-6 opacity-70"></i> Bookings</a>
+            <a onclick="switchTab('overview')" id="nav-overview" class="nav-item active flex items-center px-6 py-3 text-sm font-medium"><i class="fas fa-tachometer-alt w-6 opacity-70"></i> Overview</a>
+            <a onclick="switchTab('intelligence')" id="nav-intelligence" class="nav-item flex items-center px-6 py-3 text-sm font-medium"><i class="fas fa-brain w-6 opacity-70"></i> Intelligence</a>
+            <a onclick="switchTab('database')" id="nav-database" class="nav-item flex items-center px-6 py-3 text-sm font-medium"><i class="fas fa-list w-6 opacity-70"></i> Bookings</a>
+            <a onclick="switchTab('prices')" id="nav-prices" class="nav-item flex items-center px-6 py-3 text-sm font-medium"><i class="fas fa-tags w-6 opacity-70"></i> Price List</a>
             <a onclick="switchTab('calendar')" id="nav-calendar" class="nav-item flex items-center px-6 py-3 text-sm font-medium"><i class="fas fa-calendar-alt w-6 opacity-70"></i> Calendar</a>
             <a onclick="switchTab('invoices')" id="nav-invoices" class="nav-item flex items-center px-6 py-3 text-sm font-medium"><i class="fas fa-file-invoice-dollar w-6 opacity-70"></i> Invoices</a>
             <a onclick="switchTab('yoco')" id="nav-yoco" class="nav-item flex items-center px-6 py-3 text-sm font-medium"><i class="fas fa-credit-card w-6 opacity-70"></i> Yoco Portal</a>
             <a onclick="switchTab('banking')" id="nav-banking" class="nav-item flex items-center px-6 py-3 text-sm font-medium"><i class="fas fa-university w-6 opacity-70"></i> Banking</a>
         </nav>
         <div class="p-6 border-t border-slate-700/50">
-            <button onclick="logout()" class="w-full bg-slate-800 text-slate-300 py-2 rounded text-xs font-bold hover:bg-slate-700 hover:text-white transition">SIGN OUT</button>
+            <button onclick="logout()" class="w-full bg-slate-800 text-slate-300 py-2 rounded text-xs font-bold hover:bg-slate-700 hover:text-white transition">LOGOUT</button>
         </div>
     </aside>
 
@@ -88,7 +89,7 @@
         </header>
 
         <div id="notif-panel" class="hidden absolute top-20 right-8 w-80 bg-white shadow-2xl rounded-xl border border-slate-100 z-50 p-4">
-            <h4 class="font-bold text-slate-700 mb-2 text-sm uppercase tracking-wider border-b pb-2">Action Center</h4>
+            <h4 class="font-bold text-slate-700 mb-2 text-sm uppercase tracking-wider border-b pb-2">Notifications</h4>
             <ul id="notif-list" class="space-y-2 max-h-64 overflow-y-auto">
                 <li class="text-sm text-slate-400 text-center py-4">No new notifications.</li>
             </ul>
@@ -98,45 +99,27 @@
             
             <div id="section-overview" class="space-y-8 animate-fade">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex flex-col justify-between h-32 hover:shadow-md transition">
-                        <div class="flex justify-between items-start">
-                            <div><p class="text-slate-400 text-xs font-bold uppercase tracking-wider">Total Revenue</p><h3 class="text-2xl font-bold text-slate-800 mt-1" id="stat-rev">R 0.00</h3></div>
-                            <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center"><i class="fas fa-wallet"></i></div>
-                        </div>
-                        <div class="w-full bg-slate-100 h-1 rounded-full mt-4"><div class="bg-blue-600 h-1 rounded-full" style="width: 70%"></div></div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition">
+                        <p class="text-slate-400 text-xs font-bold uppercase">Revenue</p>
+                        <h3 class="text-2xl font-bold text-slate-800 mt-1" id="stat-rev">R 0.00</h3>
                     </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex flex-col justify-between h-32 hover:shadow-md transition">
-                        <div class="flex justify-between items-start">
-                            <div><p class="text-slate-400 text-xs font-bold uppercase tracking-wider">Pending Jobs</p><h3 class="text-2xl font-bold text-slate-800 mt-1" id="stat-pending">0</h3></div>
-                            <div class="w-8 h-8 rounded-full bg-orange-50 text-orange-600 flex items-center justify-center"><i class="fas fa-clock"></i></div>
-                        </div>
-                        <div class="w-full bg-slate-100 h-1 rounded-full mt-4"><div class="bg-orange-500 h-1 rounded-full" style="width: 40%"></div></div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition">
+                        <p class="text-slate-400 text-xs font-bold uppercase">Pending</p>
+                        <h3 class="text-2xl font-bold text-slate-800 mt-1" id="stat-pending">0</h3>
                     </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex flex-col justify-between h-32 hover:shadow-md transition">
-                        <div class="flex justify-between items-start">
-                            <div><p class="text-slate-400 text-xs font-bold uppercase tracking-wider">Active Jobs</p><h3 class="text-2xl font-bold text-slate-800 mt-1" id="stat-active">0</h3></div>
-                            <div class="w-8 h-8 rounded-full bg-green-50 text-green-600 flex items-center justify-center"><i class="fas fa-broom"></i></div>
-                        </div>
-                        <div class="w-full bg-slate-100 h-1 rounded-full mt-4"><div class="bg-green-500 h-1 rounded-full" style="width: 60%"></div></div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition">
+                        <p class="text-slate-400 text-xs font-bold uppercase">Active</p>
+                        <h3 class="text-2xl font-bold text-slate-800 mt-1" id="stat-active">0</h3>
                     </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex flex-col justify-between h-32 hover:shadow-md transition">
-                        <div class="flex justify-between items-start">
-                            <div><p class="text-slate-400 text-xs font-bold uppercase tracking-wider">Completed</p><h3 class="text-2xl font-bold text-slate-800 mt-1" id="stat-completed">0</h3></div>
-                            <div class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center"><i class="fas fa-check-circle"></i></div>
-                        </div>
-                        <div class="w-full bg-slate-100 h-1 rounded-full mt-4"><div class="bg-slate-400 h-1 rounded-full" style="width: 85%"></div></div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition">
+                        <p class="text-slate-400 text-xs font-bold uppercase">Completed</p>
+                        <h3 class="text-2xl font-bold text-slate-800 mt-1" id="stat-completed">0</h3>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                        <div class="flex justify-between items-center mb-6">
-                            <h4 class="font-bold text-slate-800">Financial Performance</h4>
-                            <select onchange="updateMainChart(this.value)" class="bg-slate-50 border-none text-xs rounded font-bold text-slate-600 cursor-pointer focus:ring-0">
-                                <option value="all">All Time</option>
-                                <option value="month">This Month</option>
-                            </select>
-                        </div>
+                        <h4 class="font-bold text-slate-800 mb-6">Sales Trend</h4>
                         <div class="h-64"><canvas id="chartSales"></canvas></div>
                     </div>
                     <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
@@ -146,27 +129,28 @@
                 </div>
             </div>
 
-            <div id="section-reports" class="hidden-section space-y-6">
+            <div id="section-intelligence" class="hidden-section space-y-6">
                 <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex flex-wrap gap-4 items-center justify-between">
                     <div class="flex items-center gap-2">
                         <div class="w-8 h-8 bg-purple-100 text-purple-600 rounded flex items-center justify-center"><i class="fas fa-filter"></i></div>
                         <span class="font-bold text-slate-700">Filter Reports</span>
                     </div>
                     <div class="flex gap-2">
-                        <select id="filter-quarter" onchange="filterReports()" class="bg-slate-50 border border-slate-200 rounded px-3 py-2 text-sm font-semibold text-slate-600">
+                        <select id="filter-quarter" onchange="filterReports()" class="bg-slate-50 border border-slate-200 rounded px-3 py-2 text-sm font-semibold text-slate-600 outline-none">
                             <option value="all">All Quarters</option>
                             <option value="1">Q1 (Jan-Mar)</option>
                             <option value="2">Q2 (Apr-Jun)</option>
                             <option value="3">Q3 (Jul-Sep)</option>
                             <option value="4">Q4 (Oct-Dec)</option>
                         </select>
-                        <select id="filter-month" onchange="filterReports()" class="bg-slate-50 border border-slate-200 rounded px-3 py-2 text-sm font-semibold text-slate-600">
+                        <select id="filter-month" onchange="filterReports()" class="bg-slate-50 border border-slate-200 rounded px-3 py-2 text-sm font-semibold text-slate-600 outline-none">
                             <option value="all">All Months</option>
                             <option value="0">January</option><option value="1">February</option><option value="2">March</option>
                             <option value="3">April</option><option value="4">May</option><option value="5">June</option>
                             <option value="6">July</option><option value="7">August</option><option value="8">September</option>
                             <option value="9">October</option><option value="10">November</option><option value="11">December</option>
                         </select>
+                        <button onclick="generateEmailReport()" class="bg-blue-600 text-white px-4 py-2 rounded text-sm font-bold hover:bg-blue-700 transition">Email Report</button>
                     </div>
                 </div>
 
@@ -174,25 +158,25 @@
                     <div class="intel-card">
                         <p class="text-slate-400 text-xs font-bold uppercase">Filtered Revenue</p>
                         <h3 class="text-3xl font-bold text-slate-800 mt-2" id="report-revenue">R 0.00</h3>
-                        <p class="text-green-600 text-xs font-bold mt-2 flex items-center gap-1"><i class="fas fa-arrow-up"></i> Based on selection</p>
+                        <p class="text-green-600 text-xs font-bold mt-2 flex items-center gap-1"><i class="fas fa-arrow-up"></i> Filtered Selection</p>
                     </div>
                     <div class="intel-card">
                         <p class="text-slate-400 text-xs font-bold uppercase">Conversion Rate</p>
                         <h3 class="text-3xl font-bold text-slate-800 mt-2" id="report-conversion">0%</h3>
-                        <p class="text-slate-400 text-xs mt-2">Confirmed vs Pending</p>
+                        <p class="text-slate-400 text-xs mt-2">Active / Total Bookings</p>
                     </div>
                     <div class="intel-card">
-                        <p class="text-slate-400 text-xs font-bold uppercase">Avg Ticket Value</p>
+                        <p class="text-slate-400 text-xs font-bold uppercase">Avg Order Value</p>
                         <h3 class="text-3xl font-bold text-slate-800 mt-2" id="report-avg">R 0.00</h3>
                         <p class="text-slate-400 text-xs mt-2">Revenue / Jobs</p>
                     </div>
                 </div>
 
                 <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
-                    <div class="p-6 border-b border-slate-100"><h4 class="font-bold text-slate-800">Detailed Transaction Log</h4></div>
-                    <div class="overflow-x-auto">
+                    <div class="p-4 border-b border-slate-100 bg-slate-50"><h4 class="font-bold text-slate-700 text-sm uppercase">Filtered Transactions</h4></div>
+                    <div class="overflow-x-auto max-h-96">
                         <table class="w-full text-sm text-left">
-                            <thead class="bg-slate-50 text-slate-500 uppercase text-xs font-bold"><tr><th class="px-6 py-4">Date</th><th class="px-6 py-4">Ref</th><th class="px-6 py-4">Customer</th><th class="px-6 py-4 text-right">Amount</th></tr></thead>
+                            <thead class="bg-white text-slate-500 uppercase text-xs font-bold sticky top-0"><tr><th class="px-6 py-3">Date</th><th class="px-6 py-3 text-right">Amount</th></tr></thead>
                             <tbody id="report-table-body" class="divide-y divide-slate-100 text-slate-600"></tbody>
                         </table>
                     </div>
@@ -203,29 +187,44 @@
                 <div class="bg-white rounded-xl shadow-sm border border-slate-100 h-full flex flex-col p-4">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="font-bold text-lg">Yoco Payments</h3>
-                        <a href="https://portal.yoco.co.za/" target="_blank" class="text-blue-600 text-sm hover:underline">Open in New Tab <i class="fas fa-external-link-alt ml-1"></i></a>
+                        <a href="https://portal.yoco.co.za/" target="_blank" class="text-blue-600 text-sm hover:underline font-bold">Open in New Tab <i class="fas fa-external-link-alt ml-1"></i></a>
                     </div>
-                    <div class="flex-1 bg-slate-100 rounded-lg flex items-center justify-center relative overflow-hidden">
+                    <div class="flex-1 bg-slate-100 rounded-lg relative overflow-hidden">
                         <iframe src="https://portal.yoco.co.za/" class="yoco-frame" title="Yoco Portal"></iframe>
-                        <div class="absolute inset-0 flex flex-col items-center justify-center bg-white z-0 pointer-events-none opacity-0 hover:opacity-100 transition duration-500">
-                            <p class="text-slate-500 mb-4">If Yoco refuses to connect here (Security Policy), click below:</p>
-                            <a href="https://portal.yoco.co.za/" target="_blank" class="bg-blue-600 text-white px-6 py-2 rounded font-bold pointer-events-auto">Launch Yoco</a>
-                        </div>
                     </div>
                 </div>
             </div>
 
             <div id="section-database" class="hidden-section space-y-4">
                 <div class="flex gap-2">
-                    <button onclick="loadTable('Pending Bookings')" class="px-4 py-2 bg-white border rounded shadow-sm text-sm font-bold hover:bg-slate-50 transition text-slate-600">Pending</button>
-                    <button onclick="loadTable('Confirmed Bookings')" class="px-4 py-2 bg-white border rounded shadow-sm text-sm font-bold hover:bg-slate-50 transition text-slate-600">Confirmed</button>
-                    <button onclick="loadTable('Completed Jobs')" class="px-4 py-2 bg-white border rounded shadow-sm text-sm font-bold hover:bg-slate-50 transition text-slate-600">History</button>
+                    <button onclick="loadTable('Pending Bookings')" class="px-4 py-2 bg-white border rounded shadow-sm text-sm font-bold hover:bg-slate-50 text-slate-600">Pending</button>
+                    <button onclick="loadTable('Confirmed Bookings')" class="px-4 py-2 bg-white border rounded shadow-sm text-sm font-bold hover:bg-slate-50 text-slate-600">Confirmed</button>
+                    <button onclick="loadTable('Completed Jobs')" class="px-4 py-2 bg-white border rounded shadow-sm text-sm font-bold hover:bg-slate-50 text-slate-600">History</button>
                 </div>
                 <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
                     <div class="overflow-x-auto max-h-[70vh]">
                         <table class="w-full text-sm text-left">
                             <thead class="bg-slate-50 border-b sticky top-0 text-slate-500 uppercase text-xs font-bold"><tr id="table-head"></tr></thead>
                             <tbody id="table-body" class="divide-y divide-slate-100 text-slate-600"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="section-prices" class="hidden-section">
+                <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+                    <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+                        <h3 class="font-bold text-lg text-slate-800">Current Price List</h3>
+                        <button onclick="loadPrices()" class="text-blue-600 text-sm font-bold hover:underline">Refresh Prices</button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-slate-50 text-slate-500 uppercase text-xs font-bold">
+                                <tr><th class="px-6 py-3">Category</th><th class="px-6 py-3">Item/Size</th><th class="px-6 py-3 text-right">Price</th></tr>
+                            </thead>
+                            <tbody id="price-table-body" class="divide-y divide-slate-100 text-slate-600">
+                                <tr><td colspan="3" class="p-6 text-center text-slate-400">Loading prices...</td></tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -239,16 +238,12 @@
 
             <div id="section-invoices" class="hidden-section">
                 <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-sm border border-slate-100 text-center">
-                    <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-6"><i class="fas fa-file-invoice text-3xl"></i></div>
-                    <h3 class="text-xl font-bold mb-2 text-slate-800">Invoice Generator</h3>
-                    <p class="text-slate-500 mb-6">Create professional invoices for confirmed bookings.</p>
-                    
+                    <h3 class="text-xl font-bold mb-4 text-slate-800">Invoice Generator</h3>
                     <div class="flex gap-2 max-w-md mx-auto">
                         <input type="text" id="inv-ref" placeholder="Booking Ref (e.g. NGY...)" class="flex-1 border border-slate-300 p-3 rounded-lg uppercase font-mono text-center">
-                        <button onclick="previewInvoice()" class="bg-blue-900 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-800 transition shadow">Fetch</button>
+                        <button onclick="previewInvoice()" class="bg-blue-900 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-800 transition">Fetch</button>
                     </div>
                 </div>
-                
                 <div id="invoice-preview" class="hidden mt-8 max-w-3xl mx-auto bg-white p-12 shadow-xl border border-slate-200 rounded-xl relative">
                     <button onclick="document.getElementById('invoice-preview').classList.add('hidden')" class="absolute top-4 right-4 text-slate-300 hover:text-slate-500"><i class="fas fa-times"></i></button>
                     <div id="invoice-html"></div>
@@ -263,12 +258,10 @@
                 <div class="max-w-lg mx-auto bg-white p-8 rounded-xl shadow-sm border border-slate-100">
                     <h3 class="font-bold text-lg mb-6">Banking Details</h3>
                     <form id="bank-form" class="space-y-4">
-                        <div><label class="text-xs font-bold text-slate-500 uppercase">Bank Name</label><input id="bank-name" class="w-full border p-2 rounded bg-slate-50"></div>
-                        <div><label class="text-xs font-bold text-slate-500 uppercase">Account Number</label><input id="bank-acc" class="w-full border p-2 rounded bg-slate-50 font-mono"></div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div><label class="text-xs font-bold text-slate-500 uppercase">Branch Code</label><input id="bank-branch" class="w-full border p-2 rounded bg-slate-50"></div>
-                            <div><label class="text-xs font-bold text-slate-500 uppercase">Account Holder</label><input id="bank-holder" class="w-full border p-2 rounded bg-slate-50"></div>
-                        </div>
+                        <input id="bank-name" placeholder="Bank Name" class="w-full border p-2 rounded bg-slate-50">
+                        <input id="bank-acc" placeholder="Account Number" class="w-full border p-2 rounded bg-slate-50 font-mono">
+                        <input id="bank-branch" placeholder="Branch Code" class="w-full border p-2 rounded bg-slate-50">
+                        <input id="bank-holder" placeholder="Account Holder" class="w-full border p-2 rounded bg-slate-50">
                         <button type="submit" class="w-full bg-blue-900 text-white py-3 rounded font-bold hover:bg-blue-800 transition">Update Settings</button>
                     </form>
                 </div>
@@ -278,17 +271,16 @@
     </main>
 
     <script>
-        // 🔴 API CONFIGURATION (V11)
+        // 🔴 SCRIPT URL
         const API_URL = "https://script.google.com/macros/s/AKfycbyg9MM0sZriynS-haeRWNnZHkZN70C8p2nLAA4bcCtrm38WmnbEMBZUPEhLph5q1LOW/exec";
 
         let salesChart, pkgChart, calendar;
-        let globalHistory = []; 
-        let globalStats = {};
+        let globalHistory = [], globalStats = {};
         let currentInvData = null, savedInvID = null;
 
         // --- AUTH ---
         document.addEventListener('DOMContentLoaded', () => {
-            if(sessionStorage.getItem('ngaoyi_dash_token')) {
+            if(sessionStorage.getItem('ngaoyi_admin_token')) {
                 document.getElementById('login-screen').classList.add('hidden');
                 loadData();
             }
@@ -298,43 +290,39 @@
             e.preventDefault();
             const res = await post({ action: 'login', username: e.target.username.value, password: e.target.password.value });
             if(res.success) {
-                sessionStorage.setItem('ngaoyi_dash_token', res.token);
+                sessionStorage.setItem('ngaoyi_admin_token', res.token);
                 document.getElementById('login-screen').classList.add('hidden');
                 loadData();
             } else showToast(res.error, 'error');
         });
 
-        function logout() { sessionStorage.removeItem('ngaoyi_dash_token'); location.reload(); }
+        function logout() { sessionStorage.removeItem('ngaoyi_admin_token'); location.reload(); }
 
-        // --- CORE DATA ENGINE ---
+        // --- CORE DATA ---
         async function loadData() {
-            showToast("Syncing data...", 'info');
+            showToast("Syncing...", 'info');
             document.getElementById('last-updated').textContent = "Syncing...";
             
             const data = await post({ action: 'fetch-dashboard-data', token: getToken() });
             
             if(data.success) {
                 document.getElementById('last-updated').textContent = "Live";
-                
-                // 1. Stats
                 const s = data.stats;
-                globalStats = s; // Store for calc
+                globalStats = s; // Save for Intelligence calculations
+                globalHistory = data.charts.history; // Save for Filtering
+
+                // Update Stats
                 document.getElementById('stat-rev').textContent = formatCurrency(s.revenue);
                 document.getElementById('stat-pending').textContent = s.pending;
                 document.getElementById('stat-active').textContent = s.active;
                 document.getElementById('stat-completed').textContent = s.completed;
 
-                // 2. Charts History Store
-                globalHistory = data.charts.history; // Array of {date, revenue}
-                
-                // 3. Notifications
+                // Notifications
                 const notifs = data.notifications;
                 const badge = document.getElementById('notif-count');
-                const list = document.getElementById('notif-list');
-                
                 if(notifs.length > 0) {
                     badge.classList.remove('hidden');
-                    list.innerHTML = notifs.map(n => `
+                    document.getElementById('notif-list').innerHTML = notifs.map(n => `
                         <li class="p-3 bg-orange-50 border-l-4 border-orange-400 rounded-r text-sm">
                             <p class="font-bold text-orange-800">${n.title}</p>
                             <p class="text-orange-700">${n.message}</p>
@@ -342,14 +330,16 @@
                     `).join('');
                 } else {
                     badge.classList.add('hidden');
-                    list.innerHTML = '<li class="text-center text-slate-400 text-sm">All caught up!</li>';
+                    document.getElementById('notif-list').innerHTML = '<li class="text-center text-slate-400 text-sm">All caught up!</li>';
                 }
 
-                // 4. Initial Renders
+                // Render Charts
                 renderCharts(data.charts);
-                filterReports(); // Run initial report calculation
                 
-                // 5. Bank Prefill
+                // Run Intelligence Calculation
+                filterReports();
+
+                // Bank
                 if(data.bank) {
                     ['name','acc','branch','holder'].forEach(k => 
                         document.getElementById('bank-'+k).value = data.bank[k==='name'?'bankName':k==='acc'?'accNum':k==='branch'?'branch':'holder']||''
@@ -360,20 +350,19 @@
             }
         }
 
-        // --- INTELLIGENCE REPORTING LOGIC ---
+        // --- INTELLIGENCE LOGIC ---
         function filterReports() {
             const qFilter = document.getElementById('filter-quarter').value;
             const mFilter = document.getElementById('filter-month').value;
             
-            let filteredRev = 0;
-            let filteredJobs = 0;
-            let filteredHistory = [];
+            let filteredRev = 0, filteredJobs = 0;
+            let filteredData = [];
 
-            // Filter logic on globalHistory
+            // Filter History Array
             globalHistory.forEach(item => {
                 const d = new Date(item.date);
-                const month = d.getMonth(); // 0-11
-                const quarter = Math.floor(month / 3) + 1; // 1-4
+                const month = d.getMonth(); 
+                const quarter = Math.floor(month / 3) + 1;
 
                 let match = true;
                 if (qFilter !== 'all' && quarter != qFilter) match = false;
@@ -381,80 +370,90 @@
 
                 if (match) {
                     filteredRev += item.revenue;
-                    filteredJobs++; // Assuming 1 entry per day is aggregated, ideally we want job count per day
-                    filteredHistory.push(item);
+                    filteredJobs++;
+                    filteredData.push(item);
                 }
             });
 
-            // Update Intelligence Cards
+            // Update Intelligence UI
             document.getElementById('report-revenue').textContent = formatCurrency(filteredRev);
             
-            // Calculate Conversion Rate (Simple: Active / (Active+Pending))
-            // Note: This is global conversion, as history doesn't separate status perfectly per date
+            // Conversion Rate: Active / (Active + Pending) * 100
             const total = globalStats.active + globalStats.pending;
             const conversion = total > 0 ? ((globalStats.active / total) * 100).toFixed(1) : 0;
             document.getElementById('report-conversion').textContent = conversion + "%";
 
-            // Avg Ticket
-            const avg = filteredJobs > 0 ? filteredRev / filteredJobs : 0; // This assumes 1 history entry = 1 job (approx)
+            // Avg Order Value (Approx based on history entries)
+            const avg = filteredJobs > 0 ? filteredRev / filteredJobs : 0;
             document.getElementById('report-avg').textContent = formatCurrency(avg);
 
             // Populate Table
             const tbody = document.getElementById('report-table-body');
-            if(filteredHistory.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-400">No data for selected period</td></tr>';
+            if(filteredData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="2" class="p-4 text-center text-slate-400">No data for selected period</td></tr>';
             } else {
-                tbody.innerHTML = filteredHistory.slice().reverse().map(h => `
+                tbody.innerHTML = filteredData.slice().reverse().map(h => `
                     <tr class="hover:bg-slate-50">
                         <td class="px-6 py-4">${h.date}</td>
-                        <td class="px-6 py-4 font-mono text-xs">LOG-${h.date.replace(/-/g,'')}</td>
-                        <td class="px-6 py-4">Daily Aggregation</td>
                         <td class="px-6 py-4 text-right font-bold text-slate-700">R ${h.revenue.toLocaleString()}</td>
                     </tr>
                 `).join('');
             }
         }
 
-        // --- CHARTS ---
+        async function generateEmailReport() {
+            if(!confirm("Send Intelligence Report via Email?")) return;
+            const type = document.getElementById('filter-quarter').value !== 'all' ? 'quarterly' : 'monthly';
+            const res = await post({ action: 'generate-report', type: type, token: getToken() });
+            if(res.success) showToast("Report Sent to Admin Email", 'success');
+            else showToast(res.error, 'error');
+        }
+
+        // --- PRICING TAB ---
+        async function loadPrices() {
+            // Since v10 script doesn't have a 'get-pricing' handler, we try to fetch the 'Pricing' table using fetch-table
+            // If the user has created a 'Pricing' sheet manually as per previous attempts.
+            const res = await post({ action: 'fetch-table', sheetName: 'Pricing' });
+            const tbody = document.getElementById('price-table-body');
+            
+            if(res.success && res.rows.length > 0) {
+                tbody.innerHTML = res.rows.map(r => `
+                    <tr class="hover:bg-slate-50">
+                        <td class="px-6 py-4 font-bold text-slate-700">${r[0] || '-'}</td>
+                        <td class="px-6 py-4">${r[1] || '-'}</td>
+                        <td class="px-6 py-4 text-right font-mono text-blue-600 font-bold">R ${r[2] || '0'}</td>
+                    </tr>
+                `).join('');
+            } else {
+                // Fallback to static if no sheet found, just to show it works
+                tbody.innerHTML = `<tr><td colspan="3" class="p-6 text-center text-slate-400">Pricing Sheet not found in database. <br>Create a 'Pricing' tab in your Google Sheet to manage this.</td></tr>`;
+            }
+        }
+
+        // --- CHARTS & UTILS ---
         function renderCharts(c) {
             if(salesChart) salesChart.destroy();
             salesChart = new Chart(document.getElementById('chartSales'), {
                 type: 'line',
-                data: { 
-                    labels: c.history.map(d => d.date), 
-                    datasets: [{ 
-                        label: 'Revenue', 
-                        data: c.history.map(d => d.revenue), 
-                        borderColor: '#2563eb', 
-                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
-                        fill: true,
-                        tension: 0.4
-                    }] 
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+                data: { labels: c.history.map(d => d.date), datasets: [{ label: 'Revenue', data: c.history.map(d => d.revenue), borderColor: '#2563eb', backgroundColor: 'rgba(37, 99, 235, 0.1)', fill: true, tension: 0.3 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
             });
 
             if(pkgChart) pkgChart.destroy();
             pkgChart = new Chart(document.getElementById('chartPkg'), {
                 type: 'doughnut',
-                data: {
-                    labels: c.pkgLabels,
-                    datasets: [{ data: c.pkgData, backgroundColor: ['#1e3a8a', '#3b82f6', '#93c5fd', '#f59e0b', '#10b981'], borderWidth: 0 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, cutout: '75%', plugins: { legend: { position: 'right' } } }
+                data: { labels: c.pkgLabels, datasets: [{ data: c.pkgData, backgroundColor: ['#1e3a8a', '#3b82f6', '#93c5fd', '#f59e0b', '#10b981'], borderWidth: 0 }] },
+                options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'right' } } }
             });
         }
 
-        // --- TABLES ---
         async function loadTable(sheet) {
             const res = await post({ action: 'fetch-table', sheetName: sheet });
             if(res.success) {
                 const head = document.getElementById('table-head');
                 const body = document.getElementById('table-body');
                 let headers = res.headers;
-                
-                if(sheet === 'Pending Bookings') headers.push('Action');
-                if(sheet === 'Confirmed Bookings') headers.push('Action');
+                if(sheet === 'Pending Bookings' || sheet === 'Confirmed Bookings') headers.push('Action');
                 
                 head.innerHTML = headers.map(h => `<th class="px-6 py-4 whitespace-nowrap">${h}</th>`).join('');
                 
@@ -462,13 +461,11 @@
                     let action = '';
                     if(sheet === 'Pending Bookings') action = `<td class="px-6 py-4"><button onclick="confirmBooking('${r[0]}')" class="bg-green-600 text-white px-3 py-1 rounded text-xs font-bold hover:bg-green-700 shadow-sm transition">Confirm</button></td>`;
                     if(sheet === 'Confirmed Bookings') action = `<td class="px-6 py-4"><button onclick="completeJob('${r[0]}')" class="bg-slate-700 text-white px-3 py-1 rounded text-xs font-bold hover:bg-slate-800 shadow-sm transition">Complete</button></td>`;
-                    
                     return `<tr class="bg-white hover:bg-slate-50 transition border-b border-slate-50">${r.map(c => `<td class="px-6 py-4 whitespace-nowrap overflow-hidden text-ellipsis max-w-xs">${c}</td>`).join('')}${action}</tr>`;
                 }).join('');
             }
         }
 
-        // --- ACTIONS (TOASTS REPLACED ALERTS) ---
         async function confirmBooking(ref) {
             if(!confirm(`Confirm ${ref}?`)) return;
             showToast("Processing...", 'info');
@@ -483,26 +480,14 @@
             if(res.success) { showToast('Job Completed', 'success'); loadTable('Confirmed Bookings'); loadData(); } else showToast(res.error, 'error');
         }
 
-        // --- INVOICES ---
         async function previewInvoice() {
             const ref = document.getElementById('inv-ref').value;
-            if(!ref) return showToast("Enter a reference", 'error');
+            if(!ref) return showToast("Enter Ref", 'error');
             const res = await post({ action: 'preview-invoice', ref: ref, token: getToken() });
             if(res.success) {
                 currentInvData = res.invoice;
                 document.getElementById('invoice-preview').classList.remove('hidden');
-                document.getElementById('invoice-html').innerHTML = `
-                    <div class="flex justify-between border-b pb-4 mb-4">
-                        <div><h1 class="text-2xl font-bold text-blue-900">INVOICE</h1><p class="text-xs text-slate-400">DRAFT</p></div>
-                        <div class="text-right"><h3 class="font-bold">Ngaoyi Cleaning</h3></div>
-                    </div>
-                    <div class="mb-6"><p class="text-xs uppercase font-bold text-slate-400">Bill To</p><p class="text-lg font-bold">${res.invoice.customer}</p><p class="text-sm text-slate-500">${res.invoice.email}</p></div>
-                    <table class="w-full mb-6">
-                        <tr class="bg-slate-50"><th class="text-left p-3 text-sm">Service</th><th class="text-right p-3 text-sm">Amount</th></tr>
-                        <tr><td class="p-3 border-b text-sm">${res.invoice.service}</td><td class="p-3 border-b text-right font-bold text-sm">R ${res.invoice.amount}</td></tr>
-                    </table>
-                    <div class="text-right text-xl font-bold text-blue-900">Total: R ${res.invoice.amount}</div>
-                `;
+                document.getElementById('invoice-html').innerHTML = `<div class="flex justify-between border-b pb-4 mb-4"><div><h1 class="text-2xl font-bold text-blue-900">INVOICE</h1><p class="text-xs text-slate-400">DRAFT</p></div><div class="text-right"><h3 class="font-bold">Ngaoyi Cleaning</h3></div></div><div class="mb-6"><p class="text-xs uppercase font-bold text-slate-400">Bill To</p><p class="text-lg font-bold">${res.invoice.customer}</p><p class="text-sm text-slate-500">${res.invoice.email}</p></div><table class="w-full mb-6"><tr class="bg-slate-50"><th class="text-left p-3 text-sm">Service</th><th class="text-right p-3 text-sm">Amount</th></tr><tr><td class="p-3 border-b text-sm">${res.invoice.service}</td><td class="p-3 border-b text-right font-bold text-sm">R ${res.invoice.amount}</td></tr></table><div class="text-right text-xl font-bold text-blue-900">Total: R ${res.invoice.amount}</div>`;
                 document.getElementById('btn-save').classList.remove('hidden'); document.getElementById('btn-send').classList.add('hidden');
             } else showToast(res.error, 'error');
         }
@@ -525,9 +510,9 @@
             document.querySelectorAll('[id^="section-"]').forEach(el => el.classList.add('hidden-section'));
             document.getElementById('section-'+id).classList.remove('hidden-section');
             document.getElementById('page-title').textContent = id.charAt(0).toUpperCase() + id.slice(1);
-            
             if(id === 'database') loadTable('Pending Bookings');
             if(id === 'calendar') loadCalendar();
+            if(id === 'prices') loadPrices();
         }
 
         function showToast(msg, type = 'info') {
@@ -542,13 +527,9 @@
 
         function toggleNotifPanel() { document.getElementById('notif-panel').classList.toggle('hidden'); }
         function formatCurrency(val) { return 'R ' + val.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}); }
-        function getToken() { return sessionStorage.getItem('ngaoyi_dash_token'); }
-
-        async function post(data) {
-            try { return await (await fetch(API_URL, { method: 'POST', body: JSON.stringify(data) })).json(); }
-            catch(e) { return { success: false, error: 'Connection Error' }; }
-        }
-
+        function getToken() { return sessionStorage.getItem('ngaoyi_admin_token'); }
+        async function post(data) { try { return await (await fetch(API_URL, { method: 'POST', body: JSON.stringify(data) })).json(); } catch(e) { return { success: false, error: 'Connection Error' }; } }
+        
         async function loadCalendar() {
             const res = await post({ action: 'fetch-calendar', token: getToken() });
             if(calendar) calendar.destroy();
