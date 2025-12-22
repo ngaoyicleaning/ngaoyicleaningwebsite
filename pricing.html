@@ -11,12 +11,6 @@
     <style>
         body { font-family: 'Inter', sans-serif; }
         .menu-hidden { display: none; }
-        .loading-skeleton {
-            animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-            background-color: #f1f5f9;
-            border-radius: 0.25rem;
-        }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
     </style>
 </head>
 <body class="font-sans text-slate-800 bg-white">
@@ -56,48 +50,83 @@
             <div class="absolute inset-0 bg-blue-900/20"></div>
             <div class="container mx-auto px-4 text-center relative z-10">
                 <h1 class="text-4xl font-extrabold mb-4 tracking-tight">Simple, Transparent Pricing</h1>
-                <p class="text-lg text-slate-300 max-w-2xl mx-auto">Live rates synced directly from our system. No hidden fees.</p>
+                <p class="text-lg text-slate-300 max-w-2xl mx-auto">No hidden fees. Just professional cleaning.</p>
             </div>
         </section>
 
         <section class="py-16">
             <div class="container mx-auto px-4">
-                <div class="flex justify-between items-end mb-8">
-                    <h2 class="text-2xl font-bold text-slate-800">Standard Cleaning Rates</h2>
-                    <span class="text-xs font-bold text-green-600 bg-green-50 px-3 py-1 rounded-full border border-green-100 flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Live Sync
-                    </span>
-                </div>
+                <h2 class="text-2xl font-bold text-slate-800 mb-8">Service Rates</h2>
                 
                 <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-xl bg-white">
                     <table class="min-w-full text-sm">
                         <thead>
                             <tr class="bg-slate-50 border-b border-slate-200">
-                                <th class="py-4 px-6 text-left font-bold text-slate-500 uppercase text-xs tracking-wider">Service Type</th>
+                                <th class="py-4 px-6 text-left font-bold text-slate-500 uppercase text-xs tracking-wider">Plan Type</th>
                                 <th class="py-4 px-6 text-center font-bold text-slate-500 uppercase text-xs tracking-wider">1-Bed</th>
                                 <th class="py-4 px-6 text-center font-bold text-slate-500 uppercase text-xs tracking-wider">2-Bed</th>
                                 <th class="py-4 px-6 text-center font-bold text-slate-500 uppercase text-xs tracking-wider">3-Bed</th>
                                 <th class="py-4 px-6 text-center font-bold text-slate-500 uppercase text-xs tracking-wider">4-Bed</th>
                             </tr>
                         </thead>
-                        <tbody id="pricing-table-body" class="divide-y divide-slate-100">
-                            <tr>
-                                <td class="p-6"><div class="h-4 w-32 loading-skeleton"></div></td>
-                                <td class="p-6"><div class="h-4 w-16 mx-auto loading-skeleton"></div></td>
-                                <td class="p-6"><div class="h-4 w-16 mx-auto loading-skeleton"></div></td>
-                                <td class="p-6"><div class="h-4 w-16 mx-auto loading-skeleton"></div></td>
-                                <td class="p-6"><div class="h-4 w-16 mx-auto loading-skeleton"></div></td>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr class="hover:bg-slate-50 transition group">
+                                <td class="py-4 px-6">
+                                    <div class="font-bold text-slate-800 text-sm">Weekly Recurring</div>
+                                    <div class="text-xs text-green-600 font-bold group-hover:text-green-700">Best Value</div>
+                                </td>
+                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 240</td>
+                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 320</td>
+                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 380</td>
+                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 440</td>
                             </tr>
-                            <tr>
-                                <td class="p-6"><div class="h-4 w-32 loading-skeleton"></div></td>
-                                <td class="p-6"><div class="h-4 w-16 mx-auto loading-skeleton"></div></td>
-                                <td class="p-6"><div class="h-4 w-16 mx-auto loading-skeleton"></div></td>
-                                <td class="p-6"><div class="h-4 w-16 mx-auto loading-skeleton"></div></td>
-                                <td class="p-6"><div class="h-4 w-16 mx-auto loading-skeleton"></div></td>
+                            
+                            <tr class="hover:bg-slate-50 transition bg-blue-50/50">
+                                <td class="py-4 px-6">
+                                    <div class="font-bold text-slate-800 text-sm">Bi-weekly Recurring</div>
+                                    <div class="text-xs text-blue-600 group-hover:text-blue-700">Most Popular</div>
+                                </td>
+                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 300</td>
+                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 350</td>
+                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 470</td>
+                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 540</td>
+                            </tr>
+
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="py-4 px-6">
+                                    <div class="font-bold text-slate-800 text-sm">Monthly Recurring</div>
+                                </td>
+                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 360</td>
+                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 480</td>
+                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 560</td>
+                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 640</td>
+                            </tr>
+
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="py-4 px-6">
+                                    <div class="font-bold text-slate-800 text-sm">Once-Off / Spring Clean</div>
+                                </td>
+                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 350</td>
+                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 450</td>
+                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 550</td>
+                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 650</td>
+                            </tr>
+
+                            <tr class="hover:bg-slate-50 transition border-l-4 border-l-blue-900 bg-slate-50">
+                                <td class="py-4 px-6">
+                                    <div class="font-bold text-slate-800 text-sm">Deep Cleaning</div>
+                                    <div class="text-xs text-slate-500">Intensive</div>
+                                </td>
+                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-800 font-bold">R 1200</td>
+                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-800 font-bold">R 1750</td>
+                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-800 font-bold">R 2300</td>
+                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-800 font-bold">R 2850</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+                
+                <p class="mt-4 text-xs text-slate-500 text-center">* Office/Commercial Cleaning starts from R600. Contact us for a custom quote.</p>
             </div>
         </section>
 
@@ -105,28 +134,47 @@
             <div class="container mx-auto px-4">
                 <h2 class="text-2xl font-bold text-slate-800 mb-8 text-center">Add-On Services</h2>
                 
-                <div id="addons-container" class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                        <div class="h-10 w-10 rounded-full mb-4 loading-skeleton"></div>
-                        <div class="h-4 w-3/4 mb-2 loading-skeleton"></div>
-                        <div class="h-6 w-1/2 loading-skeleton"></div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition">
+                        <div class="w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-lg"><i class="fas fa-window-maximize"></i></div>
+                        <div><h4 class="font-bold text-slate-800 text-sm">Window Cleaning</h4><p class="text-blue-700 font-bold mt-1">R 150</p></div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition">
+                        <div class="w-12 h-12 rounded-full bg-orange-50 text-orange-600 flex items-center justify-center text-lg"><i class="fas fa-fire-burner"></i></div>
+                        <div><h4 class="font-bold text-slate-800 text-sm">Oven Cleaning</h4><p class="text-blue-700 font-bold mt-1">R 180</p></div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition">
+                        <div class="w-12 h-12 rounded-full bg-cyan-50 text-cyan-600 flex items-center justify-center text-lg"><i class="fas fa-snowflake"></i></div>
+                        <div><h4 class="font-bold text-slate-800 text-sm">Fridge Cleaning</h4><p class="text-blue-700 font-bold mt-1">R 100</p></div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition">
+                        <div class="w-12 h-12 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center text-lg"><i class="fas fa-shirt"></i></div>
+                        <div><h4 class="font-bold text-slate-800 text-sm">Laundry Service</h4><p class="text-blue-700 font-bold mt-1">R 80</p></div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition">
+                        <div class="w-12 h-12 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center text-lg"><i class="fas fa-rug"></i></div>
+                        <div><h4 class="font-bold text-slate-800 text-sm">Carpet Cleaning</h4><p class="text-blue-700 font-bold mt-1">R 100</p></div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition">
+                        <div class="w-12 h-12 rounded-full bg-gray-50 text-gray-600 flex items-center justify-center text-lg"><i class="fas fa-bars"></i></div>
+                        <div><h4 class="font-bold text-slate-800 text-sm">Blind Cleaning</h4><p class="text-blue-700 font-bold mt-1">R 120</p></div>
                     </div>
                 </div>
             </div>
         </section>
 
         <section class="py-16">
-            <div class="container mx-auto px-4 max-w-3xl">
+            <div class="container mx-auto px-4 max-w-4xl">
                 <div class="bg-red-50 border border-red-100 rounded-xl p-8 text-center">
-                    <div class="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4 text-xl">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-red-800 mb-2">Emergency & Weekend Rates</h3>
-                    <p class="text-red-600/80 mb-6">A 50% surcharge applies to bookings made for:</p>
-                    <div class="flex justify-center gap-4 flex-wrap">
-                        <span class="px-4 py-2 bg-white rounded shadow-sm text-sm font-bold text-red-700">Weekends</span>
-                        <span class="px-4 py-2 bg-white rounded shadow-sm text-sm font-bold text-red-700">Public Holidays</span>
-                        <span class="px-4 py-2 bg-white rounded shadow-sm text-sm font-bold text-red-700">After 5PM</span>
+                    <div class="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4 text-xl"><i class="fas fa-bolt"></i></div>
+                    <h3 class="text-xl font-bold text-red-800 mb-2">Emergency Service Rates</h3>
+                    <p class="text-red-600/80 mb-6">Rates for immediate same-day service, weekends, or public holidays.</p>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                        <div class="bg-white p-3 rounded shadow-sm"><p class="text-slate-500 font-bold">1-Bed</p><p class="text-red-700 font-bold">R 525</p></div>
+                        <div class="bg-white p-3 rounded shadow-sm"><p class="text-slate-500 font-bold">2-Bed</p><p class="text-red-700 font-bold">R 675</p></div>
+                        <div class="bg-white p-3 rounded shadow-sm"><p class="text-slate-500 font-bold">3-Bed</p><p class="text-red-700 font-bold">R 825</p></div>
+                        <div class="bg-white p-3 rounded shadow-sm"><p class="text-slate-500 font-bold">4-Bed</p><p class="text-red-700 font-bold">R 975</p></div>
                     </div>
                 </div>
             </div>
@@ -149,118 +197,6 @@
     </footer>
 
     <script>
-        // 🔴 YOUR BACKEND URL
-        const API_URL = "https://script.google.com/macros/s/AKfycbwzpCsuco5PBE5BxaxQi4mXLPjtaUfS1JaHSe3ZXogQWkTK9Gzz3EeR7JDxDLmWg6aTAQ/exec";
-
-        // --- ICONS ---
-        function getIcon(name) {
-            name = name.toLowerCase();
-            if (name.includes('window')) return 'fa-window-maximize';
-            if (name.includes('oven')) return 'fa-fire-burner';
-            if (name.includes('fridge')) return 'fa-snowflake';
-            if (name.includes('laundry')) return 'fa-shirt';
-            if (name.includes('carpet')) return 'fa-rug';
-            return 'fa-plus-circle';
-        }
-
-        // --- FETCH ---
-        document.addEventListener('DOMContentLoaded', async () => {
-            try {
-                // We use POST because your script handles 'get-pricing' in doPost
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ action: 'get-pricing' })
-                });
-                
-                const data = await response.json();
-
-                if (data.success) {
-                    renderPricing(data.pricing);
-                    renderAddons(data.addons);
-                } else {
-                    console.error("API Error:", data.error);
-                    document.getElementById('pricing-table-body').innerHTML = `<tr><td colspan="5" class="p-6 text-center text-red-500">Could not load live pricing.</td></tr>`;
-                }
-            } catch (error) {
-                console.error("Network Error:", error);
-            }
-        });
-
-        // --- RENDER TABLE ---
-        function renderPricing(pricing) {
-            const tbody = document.getElementById('pricing-table-body');
-            tbody.innerHTML = ''; 
-
-            // 1. Helper to safely get price and avoid [object Object]
-            const getPrice = (type, size) => {
-                try {
-                    // Check if category exists
-                    if (!pricing[type]) return '-';
-                    
-                    // Get raw value
-                    const val = pricing[type][size];
-                    
-                    // SAFETY CHECK: If it's undefined, null, or an object, return '-'
-                    if (val === undefined || val === null || typeof val === 'object') return '-';
-                    
-                    return `R ${val}`;
-                } catch(e) { return '-'; }
-            };
-
-            // 2. Define Rows (Must match your Sheet "Type" column exactly)
-            const rows = [
-                { title: 'Weekly Recurring', sub: 'Best Value' },
-                { title: 'Bi-weekly Recurring', sub: 'Popular' },
-                { title: 'Monthly Recurring', sub: 'Maintenance' },
-                { title: 'Once-Off Cleaning', sub: 'Standard' },
-                { title: 'Deep Cleaning', sub: 'Intensive' }
-            ];
-
-            // 3. Build HTML
-            rows.forEach(row => {
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50 transition group";
-                
-                tr.innerHTML = `
-                    <td class="py-4 px-6">
-                        <div class="font-bold text-slate-800 text-sm">${row.title}</div>
-                        <div class="text-xs text-slate-400 group-hover:text-blue-500 transition">${row.sub}</div>
-                    </td>
-                    <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">${getPrice(row.title, '1-Bedroom')}</td>
-                    <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">${getPrice(row.title, '2-Bedroom')}</td>
-                    <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">${getPrice(row.title, '3-Bedroom')}</td>
-                    <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">${getPrice(row.title, '4-Bedroom')}</td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        // --- RENDER ADDONS ---
-        function renderAddons(addons) {
-            const container = document.getElementById('addons-container');
-            container.innerHTML = '';
-
-            if (!addons || addons.length === 0) return;
-
-            addons.forEach(addon => {
-                // Safety check for price here too
-                let displayPrice = (typeof addon.price === 'object') ? '-' : `R ${addon.price}`;
-
-                const div = document.createElement('div');
-                div.className = "bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition flex items-center gap-4";
-                div.innerHTML = `
-                    <div class="w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-lg">
-                        <i class="fas ${getIcon(addon.name)}"></i>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-slate-800 text-sm">${addon.name}</h4>
-                        <p class="text-blue-700 font-bold mt-1">${displayPrice}</p>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-        }
-
         // Mobile Menu
         document.getElementById('mobile-menu-toggle').addEventListener('click', () => {
             document.getElementById('mobile-menu').classList.toggle('hidden');
