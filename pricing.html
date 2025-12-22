@@ -4,100 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cleaning Service Pricing | Ngaoyi Cleaning | Gauteng</title>
-    <meta name="description" content="Transparent pricing for all our cleaning services in Gauteng. View detailed costs for recurring plans, one-off cleaning, deep cleaning, and emergency services.">
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <style>
+        body { font-family: 'Inter', sans-serif; }
         .menu-hidden { display: none; }
         .loading-skeleton {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-            background-color: #e2e8f0;
-            border-radius: 0.5rem;
+            animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            background-color: #f1f5f9;
+            border-radius: 0.25rem;
         }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: .5; }
-        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
     </style>
 </head>
-<body class="font-sans text-gray-700 bg-white">
+<body class="font-sans text-slate-800 bg-white">
     
-    <header class="sticky top-0 z-40 bg-white shadow-md">
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm shadow-sm border-b border-slate-100">
         <nav class="container mx-auto px-4 py-3">
             <div class="flex justify-between items-center">
                 <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 bg-gradient-to-br from-blue-700 to-blue-400 rounded-full overflow-hidden flex items-center justify-center">
-                        <img src="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png" 
-                             alt="Ngaoyi Cleaning Logo" class="w-full h-full object-cover">
-                    </div>
-                    <div>
-                        <h1 class="text-2xl font-bold text-blue-700">Ngaoyi Cleaning</h1>
-                        <p class="text-sm text-gray-600">Professional Cleaning Services</p>
-                    </div>
+                    <img src="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png" 
+                         alt="Ngaoyi Logo" class="w-10 h-10 object-contain">
+                    <span class="text-xl font-bold text-slate-800 tracking-tight">Ngaoyi Cleaning</span>
                 </div>
                 
-                <div class="hidden md:flex items-center space-x-6">
-                    <a href="index.html" class="text-gray-700 hover:text-blue-700 font-medium">Home</a>
-                    <a href="services.html" class="text-gray-700 hover:text-blue-700 font-medium">Services</a>
-                    <a href="pricing.html" class="text-blue-700 font-medium">Pricing</a>
-                    <a href="about.html" class="text-gray-700 hover:text-blue-700 font-medium">About</a>
-                    <a href="booking.html" class="bg-gradient-to-r from-blue-700 to-blue-500 text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg transition-all">Book Now</a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-slate-600 hover:text-blue-700 font-medium text-sm">Home</a>
+                    <a href="services.html" class="text-slate-600 hover:text-blue-700 font-medium text-sm">Services</a>
+                    <a href="pricing.html" class="text-blue-700 font-bold text-sm">Pricing</a>
+                    <a href="booking.html" class="bg-blue-900 text-white px-5 py-2.5 rounded-lg font-bold text-sm hover:bg-blue-800 transition shadow-lg shadow-blue-900/20">Book Now</a>
                 </div>
                 
-                <button id="mobile-menu-toggle" class="md:hidden text-blue-700 text-2xl">
+                <button id="mobile-menu-toggle" class="md:hidden text-slate-800 text-xl">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
             
-            <div id="mobile-menu" class="md:hidden mt-4 space-y-4 hidden">
-                <a href="index.html" class="block text-gray-700 font-medium hover:text-blue-700">Home</a>
-                <a href="services.html" class="block text-gray-700 font-medium hover:text-blue-700">Services</a>
-                <a href="pricing.html" class="block text-blue-700 font-medium">Pricing</a>
-                <a href="about.html" class="block text-gray-700 font-medium hover:text-blue-700">About</a>
-                <a href="booking.html" class="block bg-gradient-to-r from-blue-700 to-blue-500 text-white px-6 py-2 rounded-full font-semibold text-center">Book Now</a>
+            <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4 border-t pt-4">
+                <a href="index.html" class="block py-2 text-slate-600">Home</a>
+                <a href="services.html" class="block py-2 text-slate-600">Services</a>
+                <a href="pricing.html" class="block py-2 text-blue-700 font-bold">Pricing</a>
+                <a href="booking.html" class="block mt-4 bg-blue-900 text-white py-3 text-center rounded font-bold">Book Now</a>
             </div>
         </nav>
     </header>
 
-    <main class="py-8">
-        <section class="bg-gradient-to-r from-blue-700 to-blue-900 text-white py-12">
-            <div class="container mx-auto px-4">
-                <h1 class="text-4xl font-bold text-center mb-4">Transparent Pricing</h1>
-                <p class="text-xl text-center opacity-90 max-w-3xl mx-auto">Real-time pricing synced directly from our system.</p>
+    <main>
+        <section class="bg-slate-900 text-white py-16 relative overflow-hidden">
+            <div class="absolute inset-0 bg-blue-900/20"></div>
+            <div class="container mx-auto px-4 text-center relative z-10">
+                <h1 class="text-4xl font-extrabold mb-4 tracking-tight">Simple, Transparent Pricing</h1>
+                <p class="text-lg text-slate-300 max-w-2xl mx-auto">Live rates synced directly from our system. No hidden fees.</p>
             </div>
         </section>
 
         <section class="py-16">
             <div class="container mx-auto px-4">
-                <h2 class="text-3xl font-bold text-blue-700 mb-12 text-center">Service Comparison</h2>
+                <div class="flex justify-between items-end mb-8">
+                    <h2 class="text-2xl font-bold text-slate-800">Standard Cleaning Rates</h2>
+                    <span class="text-xs font-bold text-green-600 bg-green-50 px-3 py-1 rounded-full border border-green-100 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Live Sync
+                    </span>
+                </div>
                 
-                <div class="overflow-x-auto">
-                    <table class="min-w-full bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-xl bg-white">
+                    <table class="min-w-full text-sm">
                         <thead>
-                            <tr class="bg-blue-700 text-white">
-                                <th class="py-4 px-6 text-left w-1/5">Service Type</th>
-                                <th class="py-4 px-6 text-left w-1/5">1-Bedroom</th>
-                                <th class="py-4 px-6 text-left w-1/5">2-Bedroom</th>
-                                <th class="py-4 px-6 text-left w-1/5">3-Bedroom</th>
-                                <th class="py-4 px-6 text-left w-1/5">4-Bedroom</th>
+                            <tr class="bg-slate-50 border-b border-slate-200">
+                                <th class="py-4 px-6 text-left font-bold text-slate-500 uppercase text-xs tracking-wider">Service Type</th>
+                                <th class="py-4 px-6 text-center font-bold text-slate-500 uppercase text-xs tracking-wider">1-Bed</th>
+                                <th class="py-4 px-6 text-center font-bold text-slate-500 uppercase text-xs tracking-wider">2-Bed</th>
+                                <th class="py-4 px-6 text-center font-bold text-slate-500 uppercase text-xs tracking-wider">3-Bed</th>
+                                <th class="py-4 px-6 text-center font-bold text-slate-500 uppercase text-xs tracking-wider">4-Bed</th>
                             </tr>
                         </thead>
-                        <tbody id="pricing-table-body" class="divide-y divide-gray-200">
+                        <tbody id="pricing-table-body" class="divide-y divide-slate-100">
                             <tr>
-                                <td class="p-6"><div class="h-6 w-24 loading-skeleton"></div></td>
-                                <td class="p-6"><div class="h-6 w-16 loading-skeleton"></div></td>
-                                <td class="p-6"><div class="h-6 w-16 loading-skeleton"></div></td>
-                                <td class="p-6"><div class="h-6 w-16 loading-skeleton"></div></td>
-                                <td class="p-6"><div class="h-6 w-16 loading-skeleton"></div></td>
+                                <td class="p-6"><div class="h-4 w-32 loading-skeleton"></div></td>
+                                <td class="p-6"><div class="h-4 w-16 mx-auto loading-skeleton"></div></td>
+                                <td class="p-6"><div class="h-4 w-16 mx-auto loading-skeleton"></div></td>
+                                <td class="p-6"><div class="h-4 w-16 mx-auto loading-skeleton"></div></td>
+                                <td class="p-6"><div class="h-4 w-16 mx-auto loading-skeleton"></div></td>
                             </tr>
                             <tr>
-                                <td class="p-6"><div class="h-6 w-24 loading-skeleton"></div></td>
-                                <td class="p-6"><div class="h-6 w-16 loading-skeleton"></div></td>
-                                <td class="p-6"><div class="h-6 w-16 loading-skeleton"></div></td>
-                                <td class="p-6"><div class="h-6 w-16 loading-skeleton"></div></td>
-                                <td class="p-6"><div class="h-6 w-16 loading-skeleton"></div></td>
+                                <td class="p-6"><div class="h-4 w-32 loading-skeleton"></div></td>
+                                <td class="p-6"><div class="h-4 w-16 mx-auto loading-skeleton"></div></td>
+                                <td class="p-6"><div class="h-4 w-16 mx-auto loading-skeleton"></div></td>
+                                <td class="p-6"><div class="h-4 w-16 mx-auto loading-skeleton"></div></td>
+                                <td class="p-6"><div class="h-4 w-16 mx-auto loading-skeleton"></div></td>
                             </tr>
                         </tbody>
                     </table>
@@ -105,129 +101,72 @@
             </div>
         </section>
 
-        <section class="py-16 bg-gray-50">
+        <section class="py-16 bg-slate-50">
             <div class="container mx-auto px-4">
-                <h2 class="text-3xl font-bold text-blue-700 mb-12 text-center">Add-On Services</h2>
+                <h2 class="text-2xl font-bold text-slate-800 mb-8 text-center">Add-On Services</h2>
                 
                 <div id="addons-container" class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="bg-white p-6 rounded-xl shadow border border-gray-100">
-                        <div class="h-12 w-12 rounded-full mb-4 loading-skeleton"></div>
-                        <div class="h-6 w-3/4 mb-2 loading-skeleton"></div>
-                        <div class="h-4 w-full mb-4 loading-skeleton"></div>
-                        <div class="h-8 w-1/2 loading-skeleton"></div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                        <div class="h-10 w-10 rounded-full mb-4 loading-skeleton"></div>
+                        <div class="h-4 w-3/4 mb-2 loading-skeleton"></div>
+                        <div class="h-6 w-1/2 loading-skeleton"></div>
                     </div>
                 </div>
             </div>
         </section>
 
         <section class="py-16">
-            <div class="container mx-auto px-4">
-                <h2 class="text-3xl font-bold text-blue-700 mb-8 text-center">Emergency & Weekend Services</h2>
-                
-                <div class="max-w-2xl mx-auto">
-                    <div class="bg-red-50 border border-red-200 rounded-xl p-6 mb-8">
-                        <div class="flex items-center mb-4">
-                            <div class="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center mr-4">
-                                <i class="fas fa-exclamation-triangle text-white text-xl"></i>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-red-700">50% Surcharge Applies</h3>
-                                <p class="text-red-600">For bookings outside normal business hours</p>
-                            </div>
-                        </div>
-                        
-                        <div class="space-y-3">
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-700">Weekends (Sat & Sun)</span>
-                                <span class="font-bold text-red-600">+50%</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-700">After Hours (After 5PM)</span>
-                                <span class="font-bold text-red-600">+50%</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-700">Public Holidays</span>
-                                <span class="font-bold text-red-600">+50%</span>
-                            </div>
-                        </div>
+            <div class="container mx-auto px-4 max-w-3xl">
+                <div class="bg-red-50 border border-red-100 rounded-xl p-8 text-center">
+                    <div class="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4 text-xl">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-red-800 mb-2">Emergency & Weekend Rates</h3>
+                    <p class="text-red-600/80 mb-6">A 50% surcharge applies to bookings made for:</p>
+                    <div class="flex justify-center gap-4 flex-wrap">
+                        <span class="px-4 py-2 bg-white rounded shadow-sm text-sm font-bold text-red-700">Weekends</span>
+                        <span class="px-4 py-2 bg-white rounded shadow-sm text-sm font-bold text-red-700">Public Holidays</span>
+                        <span class="px-4 py-2 bg-white rounded shadow-sm text-sm font-bold text-red-700">After 5PM</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="py-16 bg-gradient-to-r from-blue-700 to-blue-900 text-white">
-            <div class="container mx-auto px-4 text-center">
-                <h2 class="text-3xl font-bold mb-6">Ready to Get Started?</h2>
-                <p class="text-xl mb-8 opacity-90 max-w-2xl mx-auto">Book online now or contact us for a personalized quote.</p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="booking.html" class="bg-white text-blue-700 px-8 py-3 rounded-full font-semibold hover:shadow-xl transition-all duration-300">
-                        Book Online Now
-                    </a>
-                    <a href="tel:+27707643709" class="bg-transparent border-2 border-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-700 transition-all duration-300">
-                        <i class="fas fa-phone mr-2"></i>Call: 070 764 3709
-                    </a>
-                </div>
+        <section class="py-20 bg-blue-900 text-white text-center">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold mb-6">Ready to book?</h2>
+                <a href="booking.html" class="inline-block bg-white text-blue-900 px-8 py-4 rounded-xl font-bold hover:bg-blue-50 transition shadow-xl transform hover:-translate-y-1">
+                    Book Service Now
+                </a>
             </div>
         </section>
     </main>
 
-    <footer class="bg-black text-white py-12">
-        <div class="container mx-auto px-4">
-            <div class="grid md:grid-cols-4 gap-8 mb-8">
-                <div>
-                    <h3 class="text-xl font-bold text-blue-400 mb-4">Ngaoyi Cleaning</h3>
-                    <p class="text-gray-400 mb-4">Transparent pricing for quality cleaning.</p>
-                </div>
-                <div>
-                    <h4 class="font-semibold text-white mb-4">Services</h4>
-                    <ul class="space-y-2">
-                        <li><a href="services.html" class="text-gray-400 hover:text-blue-400">Recurring Plans</a></li>
-                        <li><a href="services.html" class="text-gray-400 hover:text-blue-400">Once-Off Cleaning</a></li>
-                        <li><a href="services.html" class="text-gray-400 hover:text-blue-400">Deep Cleaning</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-semibold text-white mb-4">Contact</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><i class="fas fa-phone mr-2 text-blue-400"></i>070 764 3709</li>
-                        <li><i class="fas fa-envelope mr-2 text-blue-400"></i>ngaoyicleaning@gmail.com</li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-semibold text-white mb-4">Business Info</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li>Fully Insured</li>
-                        <li>Vetted Cleaners</li>
-                        <li>POPIA Compliant</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="border-t border-gray-800 pt-8 text-center text-gray-500">
-                <p>&copy; 2024 Ngaoyi Cleaning. <a href="privacy.html" class="hover:text-blue-400">Privacy Policy</a></p>
-            </div>
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2024 Ngaoyi Cleaning. All rights reserved.</p>
         </div>
     </footer>
 
     <script>
-        // 🔴 PASTE YOUR EXACT SCRIPT URL HERE (From v11 Deployment)
+        // 🔴 YOUR BACKEND URL
         const API_URL = "https://script.google.com/macros/s/AKfycbwzpCsuco5PBE5BxaxQi4mXLPjtaUfS1JaHSe3ZXogQWkTK9Gzz3EeR7JDxDLmWg6aTAQ/exec";
 
-        // --- ICONS MAP ---
-        function getIconForService(name) {
+        // --- ICONS ---
+        function getIcon(name) {
             name = name.toLowerCase();
             if (name.includes('window')) return 'fa-window-maximize';
-            if (name.includes('oven')) return 'fa-fire';
+            if (name.includes('oven')) return 'fa-fire-burner';
             if (name.includes('fridge')) return 'fa-snowflake';
-            if (name.includes('laundry') || name.includes('wash')) return 'fa-tshirt';
-            if (name.includes('carpet')) return 'fa-scroll';
-            if (name.includes('blind')) return 'fa-blinds'; // Assuming FA6 or fallback
-            return 'fa-broom'; // Default
+            if (name.includes('laundry')) return 'fa-shirt';
+            if (name.includes('carpet')) return 'fa-rug';
+            return 'fa-plus-circle';
         }
 
-        // --- FETCH DATA ---
+        // --- FETCH ---
         document.addEventListener('DOMContentLoaded', async () => {
             try {
-                // Use POST like the dashboard to ensure consistency
+                // We use POST because your script handles 'get-pricing' in doPost
                 const response = await fetch(API_URL, {
                     method: 'POST',
                     body: JSON.stringify({ action: 'get-pricing' })
@@ -236,53 +175,61 @@
                 const data = await response.json();
 
                 if (data.success) {
-                    renderPricingTable(data.pricing);
+                    renderPricing(data.pricing);
                     renderAddons(data.addons);
                 } else {
                     console.error("API Error:", data.error);
-                    showErrorState();
+                    document.getElementById('pricing-table-body').innerHTML = `<tr><td colspan="5" class="p-6 text-center text-red-500">Could not load live pricing.</td></tr>`;
                 }
             } catch (error) {
                 console.error("Network Error:", error);
-                showErrorState();
             }
         });
 
-        // --- RENDER MAIN TABLE ---
-        function renderPricingTable(pricing) {
+        // --- RENDER TABLE ---
+        function renderPricing(pricing) {
             const tbody = document.getElementById('pricing-table-body');
-            tbody.innerHTML = ''; // Clear skeleton
+            tbody.innerHTML = ''; 
 
-            // Helper to get price safely
+            // 1. Helper to safely get price and avoid [object Object]
             const getPrice = (type, size) => {
-                if (pricing[type] && pricing[type][size]) return `R ${pricing[type][size]}`;
-                return '-';
+                try {
+                    // Check if category exists
+                    if (!pricing[type]) return '-';
+                    
+                    // Get raw value
+                    const val = pricing[type][size];
+                    
+                    // SAFETY CHECK: If it's undefined, null, or an object, return '-'
+                    if (val === undefined || val === null || typeof val === 'object') return '-';
+                    
+                    return `R ${val}`;
+                } catch(e) { return '-'; }
             };
 
-            // Define rows exactly as per your request structure
-            // Keys match the 'Type' column in your sheet exactly
+            // 2. Define Rows (Must match your Sheet "Type" column exactly)
             const rows = [
-                { title: 'Weekly Recurring', subtitle: 'Regular Maintenance' },
-                { title: 'Bi-weekly Recurring', subtitle: 'Twice a Month' },
-                { title: 'Monthly Recurring', subtitle: 'Once a Month' },
-                { title: 'Once-Off Cleaning', subtitle: 'Standard Deep Clean' },
-                { title: 'Deep Cleaning', subtitle: 'Intensive Spring Clean' }
+                { title: 'Weekly Recurring', sub: 'Best Value' },
+                { title: 'Bi-weekly Recurring', sub: 'Popular' },
+                { title: 'Monthly Recurring', sub: 'Maintenance' },
+                { title: 'Once-Off Cleaning', sub: 'Standard' },
+                { title: 'Deep Cleaning', sub: 'Intensive' }
             ];
 
-            rows.forEach((row, index) => {
-                const isEven = index % 2 !== 0; 
+            // 3. Build HTML
+            rows.forEach(row => {
                 const tr = document.createElement('tr');
-                tr.className = `hover:bg-gray-50 ${isEven ? 'bg-blue-50' : ''}`;
-
+                tr.className = "hover:bg-slate-50 transition group";
+                
                 tr.innerHTML = `
                     <td class="py-4 px-6">
-                        <div class="font-semibold text-blue-700">${row.title}</div>
-                        <div class="text-sm text-gray-500">${row.subtitle}</div>
+                        <div class="font-bold text-slate-800 text-sm">${row.title}</div>
+                        <div class="text-xs text-slate-400 group-hover:text-blue-500 transition">${row.sub}</div>
                     </td>
-                    <td class="py-4 px-6 font-bold text-blue-700">${getPrice(row.title, '1-Bedroom')}</td>
-                    <td class="py-4 px-6 font-bold text-blue-700">${getPrice(row.title, '2-Bedroom')}</td>
-                    <td class="py-4 px-6 font-bold text-blue-700">${getPrice(row.title, '3-Bedroom')}</td>
-                    <td class="py-4 px-6 font-bold text-blue-700">${getPrice(row.title, '4-Bedroom')}</td>
+                    <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">${getPrice(row.title, '1-Bedroom')}</td>
+                    <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">${getPrice(row.title, '2-Bedroom')}</td>
+                    <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">${getPrice(row.title, '3-Bedroom')}</td>
+                    <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">${getPrice(row.title, '4-Bedroom')}</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -296,37 +243,27 @@
             if (!addons || addons.length === 0) return;
 
             addons.forEach(addon => {
-                const iconClass = getIconForService(addon.name);
-                
-                const card = document.createElement('div');
-                card.className = "bg-white p-6 rounded-xl shadow border border-gray-100 hover:shadow-md transition-shadow";
-                card.innerHTML = `
-                    <div class="w-12 h-12 bg-blue-700 rounded-full flex items-center justify-center mb-4">
-                        <i class="fas ${iconClass} text-white"></i>
+                // Safety check for price here too
+                let displayPrice = (typeof addon.price === 'object') ? '-' : `R ${addon.price}`;
+
+                const div = document.createElement('div');
+                div.className = "bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition flex items-center gap-4";
+                div.innerHTML = `
+                    <div class="w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-lg">
+                        <i class="fas ${getIcon(addon.name)}"></i>
                     </div>
-                    <h3 class="text-lg font-semibold text-blue-700 mb-2">${addon.name}</h3>
-                    <p class="text-gray-600 mb-4">Professional Add-on Service</p>
-                    <div class="text-blue-700 font-bold text-xl">R ${addon.price}</div>
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-sm">${addon.name}</h4>
+                        <p class="text-blue-700 font-bold mt-1">${displayPrice}</p>
+                    </div>
                 `;
-                container.appendChild(card);
+                container.appendChild(div);
             });
         }
 
-        function showErrorState() {
-            // Optional: Show fallback hardcoded data here if API fails
-            console.log("Showing fallback...");
-        }
-
-        // Mobile menu toggle
-        document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
-            const menu = document.getElementById('mobile-menu');
-            const icon = this.querySelector('i');
-            menu.classList.toggle('hidden');
-            if (menu.classList.contains('hidden')) {
-                icon.classList.replace('fa-times', 'fa-bars');
-            } else {
-                icon.classList.replace('fa-bars', 'fa-times');
-            }
+        // Mobile Menu
+        document.getElementById('mobile-menu-toggle').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
         });
     </script>
 </body>
