@@ -11,6 +11,9 @@
     <style>
         body { font-family: 'Inter', sans-serif; }
         .menu-hidden { display: none; }
+        /* Simple spinner for loading state */
+        .spinner { border: 3px solid rgba(0, 59, 111, 0.1); border-top: 3px solid #003b6f; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; margin: 0 auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="font-sans text-slate-800 bg-white">
@@ -56,77 +59,37 @@
 
         <section class="py-16">
             <div class="container mx-auto px-4">
-                <h2 class="text-2xl font-bold text-slate-800 mb-8">Service Rates</h2>
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl font-bold text-slate-800">Service Rates</h2>
+                    <div id="sync-status" class="text-sm text-gray-500 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-gray-300"></span> Loading live prices...
+                    </div>
+                </div>
                 
-                <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-xl bg-white">
+                <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-xl bg-white relative min-h-[300px]">
+                    <div id="loading-overlay" class="absolute inset-0 bg-white/80 z-10 flex items-center justify-center">
+                        <div class="text-center">
+                            <div class="spinner mb-2"></div>
+                            <p class="text-sm text-primary font-medium">Syncing latest prices...</p>
+                        </div>
+                    </div>
+
                     <table class="min-w-full text-sm">
                         <thead>
                             <tr class="bg-slate-50 border-b border-slate-200">
-                                <th class="py-4 px-6 text-left font-bold text-slate-500 uppercase text-xs tracking-wider">Plan Type</th>
+                                <th class="py-4 px-6 text-left font-bold text-slate-500 uppercase text-xs tracking-wider w-1/4">Plan Type</th>
                                 <th class="py-4 px-6 text-center font-bold text-slate-500 uppercase text-xs tracking-wider">1-Bed</th>
                                 <th class="py-4 px-6 text-center font-bold text-slate-500 uppercase text-xs tracking-wider">2-Bed</th>
                                 <th class="py-4 px-6 text-center font-bold text-slate-500 uppercase text-xs tracking-wider">3-Bed</th>
                                 <th class="py-4 px-6 text-center font-bold text-slate-500 uppercase text-xs tracking-wider">4-Bed</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100">
-                            <tr class="hover:bg-slate-50 transition group">
-                                <td class="py-4 px-6">
-                                    <div class="font-bold text-slate-800 text-sm">Weekly Recurring</div>
-                                    <div class="text-xs text-green-600 font-bold group-hover:text-green-700">Best Value</div>
-                                </td>
-                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 240</td>
-                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 320</td>
-                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 380</td>
-                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 440</td>
-                            </tr>
-                            
-                            <tr class="hover:bg-slate-50 transition bg-blue-50/50">
-                                <td class="py-4 px-6">
-                                    <div class="font-bold text-slate-800 text-sm">Bi-weekly Recurring</div>
-                                    <div class="text-xs text-blue-600 group-hover:text-blue-700">Most Popular</div>
-                                </td>
-                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 300</td>
-                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 350</td>
-                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 470</td>
-                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 540</td>
-                            </tr>
-
-                            <tr class="hover:bg-slate-50 transition">
-                                <td class="py-4 px-6">
-                                    <div class="font-bold text-slate-800 text-sm">Monthly Recurring</div>
-                                </td>
-                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 360</td>
-                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 480</td>
-                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 560</td>
-                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 640</td>
-                            </tr>
-
-                            <tr class="hover:bg-slate-50 transition">
-                                <td class="py-4 px-6">
-                                    <div class="font-bold text-slate-800 text-sm">Once-Off / Spring Clean</div>
-                                </td>
-                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 350</td>
-                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 450</td>
-                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 550</td>
-                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-600">R 650</td>
-                            </tr>
-
-                            <tr class="hover:bg-slate-50 transition border-l-4 border-l-blue-900 bg-slate-50">
-                                <td class="py-4 px-6">
-                                    <div class="font-bold text-slate-800 text-sm">Deep Cleaning</div>
-                                    <div class="text-xs text-slate-500">Intensive</div>
-                                </td>
-                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-800 font-bold">R 1200</td>
-                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-800 font-bold">R 1750</td>
-                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-800 font-bold">R 2300</td>
-                                <td class="py-4 px-6 text-center font-mono text-sm text-slate-800 font-bold">R 2850</td>
-                            </tr>
-                        </tbody>
+                        <tbody id="pricing-table-body" class="divide-y divide-slate-100">
+                            </tbody>
                     </table>
                 </div>
                 
-                <p class="mt-4 text-xs text-slate-500 text-center">* Office/Commercial Cleaning starts from R600. Contact us for a custom quote.</p>
+                <p class="mt-4 text-xs text-slate-500 text-center">* Office/Commercial Cleaning starts from <span id="office-start-price">R600</span>. Contact us for a custom quote.</p>
             </div>
         </section>
 
@@ -134,48 +97,22 @@
             <div class="container mx-auto px-4">
                 <h2 class="text-2xl font-bold text-slate-800 mb-8 text-center">Add-On Services</h2>
                 
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition">
-                        <div class="w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-lg"><i class="fas fa-window-maximize"></i></div>
-                        <div><h4 class="font-bold text-slate-800 text-sm">Window Cleaning</h4><p class="text-blue-700 font-bold mt-1">R 150</p></div>
+                <div id="addons-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition">
-                        <div class="w-12 h-12 rounded-full bg-orange-50 text-orange-600 flex items-center justify-center text-lg"><i class="fas fa-fire-burner"></i></div>
-                        <div><h4 class="font-bold text-slate-800 text-sm">Oven Cleaning</h4><p class="text-blue-700 font-bold mt-1">R 180</p></div>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition">
-                        <div class="w-12 h-12 rounded-full bg-cyan-50 text-cyan-600 flex items-center justify-center text-lg"><i class="fas fa-snowflake"></i></div>
-                        <div><h4 class="font-bold text-slate-800 text-sm">Fridge Cleaning</h4><p class="text-blue-700 font-bold mt-1">R 100</p></div>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition">
-                        <div class="w-12 h-12 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center text-lg"><i class="fas fa-shirt"></i></div>
-                        <div><h4 class="font-bold text-slate-800 text-sm">Laundry Service</h4><p class="text-blue-700 font-bold mt-1">R 80</p></div>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition">
-                        <div class="w-12 h-12 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center text-lg"><i class="fas fa-rug"></i></div>
-                        <div><h4 class="font-bold text-slate-800 text-sm">Carpet Cleaning</h4><p class="text-blue-700 font-bold mt-1">R 100</p></div>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition">
-                        <div class="w-12 h-12 rounded-full bg-gray-50 text-gray-600 flex items-center justify-center text-lg"><i class="fas fa-bars"></i></div>
-                        <div><h4 class="font-bold text-slate-800 text-sm">Blind Cleaning</h4><p class="text-blue-700 font-bold mt-1">R 120</p></div>
-                    </div>
-                </div>
             </div>
         </section>
 
         <section class="py-16">
             <div class="container mx-auto px-4 max-w-4xl">
                 <div class="bg-red-50 border border-red-100 rounded-xl p-8 text-center">
-                    <div class="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4 text-xl"><i class="fas fa-bolt"></i></div>
+                    <div class="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4 text-xl">
+                        <i class="fas fa-bolt"></i>
+                    </div>
                     <h3 class="text-xl font-bold text-red-800 mb-2">Emergency Service Rates</h3>
                     <p class="text-red-600/80 mb-6">Rates for immediate same-day service, weekends, or public holidays.</p>
                     
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                        <div class="bg-white p-3 rounded shadow-sm"><p class="text-slate-500 font-bold">1-Bed</p><p class="text-red-700 font-bold">R 525</p></div>
-                        <div class="bg-white p-3 rounded shadow-sm"><p class="text-slate-500 font-bold">2-Bed</p><p class="text-red-700 font-bold">R 675</p></div>
-                        <div class="bg-white p-3 rounded shadow-sm"><p class="text-slate-500 font-bold">3-Bed</p><p class="text-red-700 font-bold">R 825</p></div>
-                        <div class="bg-white p-3 rounded shadow-sm"><p class="text-slate-500 font-bold">4-Bed</p><p class="text-red-700 font-bold">R 975</p></div>
-                    </div>
+                    <div id="emergency-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                        </div>
                 </div>
             </div>
         </section>
@@ -197,10 +134,193 @@
     </footer>
 
     <script>
+        // 🔴 PASTE YOUR API URL HERE
+        const API_URL = "https://script.google.com/macros/s/AKfycbzQZo_rLSS86ZwuioQzdQek621SZh5vlrphB94Kql2nFVu5o_X7-p2lFr4UEHku_zgSqw/exec";
+
         // Mobile Menu
         document.getElementById('mobile-menu-toggle').addEventListener('click', () => {
             document.getElementById('mobile-menu').classList.toggle('hidden');
         });
+
+        // --- DYNAMIC PRICING LOGIC ---
+        document.addEventListener('DOMContentLoaded', async () => {
+            await fetchAndRenderPrices();
+        });
+
+        async function fetchAndRenderPrices() {
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'get-pricing' })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    renderMainTable(data.pricing);
+                    renderAddons(data.addons);
+                    renderEmergency(data.pricing);
+                    
+                    // Update status indicator
+                    const statusEl = document.getElementById('sync-status');
+                    statusEl.innerHTML = '<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Live Prices';
+                    statusEl.classList.add('text-green-700');
+                    
+                    // Hide loader
+                    document.getElementById('loading-overlay').classList.add('hidden');
+                } else {
+                    console.error("API Error:", data.error);
+                    showFallback();
+                }
+            } catch (e) {
+                console.error("Network Error:", e);
+                showFallback();
+            }
+        }
+
+        function renderMainTable(pricing) {
+            const tbody = document.getElementById('pricing-table-body');
+            tbody.innerHTML = '';
+
+            const services = [
+                { key: 'Weekly Recurring', label: 'Weekly Recurring', sub: 'Best Value', subColor: 'text-green-600' },
+                { key: 'Bi-weekly Recurring', label: 'Bi-weekly Recurring', sub: 'Most Popular', subColor: 'text-blue-600', rowClass: 'bg-blue-50/50' },
+                { key: 'Monthly Recurring', label: 'Monthly Recurring' },
+                { key: 'Once-Off Cleaning', label: 'Once-Off / Spring Clean' },
+                { key: 'Deep Cleaning', label: 'Deep Cleaning', sub: 'Intensive', rowClass: 'border-l-4 border-l-blue-900 bg-slate-50' }
+            ];
+
+            const sizes = ['1-Bedroom', '2-Bedroom', '3-Bedroom', '4-Bedroom'];
+
+            services.forEach(svc => {
+                const tr = document.createElement('tr');
+                tr.className = `hover:bg-slate-50 transition group ${svc.rowClass || ''}`;
+                
+                // Name Column
+                let nameHtml = `<div class="font-bold text-slate-800 text-sm">${svc.label}</div>`;
+                if(svc.sub) {
+                    nameHtml += `<div class="text-xs ${svc.subColor || 'text-slate-500'} font-bold group-hover:underline">${svc.sub}</div>`;
+                }
+                
+                let cells = `<td class="py-4 px-6">${nameHtml}</td>`;
+
+                // Price Columns
+                sizes.forEach(size => {
+                    let price = '-';
+                    if (pricing[svc.key] && pricing[svc.key][size]) {
+                        // For display on pricing page, we generally show the Base (Per Visit) price
+                        // Backend v18 returns: { base: X, full: Y, material: Z }
+                        // For recurring, 'base' is per visit. For once-off, 'base' is total.
+                        // This matches standard pricing page expectations.
+                        price = `R ${pricing[svc.key][size].base}`; 
+                    }
+                    
+                    let fontClass = svc.key.includes('Deep') ? 'text-slate-800 font-bold' : 'text-slate-600';
+                    cells += `<td class="py-4 px-6 text-center font-mono text-sm ${fontClass}">${price}</td>`;
+                });
+
+                tr.innerHTML = cells;
+                tbody.appendChild(tr);
+            });
+
+            // Update Office Start Price hint
+            if(pricing['Weekly Recurring'] && pricing['Weekly Recurring']['Office/Commercial']) {
+                document.getElementById('office-start-price').textContent = `R ${pricing['Weekly Recurring']['Office/Commercial'].base}`;
+            }
+        }
+
+        function renderAddons(addonsList) {
+            const grid = document.getElementById('addons-grid');
+            grid.innerHTML = '';
+
+            // Icon Mapping
+            const icons = {
+                'window_cleaning': 'fa-window-maximize',
+                'oven_cleaning': 'fa-fire-burner',
+                'fridge_cleaning': 'fa-snowflake',
+                'laundry_service': 'fa-shirt',
+                'carpet_cleaning': 'fa-rug',
+                'blind_cleaning': 'fa-bars'
+            };
+
+            // Colors for variety
+            const colors = [
+                { bg: 'bg-blue-50', text: 'text-blue-600' },
+                { bg: 'bg-orange-50', text: 'text-orange-600' },
+                { bg: 'bg-cyan-50', text: 'text-cyan-600' },
+                { bg: 'bg-purple-50', text: 'text-purple-600' },
+                { bg: 'bg-indigo-50', text: 'text-indigo-600' },
+                { bg: 'bg-gray-50', text: 'text-gray-600' }
+            ];
+
+            let i = 0;
+            addonsList.forEach(addon => {
+                // Determine icon based on name similarity
+                let icon = 'fa-plus';
+                let rawKey = addon.name.toLowerCase().replace(/ /g, '_');
+                
+                // Simple fuzzy match for icons
+                for(let k in icons) {
+                    if(rawKey.includes(k.split('_')[0])) icon = icons[k];
+                }
+
+                let style = colors[i % colors.length];
+                
+                // Suffix logic (optional, based on your previous hardcoded values)
+                let suffix = '';
+                if(rawKey.includes('laundry')) suffix = '/hr';
+                if(rawKey.includes('carpet')) suffix = '/room';
+
+                const card = `
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition">
+                        <div class="w-12 h-12 rounded-full ${style.bg} ${style.text} flex items-center justify-center text-lg">
+                            <i class="fas ${icon}"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-sm">${addon.name}</h4>
+                            <p class="text-blue-700 font-bold mt-1">R ${addon.price}${suffix}</p>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += card;
+                i++;
+            });
+        }
+
+        function renderEmergency(pricing) {
+            const container = document.getElementById('emergency-grid');
+            container.innerHTML = '';
+            
+            const sizes = ['1-Bedroom', '2-Bedroom', '3-Bedroom', '4-Bedroom'];
+            const key = 'Emergency Service';
+
+            sizes.forEach(size => {
+                let price = '-';
+                if(pricing[key] && pricing[key][size]) {
+                    price = `R ${pricing[key][size].base}`;
+                }
+                
+                const item = `
+                    <div class="bg-white p-3 rounded shadow-sm">
+                        <p class="text-slate-500 font-bold text-xs uppercase">${size.replace('Bedroom', 'Bed')}</p>
+                        <p class="text-red-700 font-bold text-lg">${price}</p>
+                    </div>
+                `;
+                container.innerHTML += item;
+            });
+        }
+
+        function showFallback() {
+            // If API fails, just remove the loader. The HTML currently has no static rows in the body, 
+            // so you might want to inject hardcoded rows here OR just let the page show empty with an error.
+            // For better UX, let's inject a retry message or leave it blank.
+            document.getElementById('loading-overlay').innerHTML = `
+                <div class="text-center text-red-500">
+                    <i class="fas fa-exclamation-triangle mb-2"></i>
+                    <p class="text-sm">Could not load live rates.</p>
+                    <a href="booking.html" class="underline text-xs mt-2">Go to Booking</a>
+                </div>
+            `;
+        }
     </script>
 </body>
 </html>
