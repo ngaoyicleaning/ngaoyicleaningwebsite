@@ -4,418 +4,316 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Cleaning Service | Ngaoyi Cleaning</title>
-    <meta name="description" content="Book professional cleaning services online. Choose your service, schedule, and add-ons for a spotless clean.">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="/assets/css/styles.css" rel="stylesheet">
     
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         'primary': '#003b6f',
-                        'primary-light': '#0056a3',
-                        'secondary': '#000000',
-                        'accent': '#00c6ff',
-                        'light-gray': '#e9ecef'
+                        'accent': '#00c6ff'
                     },
-                    fontFamily: {
-                        'sans': ['Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif']
-                    }
+                    fontFamily: { 'sans': ['Segoe UI', 'sans-serif'] }
                 }
             }
         }
     </script>
-    
-    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    <style>
+        .flatpickr-day.selected { background: #003b6f !important; border-color: #003b6f !important; }
+        .disabled-btn { opacity: 0.5; cursor: not-allowed; }
+    </style>
 </head>
 <body class="font-sans text-gray-700 bg-white">
+    
     <header class="sticky top-0 z-40 bg-white shadow-md">
-        <nav class="container mx-auto px-4 py-3">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-full overflow-hidden flex items-center justify-center">
-                        <img src="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png" 
-                             alt="Ngaoyi Cleaning Logo" class="w-full h-full object-cover">
-                    </div>
-                    <div>
-                        <h1 class="text-2xl font-bold text-primary">Ngaoyi Cleaning</h1>
-                        <p class="text-sm text-gray-600">Professional Cleaning Services</p>
-                    </div>
-                </div>
-                
-                <div class="hidden md:flex items-center space-x-6">
-                    <a href="/" class="text-gray-700 hover:text-primary font-medium transition-colors duration-200">Home</a>
-                    <a href="/services.html" class="text-gray-700 hover:text-primary font-medium transition-colors duration-200">Services</a>
-                    <a href="/pricing.html" class="text-gray-700 hover:text-primary font-medium transition-colors duration-200">Pricing</a>
-                    <a href="/about.html" class="text-gray-700 hover:text-primary font-medium transition-colors duration-200">About</a>
-                    <a href="/booking.html" class="bg-gradient-to-r from-primary to-accent text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg transition-all duration-200">Book Now</a>
-                </div>
-                
-                <button id="mobile-menu-toggle" class="md:hidden text-primary text-2xl" aria-label="Toggle menu">
-                    <i class="fas fa-bars"></i>
-                </button>
+        <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <img src="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png" class="w-10 h-10">
+                <h1 class="text-2xl font-bold text-primary">Ngaoyi Cleaning</h1>
             </div>
-            
-            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-4">
-                <a href="/" class="block text-gray-700 font-medium hover:text-primary transition-colors duration-200">Home</a>
-                <a href="/services.html" class="block text-gray-700 font-medium hover:text-primary transition-colors duration-200">Services</a>
-                <a href="/pricing.html" class="block text-gray-700 font-medium hover:text-primary transition-colors duration-200">Pricing</a>
-                <a href="/about.html" class="block text-gray-700 font-medium hover:text-primary transition-colors duration-200">About</a>
-                <a href="/booking.html" class="block bg-gradient-to-r from-primary to-accent text-white px-6 py-2 rounded-full font-semibold text-center hover:shadow-lg transition-all duration-200">Book Now</a>
+            <div class="hidden md:flex space-x-6">
+                <a href="index.html" class="hover:text-primary">Home</a>
+                <a href="services.html" class="hover:text-primary">Services</a>
+                <a href="pricing.html" class="hover:text-primary">Pricing</a>
             </div>
         </nav>
     </header>
 
     <main class="py-8">
         <div class="container mx-auto px-4 mb-8">
-            <div class="flex items-center justify-center">
-                <div class="flex items-center">
-                    <div class="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold shadow-lg ring-2 ring-primary-light">1</div>
-                    <div class="h-1 w-24 bg-gray-300"></div>
-                    <div class="w-10 h-10 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center font-bold">2</div>
-                    <div class="h-1 w-24 bg-gray-300"></div>
-                    <div class="w-10 h-10 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center font-bold">3</div>
-                </div>
-            </div>
-            <div class="flex justify-center mt-2 text-sm">
-                <div class="text-primary font-bold mr-24">Service Details</div>
-                <div class="text-gray-400">Add-ons</div>
-                <div class="text-gray-400 ml-24">Summary</div>
+            <div class="flex justify-center items-center text-sm font-bold text-gray-400">
+                <span class="text-primary">1. Details</span>
+                <span class="mx-4 text-gray-300">----------</span>
+                <span>2. Add-ons</span>
+                <span class="mx-4 text-gray-300">----------</span>
+                <span>3. Pay</span>
             </div>
         </div>
 
-        <section class="py-8">
-            <div class="container mx-auto px-4 max-w-4xl">
-                <h1 class="text-3xl font-bold text-primary mb-2">Book Your Cleaning Service</h1>
-                <p class="text-gray-600 mb-8">Fill in your details and select your preferred service</p>
+        <section class="container mx-auto px-4 max-w-4xl">
+            <form id="booking-form" class="bg-white rounded-xl shadow-lg p-6 md:p-8">
                 
-                <form id="booking-form" class="bg-white rounded-xl shadow-lg p-6 md:p-8">
-                    <div class="mb-8">
-                        <h2 class="text-xl font-semibold text-primary mb-4 pb-2 border-b">Personal Information</h2>
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="full-name" class="block text-gray-700 font-medium mb-2">Full Name *</label>
-                                <input type="text" id="full-name" required
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition">
-                            </div>
-                            <div>
-                                <label for="email" class="block text-gray-700 font-medium mb-2">Email Address *</label>
-                                <input type="email" id="email" required
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition">
-                            </div>
-                            <div>
-                                <label for="phone" class="block text-gray-700 font-medium mb-2">Phone Number *</label>
-                                <input type="tel" id="phone" required
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition">
-                            </div>
-                            
-                            <div>
-                                <label for="address" class="block text-gray-700 font-medium mb-2">Street Address *</label>
-                                <input type="text" id="address" required
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition"
-                                       placeholder="Unit 5, 123 Street Name">
-                                <p class="text-xs text-gray-500 mt-1">
-                                    <i class="fas fa-map-marker-alt mr-1"></i> Please include your Area/Suburb (e.g. 123 Rivonia Road, Sandton, Johannesburg)
-                                </p>
-                            </div>
-                        </div>
+                <h2 class="text-xl font-bold text-primary mb-4 border-b pb-2">1. Contact Details</h2>
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <div><label class="block mb-1 font-semibold">Full Name *</label><input type="text" id="full-name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary outline-none"></div>
+                    <div><label class="block mb-1 font-semibold">Email *</label><input type="email" id="email" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary outline-none"></div>
+                    <div><label class="block mb-1 font-semibold">Phone *</label><input type="tel" id="phone" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary outline-none"></div>
+                    <div><label class="block mb-1 font-semibold">Address *</label><input type="text" id="address" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="Street & Area"></div>
+                </div>
+
+                <h2 class="text-xl font-bold text-primary mb-4 border-b pb-2">2. Service Selection</h2>
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block mb-1 font-semibold">Plan *</label>
+                        <select id="service-type" class="w-full p-3 border rounded-lg bg-white">
+                            <option value="">-- Select Plan --</option>
+                            <option value="weekly">Weekly Recurring (4 Dates)</option>
+                            <option value="biweekly">Bi-weekly Recurring (2 Dates)</option>
+                            <option value="monthly">Monthly Recurring (1 Date)</option>
+                            <option value="once-off">Once-Off Cleaning</option>
+                            <option value="deep">Deep Cleaning</option>
+                            <option value="emergency">Emergency Service</option>
+                        </select>
                     </div>
-
-                    <div class="mb-8">
-                        <h2 class="text-xl font-semibold text-primary mb-4 pb-2 border-b">Service Details</h2>
-                        
-                        <div class="mb-6">
-                            <label for="service-type" class="block text-gray-700 font-medium mb-2">Service Type *</label>
-                            <select id="service-type" required
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition bg-white">
-                                <option value="">Select a service</option>
-                                <option value="weekly">Weekly Recurring</option>
-                                <option value="biweekly">Bi-weekly Recurring</option>
-                                <option value="monthly">Monthly Recurring</option>
-                                <option value="once-off">Once-Off Cleaning</option>
-                                <option value="deep">Deep Cleaning</option>
-                                <option value="emergency">Emergency Service</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-6">
-                            <label for="property-size" class="block text-gray-700 font-medium mb-2">Property Size *</label>
-                            <select id="property-size" required
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition bg-white">
-                                <option value="">Select property size</option>
-                                <option value="1-bed">1-Bedroom</option>
-                                <option value="2-bed">2-Bedroom</option>
-                                <option value="3-bed">3-Bedroom</option>
-                                <option value="4-bed">4-Bedroom</option>
-                                <option value="office">Office/Commercial</option>
-                            </select>
-                        </div>
-
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="cleaning-date" class="block text-gray-700 font-medium mb-2">Preferred Date *</label>
-                                <input type="date" id="cleaning-date" required
-                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition">
-                            </div>
-                            
-                            <div>
-                                <label for="time-slot" class="block text-gray-700 font-medium mb-2">Preferred Time Slot *</label>
-                                <select id="time-slot" required
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition bg-white">
-                                    <option value="">Select time slot</option>
-                                    <option value="9am">9:00 AM</option>
-                                    <option value="11am">11:00 AM</option>
-                                    <option value="1pm">1:00 PM</option>
-                                </select>
-                            </div>
-                        </div>
+                    <div>
+                        <label class="block mb-1 font-semibold">Size *</label>
+                        <select id="property-size" class="w-full p-3 border rounded-lg bg-white">
+                            <option value="">-- Select Size --</option>
+                            <option value="1-bed">1-Bedroom</option>
+                            <option value="2-bed">2-Bedroom</option>
+                            <option value="3-bed">3-Bedroom</option>
+                            <option value="4-bed">4-Bedroom</option>
+                            <option value="office">Office/Commercial</option>
+                        </select>
                     </div>
+                </div>
 
-                    <div class="mb-8">
-                        <label for="instructions" class="block text-gray-700 font-medium mb-2">Special Instructions</label>
-                        <textarea id="instructions" rows="3"
-                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition"
-                                  placeholder="Any special requests, pet information, access instructions, or specific areas to focus on..."></textarea>
+                <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
+                    <div class="flex justify-between mb-2">
+                        <label class="font-bold text-primary">Select Date(s) *</label>
+                        <span id="date-counter" class="text-xs font-bold text-primary bg-white px-2 py-1 rounded shadow hidden">0 selected</span>
                     </div>
+                    
+                    <input type="text" id="calendar-input" class="w-full p-3 border rounded-lg bg-white cursor-pointer" placeholder="Select Service first..." disabled>
+                    <p id="calendar-hint" class="text-xs text-gray-500 mt-2">Select a plan to enable the calendar.</p>
+                </div>
 
-                    <div class="bg-gray-50 p-6 rounded-lg mb-8">
-                        <h3 class="text-lg font-semibold text-primary mb-4">Price Estimate</h3>
-                        <div class="space-y-2">
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Base Service:</span>
-                                <span id="base-price" class="font-semibold">R 0</span>
-                            </div>
-                            <div class="flex justify-between text-gray-400">
-                                <span>Materials (Customer Supplies):</span>
-                                <span id="materials-price" class="font-semibold">R 0</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Emergency Surcharge:</span>
-                                <span id="emergency-surcharge" class="font-semibold">R 0</span>
-                            </div>
-                            <div class="border-t pt-2">
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">Subtotal:</span>
-                                    <span id="subtotal" class="font-semibold">R 0</span>
-                                </div>
-                            </div>
-                        </div>
+                <div class="mb-8">
+                    <label class="block mb-1 font-semibold">Time *</label>
+                    <select id="time-slot" class="w-full p-3 border rounded-lg bg-white">
+                        <option value="08:00">08:00</option><option value="09:00">09:00</option><option value="10:00">10:00</option>
+                        <option value="11:00">11:00</option><option value="12:00">12:00</option><option value="13:00">13:00</option>
+                    </select>
+                </div>
+
+                <div class="bg-gray-900 text-white p-6 rounded-xl mb-8 flex justify-between items-center">
+                    <div>
+                        <p class="text-gray-400 text-sm">Estimated Total</p>
+                        <h3 class="text-2xl font-bold" id="subtotal">R 0.00</h3>
+                        <p class="text-xs text-gray-500" id="rate-breakdown">Rate: R0 x 0 visits</p>
                     </div>
+                    <div id="loading-spinner" class="hidden text-accent"><i class="fas fa-circle-notch fa-spin text-2xl"></i></div>
+                </div>
 
-                    <div class="flex justify-end">
-                        <button type="button" id="next-to-addons"
-                                class="bg-gradient-to-r from-primary to-accent text-white px-8 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                                disabled>
-                            Continue to Add-ons <i class="fas fa-arrow-right ml-2"></i>
-                        </button>
-                    </div>
-                </form>
-
-                <script>
-                    // 🔴 AUTOMATICALLY CONNECTED TO YOUR BACKEND
-                    const API_URL = 'https://script.google.com/macros/s/AKfycbwzpCsuco5PBE5BxaxQi4mXLPjtaUfS1JaHSe3ZXogQWkTK9Gzz3EeR7JDxDLmWg6aTAQ/exec'; 
-
-                    document.addEventListener('DOMContentLoaded', function() {
-                        const dateField = document.getElementById('cleaning-date');
-                        if (dateField) {
-                            const today = new Date().toISOString().split('T')[0];
-                            dateField.min = today;
-                        }
-
-                        const serviceType = document.getElementById('service-type');
-                        const propertySize = document.getElementById('property-size');
-                        const nextButton = document.getElementById('next-to-addons');
-
-                        const basePriceEl = document.getElementById('base-price');
-                        const materialsPriceEl = document.getElementById('materials-price');
-                        const emergencySurchargeEl = document.getElementById('emergency-surcharge');
-                        const subtotalEl = document.getElementById('subtotal');
-
-                        // 🟢 MAPPER: TRANSLATE WEBSITE CODES TO SHEET NAMES
-                        const serviceMap = {
-                            'weekly': 'Weekly Recurring',
-                            'biweekly': 'Bi-weekly Recurring',
-                            'monthly': 'Monthly Recurring',
-                            'once-off': 'Once-Off Cleaning',
-                            'deep': 'Deep Cleaning',
-                            'emergency': 'Emergency Service'
-                        };
-
-                        const sizeMap = {
-                            '1-bed': '1-Bedroom',
-                            '2-bed': '2-Bedroom',
-                            '3-bed': '3-Bedroom',
-                            '4-bed': '4-Bedroom',
-                            'office': 'Office/Commercial'
-                        };
-
-                        // Fallback Pricing (Uses website codes structure for safety)
-                        let pricing = {
-                            'weekly': { '1-bed': 240, '2-bed': 320, '3-bed': 380, '4-bed': 440, 'office': 600 },
-                            'biweekly': { '1-bed': 300, '2-bed': 400, '3-bed': 470, '4-bed': 540, 'office': 700 },
-                            'monthly': { '1-bed': 360, '2-bed': 480, '3-bed': 560, '4-bed': 640, 'office': 800 },
-                            'once-off': { '1-bed': 350, '2-bed': 450, '3-bed': 550, '4-bed': 650, 'office': 850 },
-                            'deep': { '1-bed': 1200, '2-bed': 1750, '3-bed': 2300, '4-bed': 2850, 'office': 4000 },
-                            'emergency': { '1-bed': 525, '2-bed': 675, '3-bed': 825, '4-bed': 975, 'office': 1275 }
-                        };
-                        
-                        // FETCH: GET REAL PRICES FROM SHEET
-                        async function fetchPrices() {
-                            try {
-                                basePriceEl.textContent = 'Loading...';
-                                const response = await fetch(API_URL, {
-                                    method: 'POST',
-                                    body: JSON.stringify({ action: 'get-pricing' })
-                                });
-                                const data = await response.json();
-                                if (data.success) {
-                                    // We need to merge sheet data into our pricing logic
-                                    // The sheet returns keys like "Weekly Recurring", we need to map our codes to that
-                                    window.sheetPricing = data.pricing; // Store globally
-                                    console.log("Prices synced with Google Sheet");
-                                    calculatePrice();
-                                }
-                            } catch (e) {
-                                console.error("Using fallback prices:", e);
-                                // If sync fails, we still use the hardcoded `pricing` object above
-                                calculatePrice();
-                            }
-                        }
-
-                        let currentBasePrice = 0;
-                        let currentSubtotal = 0;
-                        let currentSurcharge = 0;
-
-                        function calculatePrice() {
-                            const codeService = serviceType.value;
-                            const codeSize = propertySize.value;
-                            const isEmergency = codeService === 'emergency';
-                            
-                            currentBasePrice = 0;
-                            let materialsPrice = 0; 
-                            currentSurcharge = 0;
-
-                            // 1. Try to find price in SHEET DATA (if loaded)
-                            let foundPrice = false;
-                            if (window.sheetPricing) {
-                                const sheetServiceName = serviceMap[codeService];
-                                const sheetSizeName = sizeMap[codeSize];
-
-                                if(sheetServiceName && sheetSizeName && 
-                                   window.sheetPricing[sheetServiceName] && 
-                                   window.sheetPricing[sheetServiceName][sheetSizeName]) {
-                                    
-                                    const pData = window.sheetPricing[sheetServiceName][sheetSizeName];
-                                    currentBasePrice = Number(pData.basePrice || pData);
-                                    foundPrice = true;
-                                }
-                            }
-
-                            // 2. If not found in Sheet, use Fallback Hardcoded
-                            if (!foundPrice && pricing[codeService] && pricing[codeService][codeSize]) {
-                                currentBasePrice = pricing[codeService][codeSize];
-                            }
-
-                            // Calculations
-                            if (isEmergency) {
-                                currentSurcharge = Math.round(currentBasePrice * 0.5);
-                            }
-
-                            currentSubtotal = currentBasePrice + materialsPrice + currentSurcharge;
-
-                            basePriceEl.textContent = `R ${currentBasePrice}`;
-                            materialsPriceEl.textContent = `R ${materialsPrice}`;
-                            emergencySurchargeEl.textContent = `R ${currentSurcharge}`;
-                            subtotalEl.textContent = `R ${currentSubtotal}`;
-
-                            const isValid = codeService && codeSize && dateField.value && currentBasePrice > 0;
-                            nextButton.disabled = !isValid;
-                            
-                            if(isValid) {
-                                nextButton.classList.remove('opacity-50', 'cursor-not-allowed');
-                            } else {
-                                nextButton.classList.add('opacity-50', 'cursor-not-allowed');
-                            }
-                        }
-
-                        [serviceType, propertySize, dateField].forEach(el => {
-                            if (el) el.addEventListener('change', calculatePrice);
-                        });
-
-                        ['full-name', 'email', 'phone', 'address'].forEach(id => {
-                            const el = document.getElementById(id);
-                            if (el) el.addEventListener('input', calculatePrice);
-                        });
-
-                        fetchPrices();
-
-                        nextButton.addEventListener('click', function() {
-                            const requiredFields = ['full-name', 'email', 'phone', 'address', 'service-type', 'property-size', 'cleaning-date', 'time-slot'];
-                            let isValid = true;
-                            
-                            requiredFields.forEach(fieldId => {
-                                const field = document.getElementById(fieldId);
-                                if (!field || !field.value.trim()) {
-                                    isValid = false;
-                                    field.classList.add('border-red-500');
-                                } else {
-                                    field.classList.remove('border-red-500');
-                                }
-                            });
-
-                            if (isValid) {
-                                const sIndex = serviceType.selectedIndex;
-                                const pIndex = propertySize.selectedIndex;
-                                const serviceName = serviceType.options[sIndex].text;
-                                const sizeName = propertySize.options[pIndex].text;
-
-                                const bookingData = {
-                                    fullName: document.getElementById('full-name').value,
-                                    email: document.getElementById('email').value,
-                                    phone: document.getElementById('phone').value,
-                                    address: document.getElementById('address').value,
-                                    serviceType: serviceName, 
-                                    propertySize: sizeName,
-                                    serviceCode: serviceType.value,
-                                    propertySizeCode: propertySize.value,
-                                    materialsOption: 'customer-supply',
-                                    cleaningDate: dateField.value,
-                                    timeSlot: document.getElementById('time-slot').value,
-                                    instructions: document.getElementById('instructions').value,
-                                    basePrice: Number(currentBasePrice),
-                                    materialsPrice: 0,
-                                    emergencySurcharge: Number(currentSurcharge),
-                                    subtotal: Number(currentSubtotal)
-                                };
-
-                                localStorage.setItem('bookingData', JSON.stringify(bookingData));
-                                window.location.href = '/booking-addons.html';
-                            } else {
-                                alert('Please fill in all required fields marked with *');
-                            }
-                        });
-                    });
-                </script>
-            </div>
+                <div class="flex justify-end">
+                    <button type="button" id="next-btn" class="bg-accent hover:bg-blue-400 text-white px-8 py-3 rounded-full font-bold shadow-lg transition-all disabled-btn" disabled>
+                        Next Step <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </form>
         </section>
     </main>
 
-    <footer class="bg-black text-white py-8">
-        <div class="container mx-auto px-4">
-            <div class="text-center">
-                <p class="text-gray-400">Need help? Call us at <a href="tel:+27707643709" class="text-accent">070 764 3709</a></p>
-                <div class="mt-4">
-                    <a href="/privacy.html" class="text-gray-400 hover:text-accent text-sm mx-2">Privacy Policy</a>
-                    <a href="/terms.html" class="text-gray-400 hover:text-accent text-sm mx-2">Terms & Conditions</a>
-                </div>
-                <p class="text-gray-500 text-sm mt-4">&copy; 2024 Ngaoyi Cleaning. All rights reserved.</p>
-            </div>
-        </div>
+    <footer class="bg-black text-white py-8 text-center">
+        <p>&copy; 2024 Ngaoyi Cleaning. <a href="tel:0707643709" class="text-accent">070 764 3709</a></p>
     </footer>
 
-    <script src="/assets/js/site.js"></script>
+    <script>
+        // 🔴 API CONFIGURATION
+        const API_URL = 'https://script.google.com/macros/s/AKfycbzQZo_rLSS86ZwuioQzdQek621SZh5vlrphB94Kql2nFVu5o_X7-p2lFr4UEHku_zgSqw/exec';
+
+        let sheetPricing = null;
+        let fpInstance = null;
+        let requiredDates = 1;
+
+        // MAPPINGS
+        const serviceMap = {
+            'weekly': 'Weekly Recurring',
+            'biweekly': 'Bi-weekly Recurring',
+            'monthly': 'Monthly Recurring',
+            'once-off': 'Once-Off Cleaning',
+            'deep': 'Deep Cleaning',
+            'emergency': 'Emergency Service'
+        };
+        const sizeMap = { '1-bed': '1-Bedroom', '2-bed': '2-Bedroom', '3-bed': '3-Bedroom', '4-bed': '4-Bedroom', 'office': 'Office/Commercial' };
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await fetchPrices();
+            
+            // Listeners
+            document.getElementById('service-type').addEventListener('change', updateCalendarMode);
+            document.getElementById('property-size').addEventListener('change', calculateTotal);
+            document.getElementById('next-btn').addEventListener('click', saveAndNext);
+        });
+
+        // 1. FETCH PRICES
+        async function fetchPrices() {
+            document.getElementById('loading-spinner').classList.remove('hidden');
+            try {
+                const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'get-pricing' }) });
+                const data = await res.json();
+                if(data.success) {
+                    sheetPricing = data.pricing;
+                    console.log("Prices Loaded");
+                }
+            } catch(e) { console.error(e); }
+            document.getElementById('loading-spinner').classList.add('hidden');
+        }
+
+        // 2. SMART CALENDAR LOGIC
+        function updateCalendarMode() {
+            const type = document.getElementById('service-type').value;
+            const input = document.getElementById('calendar-input');
+            const hint = document.getElementById('calendar-hint');
+            const counter = document.getElementById('date-counter');
+
+            if(!type) {
+                input.disabled = true;
+                if(fpInstance) fpInstance.clear();
+                return;
+            }
+
+            input.disabled = false;
+            
+            // Define Rules
+            let mode = 'single';
+            let maxDates = 1;
+            
+            if (type === 'weekly') {
+                mode = 'multiple';
+                maxDates = 4;
+                requiredDates = 4;
+                hint.textContent = "Please select exactly 4 dates within the next month.";
+                counter.classList.remove('hidden');
+            } else if (type === 'biweekly') {
+                mode = 'multiple';
+                maxDates = 2;
+                requiredDates = 2;
+                hint.textContent = "Please select exactly 2 dates within the next month.";
+                counter.classList.remove('hidden');
+            } else {
+                // Monthly, Once-Off, Deep, Emergency -> Single Date
+                mode = 'single';
+                maxDates = 1;
+                requiredDates = 1;
+                hint.textContent = "Please select your preferred service date.";
+                counter.classList.add('hidden');
+            }
+
+            // Destroy old instance to change mode
+            if(fpInstance) fpInstance.destroy();
+
+            // Init New Flatpickr
+            fpInstance = flatpickr("#calendar-input", {
+                mode: mode,
+                minDate: "today",
+                maxDate: new Date().fp_incr(30), // Limit to 1 month from today
+                dateFormat: "Y-m-d",
+                conjunction: ", ",
+                maxDate: new Date().fp_incr(31), // Limit to 31 days ahead
+                onChange: function(selectedDates) {
+                    // Enforce Limits manually for cleaner UI interaction
+                    if (mode === 'multiple' && selectedDates.length > maxDates) {
+                        this.clear(); // Or remove last
+                        alert(`You can only select ${maxDates} dates for this plan.`);
+                        return;
+                    }
+                    
+                    // Update UI
+                    document.getElementById('date-counter').textContent = `${selectedDates.length}/${requiredDates} selected`;
+                    calculateTotal();
+                    
+                    // Validate
+                    if (selectedDates.length === requiredDates) {
+                        input.style.borderColor = '#10b981'; // Green
+                    } else {
+                        input.style.borderColor = '#ef4444'; // Red
+                    }
+                }
+            });
+        }
+
+        // 3. CALCULATE TOTAL
+        function calculateTotal() {
+            const sCode = document.getElementById('service-type').value;
+            const pCode = document.getElementById('property-size').value;
+            
+            if(!sCode || !pCode || !sheetPricing || !fpInstance) return;
+
+            const sName = serviceMap[sCode];
+            const pName = sizeMap[pCode];
+            const dates = fpInstance.selectedDates;
+
+            // Get Base Price (Per Visit)
+            let perVisit = 0;
+            if (sheetPricing[sName] && sheetPricing[sName][pName]) {
+                perVisit = Number(sheetPricing[sName][pName].base); 
+            }
+
+            // Emergency Multiplier
+            if (sCode === 'emergency') perVisit = perVisit; // Logic handled in backend usually, or apply here: perVisit * 1.5
+
+            const total = perVisit * dates.length;
+
+            document.getElementById('subtotal').textContent = `R ${total.toFixed(2)}`;
+            document.getElementById('rate-breakdown').textContent = `Rate: R${perVisit} x ${dates.length} visit(s)`;
+
+            // Enable Button
+            const btn = document.getElementById('next-btn');
+            const validDates = dates.length === requiredDates;
+            const validInfo = document.getElementById('full-name').value !== "";
+
+            if (validDates && total > 0 && validInfo) {
+                btn.disabled = false;
+                btn.classList.remove('disabled-btn');
+            } else {
+                btn.disabled = true;
+                btn.classList.add('disabled-btn');
+            }
+        }
+
+        // 4. SAVE & NEXT
+        function saveAndNext() {
+            const requiredIds = ['full-name', 'email', 'phone', 'address'];
+            for(let id of requiredIds) {
+                if(!document.getElementById(id).value) { alert("Please fill in all contact fields."); return; }
+            }
+
+            const dates = fpInstance.selectedDates.map(d => d.toISOString().split('T')[0]);
+            
+            const bookingData = {
+                name: document.getElementById('full-name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value,
+                serviceType: serviceMap[document.getElementById('service-type').value],
+                propertySize: sizeMap[document.getElementById('property-size').value],
+                serviceCode: document.getElementById('service-type').value,
+                propertySizeCode: document.getElementById('property-size').value,
+                dates: dates, // Array
+                time: document.getElementById('time-slot').value,
+                baseTotal: parseFloat(document.getElementById('subtotal').textContent.replace('R ',''))
+            };
+
+            localStorage.setItem('bookingData', JSON.stringify(bookingData));
+            window.location.href = 'booking-addons.html';
+        }
+    </script>
 </body>
 </html>
