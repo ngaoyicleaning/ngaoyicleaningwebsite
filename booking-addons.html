@@ -7,7 +7,6 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="/assets/css/styles.css" rel="stylesheet">
     
     <script>
         tailwind.config = {
@@ -16,401 +15,274 @@
                     colors: {
                         'primary': '#003b6f',
                         'primary-light': '#0056a3',
-                        'secondary': '#000000',
                         'accent': '#00c6ff',
-                        'light-gray': '#e9ecef',
                         'success': '#10b981'
                     },
-                    fontFamily: {
-                        'sans': ['Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif']
-                    }
+                    fontFamily: { 'sans': ['Segoe UI', 'sans-serif'] }
                 }
             }
         }
     </script>
-    
-    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
 </head>
 <body class="font-sans text-gray-700 bg-white">
+    
     <header class="sticky top-0 z-40 bg-white shadow-md">
-        <nav class="container mx-auto px-4 py-3">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-full overflow-hidden flex items-center justify-center">
-                        <img src="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png" 
-                             alt="Ngaoyi Cleaning Logo" class="w-full h-full object-cover">
-                    </div>
-                    <div>
-                        <h1 class="text-2xl font-bold text-primary">Ngaoyi Cleaning</h1>
-                        <p class="text-sm text-gray-600">Professional Cleaning Services</p>
-                    </div>
-                </div>
-                
-                <button id="mobile-menu-toggle" class="md:hidden text-primary text-2xl" aria-label="Toggle menu">
-                    <i class="fas fa-bars"></i>
-                </button>
+        <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <img src="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png" class="w-10 h-10">
+                <h1 class="text-2xl font-bold text-primary">Ngaoyi Cleaning</h1>
             </div>
         </nav>
     </header>
 
     <main class="py-8">
         <div class="container mx-auto px-4 mb-8">
-            <div class="flex items-center justify-center">
-                <div class="flex items-center">
-                    <div class="w-10 h-10 bg-success text-white rounded-full flex items-center justify-center font-bold shadow-md">
-                        <i class="fas fa-check"></i>
-                    </div>
-                    <div class="h-1 w-24 bg-success"></div>
-                    
-                    <div class="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold shadow-lg ring-2 ring-primary-light">2</div>
-                    <div class="h-1 w-24 bg-gray-300"></div>
-                    
-                    <div class="w-10 h-10 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center font-bold">3</div>
-                </div>
-            </div>
-            <div class="flex justify-center mt-2 text-sm">
-                <div class="text-success font-semibold mr-24">Service Details</div>
-                <div class="text-primary font-bold">Add-ons</div>
-                <div class="text-gray-400 ml-24">Summary</div>
+            <div class="flex justify-center items-center text-sm font-bold text-gray-400">
+                <span class="text-success"><i class="fas fa-check-circle"></i> Details</span>
+                <span class="mx-4 text-primary">----------</span>
+                <span class="text-primary">2. Add-ons</span>
+                <span class="mx-4 text-gray-300">----------</span>
+                <span>3. Pay</span>
             </div>
         </div>
 
-        <section class="py-8">
-            <div class="container mx-auto px-4 max-w-4xl">
-                <h1 class="text-3xl font-bold text-primary mb-2">Add Extra Services</h1>
-                <p class="text-gray-600 mb-8">Enhance your cleaning with these additional services</p>
+        <section class="container mx-auto px-4 max-w-4xl">
+            <h1 class="text-3xl font-bold text-primary mb-2">Enhance Your Clean</h1>
+            <p class="text-gray-600 mb-8">Select extra services. <span id="visit-indicator" class="font-bold text-accent"></span></p>
+            
+            <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
                 
-                <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
-                    <div class="grid md:grid-cols-2 gap-6 mb-8">
-                        <div class="border border-gray-200 rounded-lg p-4 hover:border-primary transition-colors">
-                            <div class="flex items-start justify-between mb-3">
-                                <div>
-                                    <h3 class="font-semibold text-primary">Window Cleaning</h3>
-                                    <p class="text-sm text-gray-600">Interior and accessible exterior windows</p>
-                                </div>
-                                <div class="text-primary font-bold" data-price-display="window_cleaning">R 150</div>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-2">
-                                    <button class="addon-minus w-8 h-8 border border-gray-300 rounded-full hover:bg-gray-100" data-addon="window_cleaning">-</button>
-                                    <span class="addon-quantity w-8 text-center font-bold" data-addon="window_cleaning">0</span>
-                                    <button class="addon-plus w-8 h-8 border border-gray-300 rounded-full hover:bg-gray-100" data-addon="window_cleaning">+</button>
-                                </div>
-                                <div class="text-primary font-bold addon-total" data-addon="window_cleaning">R 0</div>
-                            </div>
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    
+                    <div class="border rounded-lg p-4 hover:border-primary transition-colors flex flex-col justify-between">
+                        <div class="flex justify-between mb-2">
+                            <div><h3 class="font-bold text-primary">Window Cleaning</h3><p class="text-xs text-gray-500">Interior & accessible exterior</p></div>
+                            <div class="text-primary font-bold" data-price-key="window_cleaning">R 150</div>
                         </div>
-
-                        <div class="border border-gray-200 rounded-lg p-4 hover:border-primary transition-colors">
-                            <div class="flex items-start justify-between mb-3">
-                                <div>
-                                    <h3 class="font-semibold text-primary">Oven Cleaning</h3>
-                                    <p class="text-sm text-gray-600">Deep clean of oven interior and exterior</p>
-                                </div>
-                                <div class="text-primary font-bold" data-price-display="oven_cleaning">R 180</div>
+                        <div class="flex justify-between items-center mt-2">
+                            <div class="flex items-center gap-3">
+                                <button class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 font-bold btn-minus" data-id="window_cleaning">-</button>
+                                <span class="font-bold w-4 text-center qty-display" data-id="window_cleaning">0</span>
+                                <button class="w-8 h-8 rounded-full bg-primary text-white hover:bg-primary-light font-bold btn-plus" data-id="window_cleaning">+</button>
                             </div>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-2">
-                                    <button class="addon-minus w-8 h-8 border border-gray-300 rounded-full hover:bg-gray-100" data-addon="oven_cleaning">-</button>
-                                    <span class="addon-quantity w-8 text-center font-bold" data-addon="oven_cleaning">0</span>
-                                    <button class="addon-plus w-8 h-8 border border-gray-300 rounded-full hover:bg-gray-100" data-addon="oven_cleaning">+</button>
-                                </div>
-                                <div class="text-primary font-bold addon-total" data-addon="oven_cleaning">R 0</div>
-                            </div>
-                        </div>
-
-                        <div class="border border-gray-200 rounded-lg p-4 hover:border-primary transition-colors">
-                            <div class="flex items-start justify-between mb-3">
-                                <div>
-                                    <h3 class="font-semibold text-primary">Fridge Cleaning</h3>
-                                    <p class="text-sm text-gray-600">Interior deep clean and organization</p>
-                                </div>
-                                <div class="text-primary font-bold" data-price-display="fridge_cleaning">R 100</div>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-2">
-                                    <button class="addon-minus w-8 h-8 border border-gray-300 rounded-full hover:bg-gray-100" data-addon="fridge_cleaning">-</button>
-                                    <span class="addon-quantity w-8 text-center font-bold" data-addon="fridge_cleaning">0</span>
-                                    <button class="addon-plus w-8 h-8 border border-gray-300 rounded-full hover:bg-gray-100" data-addon="fridge_cleaning">+</button>
-                                </div>
-                                <div class="text-primary font-bold addon-total" data-addon="fridge_cleaning">R 0</div>
-                            </div>
-                        </div>
-
-                        <div class="border border-gray-200 rounded-lg p-4 hover:border-primary transition-colors">
-                            <div class="flex items-start justify-between mb-3">
-                                <div>
-                                    <h3 class="font-semibold text-primary">Laundry Service</h3>
-                                    <p class="text-sm text-gray-600">Wash, dry, and fold laundry</p>
-                                </div>
-                                <div class="text-primary font-bold" data-price-display="laundry_service">R 80/hr</div>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-2">
-                                    <button class="addon-minus w-8 h-8 border border-gray-300 rounded-full hover:bg-gray-100" data-addon="laundry_service">-</button>
-                                    <span class="addon-quantity w-8 text-center font-bold" data-addon="laundry_service">0</span>
-                                    <button class="addon-plus w-8 h-8 border border-gray-300 rounded-full hover:bg-gray-100" data-addon="laundry_service">+</button>
-                                </div>
-                                <div class="text-primary font-bold addon-total" data-addon="laundry_service">R 0</div>
-                            </div>
-                            <div class="mt-3 text-sm text-gray-500">
-                                <p>Each unit = 1 hour of laundry service</p>
-                            </div>
-                        </div>
-
-                        <div class="border border-gray-200 rounded-lg p-4 hover:border-primary transition-colors">
-                            <div class="flex items-start justify-between mb-3">
-                                <div>
-                                    <h3 class="font-semibold text-primary">Carpet Cleaning</h3>
-                                    <p class="text-sm text-gray-600">Deep clean for carpets and rugs</p>
-                                </div>
-                                <div class="text-primary font-bold" data-price-display="carpet_cleaning">R 200/room</div>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-2">
-                                    <button class="addon-minus w-8 h-8 border border-gray-300 rounded-full hover:bg-gray-100" data-addon="carpet_cleaning">-</button>
-                                    <span class="addon-quantity w-8 text-center font-bold" data-addon="carpet_cleaning">0</span>
-                                    <button class="addon-plus w-8 h-8 border border-gray-300 rounded-full hover:bg-gray-100" data-addon="carpet_cleaning">+</button>
-                                </div>
-                                <div class="text-primary font-bold addon-total" data-addon="carpet_cleaning">R 0</div>
-                            </div>
-                        </div>
-
-                        <div class="border border-gray-200 rounded-lg p-4 hover:border-primary transition-colors">
-                            <div class="flex items-start justify-between mb-3">
-                                <div>
-                                    <h3 class="font-semibold text-primary">Blind Cleaning</h3>
-                                    <p class="text-sm text-gray-600">Clean window blinds and curtains</p>
-                                </div>
-                                <div class="text-primary font-bold" data-price-display="blind_cleaning">R 120</div>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-2">
-                                    <button class="addon-minus w-8 h-8 border border-gray-300 rounded-full hover:bg-gray-100" data-addon="blind_cleaning">-</button>
-                                    <span class="addon-quantity w-8 text-center font-bold" data-addon="blind_cleaning">0</span>
-                                    <button class="addon-plus w-8 h-8 border border-gray-300 rounded-full hover:bg-gray-100" data-addon="blind_cleaning">+</button>
-                                </div>
-                                <div class="text-primary font-bold addon-total" data-addon="blind_cleaning">R 0</div>
-                            </div>
+                            <div class="font-bold text-accent total-display" data-id="window_cleaning">R 0</div>
                         </div>
                     </div>
 
-                    <div class="bg-gray-50 p-6 rounded-lg mb-8">
-                        <h3 class="text-lg font-semibold text-primary mb-4">Current Price Summary</h3>
-                        <div class="space-y-2" id="price-summary">
-                            <p class="text-gray-500">Loading estimate...</p>
+                    <div class="border rounded-lg p-4 hover:border-primary transition-colors flex flex-col justify-between">
+                        <div class="flex justify-between mb-2">
+                            <div><h3 class="font-bold text-primary">Oven Cleaning</h3><p class="text-xs text-gray-500">Deep clean & degrease</p></div>
+                            <div class="text-primary font-bold" data-price-key="oven_cleaning">R 180</div>
+                        </div>
+                        <div class="flex justify-between items-center mt-2">
+                            <div class="flex items-center gap-3">
+                                <button class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 font-bold btn-minus" data-id="oven_cleaning">-</button>
+                                <span class="font-bold w-4 text-center qty-display" data-id="oven_cleaning">0</span>
+                                <button class="w-8 h-8 rounded-full bg-primary text-white hover:bg-primary-light font-bold btn-plus" data-id="oven_cleaning">+</button>
+                            </div>
+                            <div class="font-bold text-accent total-display" data-id="oven_cleaning">R 0</div>
                         </div>
                     </div>
 
-                    <div class="flex justify-between">
-                        <a href="/booking.html" class="text-primary font-semibold hover:text-accent flex items-center">
-                            <i class="fas fa-arrow-left mr-2"></i> Back to Service Details
-                        </a>
-                        <button id="next-to-summary"
-                                class="bg-gradient-to-r from-primary to-accent text-white px-8 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300">
-                            Continue to Summary <i class="fas fa-arrow-right ml-2"></i>
-                        </button>
+                    <div class="border rounded-lg p-4 hover:border-primary transition-colors flex flex-col justify-between">
+                        <div class="flex justify-between mb-2">
+                            <div><h3 class="font-bold text-primary">Fridge Cleaning</h3><p class="text-xs text-gray-500">Interior wipe down</p></div>
+                            <div class="text-primary font-bold" data-price-key="fridge_cleaning">R 100</div>
+                        </div>
+                        <div class="flex justify-between items-center mt-2">
+                            <div class="flex items-center gap-3">
+                                <button class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 font-bold btn-minus" data-id="fridge_cleaning">-</button>
+                                <span class="font-bold w-4 text-center qty-display" data-id="fridge_cleaning">0</span>
+                                <button class="w-8 h-8 rounded-full bg-primary text-white hover:bg-primary-light font-bold btn-plus" data-id="fridge_cleaning">+</button>
+                            </div>
+                            <div class="font-bold text-accent total-display" data-id="fridge_cleaning">R 0</div>
+                        </div>
                     </div>
+
+                    <div class="border rounded-lg p-4 hover:border-primary transition-colors flex flex-col justify-between">
+                        <div class="flex justify-between mb-2">
+                            <div><h3 class="font-bold text-primary">Laundry Service</h3><p class="text-xs text-gray-500">Wash, dry & fold (per load)</p></div>
+                            <div class="text-primary font-bold" data-price-key="laundry_service">R 80</div>
+                        </div>
+                        <div class="flex justify-between items-center mt-2">
+                            <div class="flex items-center gap-3">
+                                <button class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 font-bold btn-minus" data-id="laundry_service">-</button>
+                                <span class="font-bold w-4 text-center qty-display" data-id="laundry_service">0</span>
+                                <button class="w-8 h-8 rounded-full bg-primary text-white hover:bg-primary-light font-bold btn-plus" data-id="laundry_service">+</button>
+                            </div>
+                            <div class="font-bold text-accent total-display" data-id="laundry_service">R 0</div>
+                        </div>
+                    </div>
+
+                    <div class="border rounded-lg p-4 hover:border-primary transition-colors flex flex-col justify-between">
+                        <div class="flex justify-between mb-2">
+                            <div><h3 class="font-bold text-primary">Carpet Cleaning</h3><p class="text-xs text-gray-500">Deep shampoo (per room)</p></div>
+                            <div class="text-primary font-bold" data-price-key="carpet_cleaning">R 200</div>
+                        </div>
+                        <div class="flex justify-between items-center mt-2">
+                            <div class="flex items-center gap-3">
+                                <button class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 font-bold btn-minus" data-id="carpet_cleaning">-</button>
+                                <span class="font-bold w-4 text-center qty-display" data-id="carpet_cleaning">0</span>
+                                <button class="w-8 h-8 rounded-full bg-primary text-white hover:bg-primary-light font-bold btn-plus" data-id="carpet_cleaning">+</button>
+                            </div>
+                            <div class="font-bold text-accent total-display" data-id="carpet_cleaning">R 0</div>
+                        </div>
+                    </div>
+
+                    <div class="border rounded-lg p-4 hover:border-primary transition-colors flex flex-col justify-between">
+                        <div class="flex justify-between mb-2">
+                            <div><h3 class="font-bold text-primary">Blind Cleaning</h3><p class="text-xs text-gray-500">Dust & wipe (per set)</p></div>
+                            <div class="text-primary font-bold" data-price-key="blind_cleaning">R 120</div>
+                        </div>
+                        <div class="flex justify-between items-center mt-2">
+                            <div class="flex items-center gap-3">
+                                <button class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 font-bold btn-minus" data-id="blind_cleaning">-</button>
+                                <span class="font-bold w-4 text-center qty-display" data-id="blind_cleaning">0</span>
+                                <button class="w-8 h-8 rounded-full bg-primary text-white hover:bg-primary-light font-bold btn-plus" data-id="blind_cleaning">+</button>
+                            </div>
+                            <div class="font-bold text-accent total-display" data-id="blind_cleaning">R 0</div>
+                        </div>
+                    </div>
+
                 </div>
+
+                <div class="bg-gray-50 p-6 rounded-lg mb-8 border border-gray-200">
+                    <h3 class="text-lg font-bold text-primary mb-4">Estimate Summary</h3>
+                    
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Base Service (x<span id="visit-count-disp">1</span>):</span>
+                            <span class="font-semibold" id="base-total">R 0.00</span>
+                        </div>
+                        <div class="flex justify-between text-accent">
+                            <span class="text-gray-600">Add-ons Total:</span>
+                            <span class="font-semibold" id="addons-total">R 0.00</span>
+                        </div>
+                        <div class="border-t border-gray-300 mt-2 pt-2 flex justify-between text-xl font-bold text-primary">
+                            <span>Estimated Total:</span>
+                            <span id="grand-total">R 0.00</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-2">* Add-ons are applied per visit for recurring plans.</p>
+                </div>
+
+                <div class="flex justify-between">
+                    <a href="booking.html" class="text-primary font-bold flex items-center hover:underline"><i class="fas fa-arrow-left mr-2"></i> Back</a>
+                    <button id="next-btn" class="bg-gradient-to-r from-primary to-accent text-white px-8 py-3 rounded-full font-bold hover:shadow-lg transition-all">
+                        Review & Pay <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+
             </div>
         </section>
     </main>
 
     <script>
-        // 🔴 PASTE YOUR WEB APP URL BETWEEN THE QUOTES BELOW
-        const API_URL = 'https://script.google.com/macros/s/AKfycbwzpCsuco5PBE5BxaxQi4mXLPjtaUfS1JaHSe3ZXogQWkTK9Gzz3EeR7JDxDLmWg6aTAQ/exec'; 
+        // 🔴 API URL
+        const API_URL = 'https://script.google.com/macros/s/AKfycbzQZo_rLSS86ZwuioQzdQek621SZh5vlrphB94Kql2nFVu5o_X7-p2lFr4UEHku_zgSqw/exec';
 
-        document.addEventListener('DOMContentLoaded', function() {
-            // 1. Safe Load of Previous Data
-            let bookingData = {};
+        // STATE
+        let visitCount = 1;
+        let bookingData = {};
+        
+        // Prices (Default, updated by API)
+        let prices = {
+            'window_cleaning': 150, 'oven_cleaning': 180, 'fridge_cleaning': 100,
+            'laundry_service': 80, 'carpet_cleaning': 200, 'blind_cleaning': 120
+        };
+
+        // Selection State
+        let cart = {
+            'window_cleaning': 0, 'oven_cleaning': 0, 'fridge_cleaning': 0,
+            'laundry_service': 0, 'carpet_cleaning': 0, 'blind_cleaning': 0
+        };
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 1. Load Data
+            const stored = localStorage.getItem('bookingData');
+            if(!stored) { window.location.href = 'booking.html'; return; }
+            bookingData = JSON.parse(stored);
+            
+            // 2. Set Visit Count
+            visitCount = bookingData.dates ? bookingData.dates.length : 1;
+            document.getElementById('visit-count-disp').textContent = visitCount;
+            document.getElementById('visit-indicator').textContent = `(Applied to ${visitCount} visit${visitCount>1?'s':''})`;
+            document.getElementById('base-total').textContent = `R ${bookingData.baseTotal.toFixed(2)}`;
+
+            // 3. Fetch Real Prices
+            await fetchPrices();
+
+            // 4. Update UI
+            updateTotals();
+
+            // 5. Listeners
+            document.querySelectorAll('.btn-plus').forEach(b => b.addEventListener('click', () => changeQty(b.dataset.id, 1)));
+            document.querySelectorAll('.btn-minus').forEach(b => b.addEventListener('click', () => changeQty(b.dataset.id, -1)));
+            document.getElementById('next-btn').addEventListener('click', saveAndNext);
+        });
+
+        async function fetchPrices() {
             try {
-                bookingData = JSON.parse(localStorage.getItem('bookingData') || '{}');
-            } catch (e) { console.error("Data Load Error", e); }
-
-            // Default Prices (Fallback)
-            let addonPrices = {
-                'window_cleaning': 150,
-                'oven_cleaning': 180,
-                'fridge_cleaning': 100,
-                'laundry_service': 80,
-                'carpet_cleaning': 200,
-                'blind_cleaning': 120
-            };
-
-            // Initialize add-ons data
-            let addons = {
-                window_cleaning: { quantity: 0, total: 0 },
-                oven_cleaning: { quantity: 0, total: 0 },
-                fridge_cleaning: { quantity: 0, total: 0 },
-                laundry_service: { quantity: 0, total: 0 },
-                carpet_cleaning: { quantity: 0, total: 0 },
-                blind_cleaning: { quantity: 0, total: 0 }
-            };
-
-            // 🟢 2. FETCH PRICES FROM SHEET
-            async function fetchAddonPrices() {
-                if (!API_URL || API_URL.includes('PASTE_YOUR')) return;
-                
-                try {
-                    const response = await fetch(API_URL, {
-                        method: 'POST',
-                        body: JSON.stringify({ action: 'get-pricing' })
+                const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'get-pricing' }) });
+                const data = await res.json();
+                if(data.success && data.addons) {
+                    data.addons.forEach(a => {
+                        // Map sheet names (clean format) to IDs
+                        const id = a.name.toLowerCase().replace(/ /g, '_'); 
+                        // Or utilize exact mapping if sheet has IDs
+                        // Assuming sheet returns exact IDs based on v18 logic:
+                        if(prices[a.name]) prices[a.name] = Number(a.price);
                     });
-                    const data = await response.json();
-                    
-                    if (data.success && data.pricing && data.pricing['Addon']) {
-                        const sheetAddons = data.pricing['Addon'];
-                        
-                        // Update Internal Prices and UI Text
-                        Object.keys(addonPrices).forEach(key => {
-                            if (sheetAddons[key]) {
-                                // Update logic price
-                                const newPrice = Number(sheetAddons[key].basePrice);
-                                addonPrices[key] = newPrice;
-
-                                // Update UI display text
-                                const displayEl = document.querySelector(`[data-price-display="${key}"]`);
-                                if (displayEl) {
-                                    // Keep suffix if it exists (like "/hr" or "/room")
-                                    let suffix = '';
-                                    if (key === 'laundry_service') suffix = '/hr';
-                                    if (key === 'carpet_cleaning') suffix = '/room';
-                                    displayEl.textContent = `R ${newPrice}${suffix}`;
-                                }
-                            }
-                        });
-                        console.log("Add-on prices synced from sheet");
-                        // Recalculate totals with new prices
-                        recalculateAllTotals();
+                    // Refresh Display
+                    for(let k in prices) {
+                        const el = document.querySelector(`[data-price-key="${k}"]`);
+                        if(el) el.textContent = `R ${prices[k]}`;
                     }
-                } catch (e) {
-                    console.error("Using default addon prices:", e);
+                }
+            } catch(e) {}
+        }
+
+        function changeQty(id, delta) {
+            const newQty = cart[id] + delta;
+            if(newQty >= 0) {
+                cart[id] = newQty;
+                // Update specific row UI
+                document.querySelector(`.qty-display[data-id="${id}"]`).textContent = newQty;
+                document.querySelector(`.total-display[data-id="${id}"]`).textContent = `R ${newQty * prices[id]}`;
+                updateTotals();
+            }
+        }
+
+        function updateTotals() {
+            let addonSumPerVisit = 0;
+            for(let k in cart) {
+                addonSumPerVisit += (cart[k] * prices[k]);
+            }
+            
+            // Total Addons = (Price * Qty) * VisitCount
+            const totalAddons = addonSumPerVisit * visitCount;
+            const grandTotal = bookingData.baseTotal + totalAddons;
+
+            document.getElementById('addons-total').textContent = `R ${totalAddons.toFixed(2)}`;
+            document.getElementById('grand-total').textContent = `R ${grandTotal.toFixed(2)}`;
+        }
+
+        function saveAndNext() {
+            // Convert Cart {fridge: 2} -> Array ['fridge_cleaning', 'fridge_cleaning']
+            let addonArray = [];
+            for(let k in cart) {
+                for(let i=0; i<cart[k]; i++) {
+                    addonArray.push(k);
                 }
             }
 
-            // Load saved add-ons if any
-            const savedAddons = JSON.parse(localStorage.getItem('bookingAddons') || '{}');
-            if (Object.keys(savedAddons).length > 0) {
-                Object.keys(savedAddons).forEach(k => {
-                    if (addons[k]) addons[k].quantity = savedAddons[k].quantity;
-                });
-            }
+            bookingData.addons = addonArray;
+            bookingData.addonsTotal = parseFloat(document.getElementById('addons-total').textContent.replace('R ',''));
+            bookingData.estimatedGrandTotal = parseFloat(document.getElementById('grand-total').textContent.replace('R ',''));
 
-            // Recalculate everything (useful after fetching new prices)
-            function recalculateAllTotals() {
-                Object.keys(addons).forEach(k => {
-                    addons[k].total = addons[k].quantity * addonPrices[k];
-                });
-                updateAddonsDisplay();
-            }
-
-            // Update price summary
-            function updatePriceSummary() {
-                const basePrice = Number(bookingData.basePrice || 0);
-                const materialsPrice = Number(bookingData.materialsPrice || 0);
-                const emergencySurcharge = Number(bookingData.emergencySurcharge || 0);
-                
-                let addonsTotal = 0;
-                Object.values(addons).forEach(addon => {
-                    addonsTotal += Number(addon.total);
-                });
-
-                const subtotal = basePrice + materialsPrice + emergencySurcharge + addonsTotal;
-
-                const summaryHTML = `
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Base Service:</span>
-                        <span class="font-semibold">R ${basePrice.toFixed(2)}</span>
-                    </div>
-                    ${materialsPrice > 0 ? `
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Materials:</span>
-                        <span class="font-semibold">R ${materialsPrice.toFixed(2)}</span>
-                    </div>` : ''}
-                    ${emergencySurcharge > 0 ? `
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Emergency Surcharge:</span>
-                        <span class="font-semibold">R ${emergencySurcharge.toFixed(2)}</span>
-                    </div>` : ''}
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Add-ons:</span>
-                        <span class="font-semibold">R ${addonsTotal.toFixed(2)}</span>
-                    </div>
-                    <div class="border-t pt-2 mt-2">
-                        <div class="flex justify-between">
-                            <span class="text-gray-600 font-semibold">Subtotal:</span>
-                            <span class="text-primary font-bold text-lg">R ${subtotal.toFixed(2)}</span>
-                        </div>
-                    </div>
-                `;
-
-                document.getElementById('price-summary').innerHTML = summaryHTML;
-
-                // Save to localStorage
-                localStorage.setItem('bookingAddons', JSON.stringify(addons));
-                localStorage.setItem('bookingSubtotal', subtotal.toString());
-            }
-
-            // Update add-ons display
-            function updateAddonsDisplay() {
-                Object.keys(addons).forEach(addonKey => {
-                    const quantityEl = document.querySelector(`.addon-quantity[data-addon="${addonKey}"]`);
-                    const totalEl = document.querySelector(`.addon-total[data-addon="${addonKey}"]`);
-                    
-                    if (quantityEl && totalEl) {
-                        quantityEl.textContent = addons[addonKey].quantity;
-                        totalEl.textContent = `R ${addons[addonKey].total}`;
-                    }
-                });
-                updatePriceSummary();
-            }
-
-            // Handle add-on buttons
-            document.querySelectorAll('.addon-plus').forEach(button => {
-                button.addEventListener('click', function() {
-                    const addonKey = this.getAttribute('data-addon');
-                    if(addons[addonKey]) {
-                        addons[addonKey].quantity++;
-                        addons[addonKey].total = addons[addonKey].quantity * addonPrices[addonKey];
-                        updateAddonsDisplay();
-                    }
-                });
-            });
-
-            document.querySelectorAll('.addon-minus').forEach(button => {
-                button.addEventListener('click', function() {
-                    const addonKey = this.getAttribute('data-addon');
-                    if (addons[addonKey] && addons[addonKey].quantity > 0) {
-                        addons[addonKey].quantity--;
-                        addons[addonKey].total = addons[addonKey].quantity * addonPrices[addonKey];
-                        updateAddonsDisplay();
-                    }
-                });
-            });
-
-            // Next button handler
-            document.getElementById('next-to-summary').addEventListener('click', function() {
-                window.location.href = '/summary.html';
-            });
-
-            // Start Process
-            fetchAddonPrices(); // Fetch fresh prices
-            recalculateAllTotals(); // Calculate with defaults first, then update after fetch
-        });
+            localStorage.setItem('bookingData', JSON.stringify(bookingData));
+            window.location.href = 'summary.html';
+        }
     </script>
-
-    <footer class="bg-black text-white py-8">
-        <div class="container mx-auto px-4">
-            <div class="text-center">
-                <p class="text-gray-400">Need help? Call us at <a href="tel:+27707643709" class="text-accent">070 764 3709</a></p>
-                <div class="mt-4">
-                    <a href="/privacy.html" class="text-gray-400 hover:text-accent text-sm mx-2">Privacy Policy</a>
-                    <a href="/terms.html" class="text-gray-400 hover:text-accent text-sm mx-2">Terms & Conditions</a>
-                </div>
-                <p class="text-gray-500 text-sm mt-4">&copy; 2024 Ngaoyi Cleaning. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="/assets/js/site.js"></script>
 </body>
 </html>
