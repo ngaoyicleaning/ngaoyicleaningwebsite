@@ -31,10 +31,18 @@
         .flatpickr-day.selected { background: #003b6f !important; border-color: #003b6f !important; }
         .disabled-btn { opacity: 0.5; cursor: not-allowed; filter: grayscale(100%); }
         /* Google Autocomplete Styling */
-        .pac-container { border-radius: 8px; margin-top: 5px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 1px solid #e2e8f0; font-family: 'Segoe UI', sans-serif; }
-        .pac-item { padding: 10px; font-size: 14px; cursor: pointer; }
-        .pac-item:hover { background-color: #f1f5f9; }
+        .pac-container { 
+            border-radius: 8px; 
+            margin-top: 5px; 
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); 
+            border: 1px solid #e2e8f0; 
+            font-family: 'Segoe UI', sans-serif; 
+            z-index: 9999 !important; /* Ensure it sits on top */
+        }
+        .pac-item { padding: 10px 15px; font-size: 14px; cursor: pointer; border-top: 1px solid #f1f5f9; }
+        .pac-item:hover { background-color: #f8fafc; }
         .pac-item-query { font-size: 14px; color: #003b6f; font-weight: 600; }
+        .pac-icon { display: none; } /* Hide default icons for cleaner look */
     </style>
 </head>
 <body class="font-sans text-gray-700 bg-gray-50">
@@ -97,10 +105,10 @@
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-1">Service Address *</label>
                                 <div class="relative">
-                                    <i class="fas fa-map-marker-alt absolute left-3 top-3.5 text-gray-400"></i>
-                                    <input type="text" id="address" required 
+                                    <i class="fas fa-map-marker-alt absolute left-3 top-3.5 text-gray-400 z-10"></i>
+                                    <input type="text" id="address" required autocomplete="off"
                                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none transition" 
-                                           placeholder="Start typing your address...">
+                                           placeholder="Type your area (e.g. Sandton)...">
                                 </div>
                                 <p id="address-error" class="text-xs text-red-500 mt-1 hidden font-bold"><i class="fas fa-times-circle"></i> We do not serve this area yet.</p>
                                 <p id="address-success" class="text-xs text-green-600 mt-1 hidden font-bold"><i class="fas fa-check-circle"></i> Location Verified</p>
@@ -173,7 +181,7 @@
                         </div>
                         
                         <div class="text-xs text-gray-500 bg-gray-50 p-2 rounded border border-gray-100 mb-6">
-                            <i class="fas fa-info-circle mr-1"></i> Please note: Ngaoyi Cleaning staff will arrive with equipment. Please ensure you have basic cleaning agents (bleach, polish) unless you selected a Deep Clean.
+                            <i class="fas fa-info-circle mr-1"></i> Please note: Customers are expected to provide basic cleaning supplies (mops, brooms, liquids) for standard cleans.
                         </div>
                     </div>
 
@@ -207,10 +215,14 @@
         </div>
     </footer>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDM4fAVuAB0X5dja_wwIxmu4abB6bTPrXk&libraries=places&callback=initAutocomplete" async defer></script>
+    <script 
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDM4fAVuAB0X5dja_wwIxmu4abB6bTPrXk&libraries=places&callback=initAutocomplete" 
+        async 
+        defer>
+    </script>
 
     <script>
-        // 🔴 API URL
+        // 🔴 YOUR UPDATED SCRIPT URL
         const API_URL = 'https://script.google.com/macros/s/AKfycbycs4Rnz7UOcGtZlKc6pGEiykbCWkqO4UpwsGZU-VrM_e5Qa8oKKmG2k2fejnN43oym/exec';
 
         let sheetPricing = null;
@@ -218,8 +230,12 @@
         let requiredDates = 1;
         let isAddressValid = false;
 
-        // ALLOWED AREAS (Service Check)
-        const ALLOWED_AREAS = ['Johannesburg', 'Pretoria', 'Sandton', 'Midrand', 'Centurion', 'Fourways', 'Randburg', 'Roodepoort', 'Kempton Park', 'Germiston', 'Alberton', 'Edenvale', 'Bedfordview', 'Boksburg', 'Benoni'];
+        // ALLOWED AREAS (Geofencing)
+        const ALLOWED_AREAS = [
+            'Johannesburg', 'Pretoria', 'Sandton', 'Midrand', 'Centurion', 
+            'Fourways', 'Randburg', 'Roodepoort', 'Kempton Park', 'Germiston', 
+            'Alberton', 'Edenvale', 'Bedfordview', 'Boksburg', 'Benoni', 'Soweto'
+        ];
 
         // MAPPINGS
         const serviceMap = {
@@ -241,19 +257,20 @@
             document.getElementById('property-size').addEventListener('change', calculateTotal);
             document.getElementById('next-btn').addEventListener('click', saveAndNext);
             
-            // Disable Enter Key on form
+            // Disable Enter Key on form to prevent premature submission
             document.getElementById('booking-form').addEventListener('keydown', (e) => { if(e.key === 'Enter') e.preventDefault(); });
         });
 
-        // --- GOOGLE MAPS AUTOCOMPLETE & VERIFICATION ---
+        // --- GOOGLE MAPS AUTOCOMPLETE ---
+        // This function matches the &callback=initAutocomplete in the script tag
         function initAutocomplete() {
             const input = document.getElementById("address");
             if (!input) return;
 
             const options = {
-                componentRestrictions: { country: "za" }, // Restrict to South Africa
+                componentRestrictions: { country: "za" }, // Limit to South Africa
                 fields: ["formatted_address", "address_components", "geometry"],
-                types: ["address"]
+                types: ["address"] // Suggest precise addresses
             };
 
             const autocomplete = new google.maps.places.Autocomplete(input, options);
@@ -263,7 +280,7 @@
                 const errorMsg = document.getElementById('address-error');
                 const successMsg = document.getElementById('address-success');
 
-                // 1. Check if valid Google place
+                // 1. Validate if a real place was selected from dropdown
                 if (!place.geometry) {
                     input.classList.add('border-red-500');
                     errorMsg.textContent = "Please select a valid address from the list.";
@@ -274,10 +291,11 @@
                     return;
                 }
 
-                // 2. Check Area (Geofencing via Text Match)
+                // 2. Check Area (Geofencing)
                 let areaFound = false;
                 const fullAddress = place.formatted_address || "";
                 
+                // Check address components for matching cities/suburbs
                 if (place.address_components) {
                     for (const component of place.address_components) {
                         const name = component.long_name;
@@ -288,11 +306,13 @@
                     }
                 }
 
+                // Fallback text check
                 if (!areaFound) {
                     if (ALLOWED_AREAS.some(area => fullAddress.includes(area))) areaFound = true;
                 }
 
                 if (areaFound) {
+                    // Valid Address & Area
                     input.value = fullAddress;
                     input.classList.remove('border-red-500');
                     input.classList.add('border-green-500');
@@ -300,6 +320,7 @@
                     successMsg.classList.remove('hidden');
                     isAddressValid = true;
                 } else {
+                    // Outside Service Area
                     input.classList.add('border-red-500');
                     input.classList.remove('border-green-500');
                     errorMsg.textContent = "Sorry, we do not serve this area yet.";
@@ -311,7 +332,7 @@
             });
         }
 
-        // --- PRICING ---
+        // --- PRICING FETCH ---
         async function fetchPrices() {
             document.getElementById('loading-spinner').classList.remove('hidden');
             try {
@@ -321,11 +342,11 @@
                     sheetPricing = data.pricing;
                     console.log("Prices Loaded");
                 }
-            } catch(e) { console.error(e); }
+            } catch(e) { console.error("Pricing Error:", e); }
             document.getElementById('loading-spinner').classList.add('hidden');
         }
 
-        // --- CALENDAR LOGIC ---
+        // --- CALENDAR & TOTALS ---
         function updateCalendarMode() {
             const type = document.getElementById('service-type').value;
             const input = document.getElementById('calendar-input');
@@ -391,7 +412,6 @@
             calculateTotal();
         }
 
-        // --- TOTAL CALC ---
         function calculateTotal() {
             const sCode = document.getElementById('service-type').value;
             const pCode = document.getElementById('property-size').value;
@@ -403,7 +423,7 @@
             const dates = fpInstance.selectedDates;
             const visitCount = dates.length > 0 ? dates.length : 1; 
 
-            // Get Base Price (Per Visit)
+            // Get Price
             let perVisit = 0;
             if (sheetPricing[sName] && sheetPricing[sName][pName]) {
                 perVisit = Number(sheetPricing[sName][pName].base); 
@@ -414,13 +434,12 @@
             document.getElementById('subtotal').textContent = `R ${total.toFixed(2)}`;
             
             let breakdownText = `R${perVisit} base x ${dates.length || 1} visit(s)`;
-            
             document.getElementById('rate-breakdown').textContent = breakdownText;
 
             validateForm(dates.length === requiredDates, total > 0);
         }
 
-        // --- VALIDATION ---
+        // --- VALIDATION & SAVING ---
         function validateForm(dateValid = false, priceValid = false) {
             const name = document.getElementById('full-name').value;
             const email = document.getElementById('email').value;
@@ -440,12 +459,10 @@
             }
         }
 
-        // Listen for input changes to re-validate
         ['full-name', 'email', 'phone'].forEach(id => {
             document.getElementById(id).addEventListener('input', () => validateForm());
         });
 
-        // --- SAVE ---
         function saveAndNext() {
             const dates = fpInstance.selectedDates.map(d => d.toISOString().split('T')[0]);
             
@@ -458,7 +475,7 @@
                 propertySize: sizeMap[document.getElementById('property-size').value],
                 serviceCode: document.getElementById('service-type').value,
                 propertySizeCode: document.getElementById('property-size').value,
-                materialsOption: 'customer-supply', // Defaulted
+                materialsOption: 'customer-supply',
                 dates: dates,
                 time: document.getElementById('time-slot').value,
                 instructions: document.getElementById('instructions').value,
