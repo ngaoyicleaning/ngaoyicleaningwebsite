@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Cleaning Service | Ngaoyi Cleaning</title>
+    <meta name="description" content="Book professional cleaning services in Gauteng. Secure your slot online.">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -17,27 +18,37 @@
                 extend: {
                     colors: {
                         'primary': '#003b6f',
-                        'accent': '#00c6ff'
+                        'primary-light': '#0056a3',
+                        'accent': '#00c6ff',
+                        'success': '#10b981'
                     },
-                    fontFamily: { 'sans': ['Segoe UI', 'sans-serif'] }
+                    fontFamily: { 'sans': ['Segoe UI', 'Tahoma', 'sans-serif'] }
                 }
             }
         }
     </script>
     <style>
         .flatpickr-day.selected { background: #003b6f !important; border-color: #003b6f !important; }
-        .disabled-btn { opacity: 0.5; cursor: not-allowed; }
+        .disabled-btn { opacity: 0.5; cursor: not-allowed; filter: grayscale(100%); }
+        /* Google Autocomplete Styling */
+        .pac-container { border-radius: 8px; margin-top: 5px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 1px solid #e2e8f0; font-family: 'Segoe UI', sans-serif; }
+        .pac-item { padding: 10px; font-size: 14px; cursor: pointer; }
+        .pac-item:hover { background-color: #f1f5f9; }
+        .pac-item-query { font-size: 14px; color: #003b6f; font-weight: 600; }
     </style>
 </head>
-<body class="font-sans text-gray-700 bg-white">
+<body class="font-sans text-gray-700 bg-gray-50">
     
     <header class="sticky top-0 z-40 bg-white shadow-md">
         <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <img src="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png" class="w-10 h-10">
-                <h1 class="text-2xl font-bold text-primary">Ngaoyi Cleaning</h1>
+                <img src="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png" class="w-10 h-10 object-contain">
+                <div>
+                    <h1 class="text-2xl font-bold text-primary leading-none">Ngaoyi Cleaning</h1>
+                    <p class="text-xs text-gray-500 font-semibold tracking-wide">GAUTENG</p>
+                </div>
             </div>
-            <div class="hidden md:flex space-x-6">
+            <div class="hidden md:flex space-x-6 text-sm font-semibold">
                 <a href="index.html" class="hover:text-primary">Home</a>
                 <a href="services.html" class="hover:text-primary">Services</a>
                 <a href="pricing.html" class="hover:text-primary">Pricing</a>
@@ -48,99 +59,171 @@
     <main class="py-8">
         <div class="container mx-auto px-4 mb-8">
             <div class="flex justify-center items-center text-sm font-bold text-gray-400">
-                <span class="text-primary">1. Details</span>
-                <span class="mx-4 text-gray-300">----------</span>
+                <span class="text-primary border-b-2 border-primary pb-1">1. Booking Details</span>
+                <span class="mx-4 text-gray-300"><i class="fas fa-chevron-right"></i></span>
                 <span>2. Add-ons</span>
-                <span class="mx-4 text-gray-300">----------</span>
-                <span>3. Pay</span>
+                <span class="mx-4 text-gray-300"><i class="fas fa-chevron-right"></i></span>
+                <span>3. Payment</span>
             </div>
         </div>
 
         <section class="container mx-auto px-4 max-w-4xl">
-            <form id="booking-form" class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+                <div class="bg-primary px-6 py-4">
+                    <h1 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fas fa-calendar-alt"></i> Schedule Your Clean
+                    </h1>
+                    <p class="text-blue-200 text-sm">We serve Johannesburg, Pretoria, Sandton, Midrand, Centurion & surrounds.</p>
+                </div>
                 
-                <h2 class="text-xl font-bold text-primary mb-4 border-b pb-2">1. Contact Details</h2>
-                <div class="grid md:grid-cols-2 gap-6 mb-8">
-                    <div><label class="block mb-1 font-semibold">Full Name *</label><input type="text" id="full-name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary outline-none"></div>
-                    <div><label class="block mb-1 font-semibold">Email *</label><input type="email" id="email" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary outline-none"></div>
-                    <div><label class="block mb-1 font-semibold">Phone *</label><input type="tel" id="phone" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary outline-none"></div>
-                    <div><label class="block mb-1 font-semibold">Address *</label><input type="text" id="address" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="Street & Area"></div>
-                </div>
-
-                <h2 class="text-xl font-bold text-primary mb-4 border-b pb-2">2. Service Selection</h2>
-                <div class="grid md:grid-cols-2 gap-6 mb-6">
-                    <div>
-                        <label class="block mb-1 font-semibold">Plan *</label>
-                        <select id="service-type" class="w-full p-3 border rounded-lg bg-white">
-                            <option value="">-- Select Plan --</option>
-                            <option value="weekly">Weekly Recurring (4 Dates)</option>
-                            <option value="biweekly">Bi-weekly Recurring (2 Dates)</option>
-                            <option value="monthly">Monthly Recurring (1 Date)</option>
-                            <option value="once-off">Once-Off Cleaning</option>
-                            <option value="deep">Deep Cleaning</option>
-                            <option value="emergency">Emergency Service</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block mb-1 font-semibold">Size *</label>
-                        <select id="property-size" class="w-full p-3 border rounded-lg bg-white">
-                            <option value="">-- Select Size --</option>
-                            <option value="1-bed">1-Bedroom</option>
-                            <option value="2-bed">2-Bedroom</option>
-                            <option value="3-bed">3-Bedroom</option>
-                            <option value="4-bed">4-Bedroom</option>
-                            <option value="office">Office/Commercial</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
-                    <div class="flex justify-between mb-2">
-                        <label class="font-bold text-primary">Select Date(s) *</label>
-                        <span id="date-counter" class="text-xs font-bold text-primary bg-white px-2 py-1 rounded shadow hidden">0 selected</span>
-                    </div>
+                <form id="booking-form" class="p-6 md:p-8">
                     
-                    <input type="text" id="calendar-input" class="w-full p-3 border rounded-lg bg-white cursor-pointer" placeholder="Select Service first..." disabled>
-                    <p id="calendar-hint" class="text-xs text-gray-500 mt-2">Select a plan to enable the calendar.</p>
-                </div>
-
-                <div class="mb-8">
-                    <label class="block mb-1 font-semibold">Time *</label>
-                    <select id="time-slot" class="w-full p-3 border rounded-lg bg-white">
-                        <option value="08:00">08:00</option><option value="09:00">09:00</option><option value="10:00">10:00</option>
-                        <option value="11:00">11:00</option><option value="12:00">12:00</option><option value="13:00">13:00</option>
-                    </select>
-                </div>
-
-                <div class="bg-gray-900 text-white p-6 rounded-xl mb-8 flex justify-between items-center">
-                    <div>
-                        <p class="text-gray-400 text-sm">Estimated Total</p>
-                        <h3 class="text-2xl font-bold" id="subtotal">R 0.00</h3>
-                        <p class="text-xs text-gray-500" id="rate-breakdown">Rate: R0 x 0 visits</p>
+                    <div class="mb-8">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Contact Information</h2>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Full Name *</label>
+                                <input type="text" id="full-name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none transition" placeholder="John Doe">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Email Address *</label>
+                                <input type="email" id="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none transition" placeholder="john@example.com">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Phone Number *</label>
+                                <input type="tel" id="phone" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none transition" placeholder="072 123 4567">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Service Address *</label>
+                                <div class="relative">
+                                    <i class="fas fa-map-marker-alt absolute left-3 top-3.5 text-gray-400"></i>
+                                    <input type="text" id="address" required 
+                                           class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none transition" 
+                                           placeholder="Start typing your address...">
+                                </div>
+                                <p id="address-error" class="text-xs text-red-500 mt-1 hidden font-bold"><i class="fas fa-times-circle"></i> We do not serve this area yet.</p>
+                                <p id="address-success" class="text-xs text-green-600 mt-1 hidden font-bold"><i class="fas fa-check-circle"></i> Location Verified</p>
+                            </div>
+                        </div>
                     </div>
-                    <div id="loading-spinner" class="hidden text-accent"><i class="fas fa-circle-notch fa-spin text-2xl"></i></div>
-                </div>
 
-                <div class="flex justify-end">
-                    <button type="button" id="next-btn" class="bg-accent hover:bg-blue-400 text-white px-8 py-3 rounded-full font-bold shadow-lg transition-all disabled-btn" disabled>
-                        Next Step <i class="fas fa-arrow-right ml-2"></i>
-                    </button>
-                </div>
-            </form>
+                    <div class="mb-8">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Service Details</h2>
+                        
+                        <div class="grid md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Service Plan *</label>
+                                <select id="service-type" class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-primary">
+                                    <option value="">Select a Plan...</option>
+                                    <option value="weekly">Weekly Recurring (4 Visits/Month)</option>
+                                    <option value="biweekly">Bi-weekly Recurring (2 Visits/Month)</option>
+                                    <option value="monthly">Monthly Recurring (1 Visit/Month)</option>
+                                    <option value="once-off">Once-Off / Spring Clean</option>
+                                    <option value="deep">Deep Cleaning (Intensive)</option>
+                                    <option value="emergency">Emergency Service</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Property Size *</label>
+                                <select id="property-size" class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-primary">
+                                    <option value="">Select Size...</option>
+                                    <option value="1-bed">1-Bedroom</option>
+                                    <option value="2-bed">2-Bedroom</option>
+                                    <option value="3-bed">3-Bedroom</option>
+                                    <option value="4-bed">4-Bedroom</option>
+                                    <option value="office">Office/Commercial</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-6 p-5 bg-blue-50 rounded-xl border border-blue-100 transition-all" id="calendar-wrapper">
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-sm font-bold text-primary">Select Date(s) *</label>
+                                <span id="date-counter" class="text-xs font-bold text-white bg-primary px-2 py-1 rounded hidden">0 Selected</span>
+                            </div>
+                            
+                            <div class="relative">
+                                <i class="fas fa-calendar-alt absolute left-3 top-3.5 text-gray-400"></i>
+                                <input type="text" id="calendar-input" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg bg-white cursor-pointer focus:ring-2 focus:ring-primary" placeholder="Choose a plan to unlock calendar" disabled>
+                            </div>
+                            
+                            <p id="calendar-hint" class="text-xs text-gray-500 mt-2 flex items-center gap-1">
+                                <i class="fas fa-info-circle"></i> Please select a service plan first.
+                            </p>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Start Time *</label>
+                                <select id="time-slot" class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-primary">
+                                    <option value="08:00">08:00 AM</option>
+                                    <option value="09:00">09:00 AM</option>
+                                    <option value="10:00">10:00 AM</option>
+                                    <option value="11:00">11:00 AM</option>
+                                    <option value="12:00">12:00 PM</option>
+                                    <option value="13:00">01:00 PM</option>
+                                    <option value="14:00">02:00 PM</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Supplies Needed? *</label>
+                                <select id="supplies" class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-primary">
+                                    <option value="customer-supply">I have supplies (Mops, brooms, chemicals)</option>
+                                    <option value="we_supply">Ngaoyi Supplies (+R150 per visit)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1">Access Notes</label>
+                            <textarea id="instructions" rows="2" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="Gate codes, key location, pets, specific focus areas..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 text-white p-6 rounded-xl flex flex-col md:flex-row justify-between items-center shadow-lg">
+                        <div class="mb-4 md:mb-0">
+                            <p class="text-gray-400 text-xs uppercase font-bold tracking-wider">Estimated Total</p>
+                            <div class="flex items-baseline gap-2">
+                                <h3 class="text-3xl font-bold" id="subtotal">R 0.00</h3>
+                                <span class="text-sm text-gray-400 font-medium" id="rate-breakdown"></span>
+                            </div>
+                        </div>
+                        
+                        <div id="loading-spinner" class="hidden text-accent mr-4">
+                            <i class="fas fa-circle-notch fa-spin text-2xl"></i> Syncing...
+                        </div>
+
+                        <button type="button" id="next-btn" class="bg-accent hover:bg-cyan-400 text-white px-8 py-3 rounded-full font-bold shadow-lg transition-all transform hover:-translate-y-1 disabled-btn" disabled>
+                            Next Step <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+
+                </form>
+            </div>
         </section>
     </main>
 
-    <footer class="bg-black text-white py-8 text-center">
-        <p>&copy; 2024 Ngaoyi Cleaning. <a href="tel:0707643709" class="text-accent">070 764 3709</a></p>
+    <footer class="bg-slate-900 text-white py-8 text-center border-t border-slate-800">
+        <div class="container mx-auto px-4">
+            <p class="text-gray-400 text-sm">Need assistance? Call <a href="tel:0707643709" class="text-accent font-bold">070 764 3709</a></p>
+            <p class="text-gray-600 text-xs mt-4">&copy; 2025 Ngaoyi Cleaning. All rights reserved.</p>
+        </div>
     </footer>
 
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDM4fAVuAB0X5dja_wwIxmu4abB6bTPrXk&libraries=places&callback=initAutocomplete" async defer></script>
+
     <script>
-        // 🔴 API CONFIGURATION
+        // 🔴 API URL
         const API_URL = 'https://script.google.com/macros/s/AKfycbzQZo_rLSS86ZwuioQzdQek621SZh5vlrphB94Kql2nFVu5o_X7-p2lFr4UEHku_zgSqw/exec';
 
         let sheetPricing = null;
         let fpInstance = null;
         let requiredDates = 1;
+        let isAddressValid = false;
+
+        // ALLOWED AREAS (Service Check)
+        const ALLOWED_AREAS = ['Johannesburg', 'Pretoria', 'Sandton', 'Midrand', 'Centurion', 'Fourways', 'Randburg', 'Roodepoort', 'Kempton Park', 'Germiston', 'Alberton', 'Edenvale', 'Bedfordview', 'Boksburg', 'Benoni'];
 
         // MAPPINGS
         const serviceMap = {
@@ -153,16 +236,92 @@
         };
         const sizeMap = { '1-bed': '1-Bedroom', '2-bed': '2-Bedroom', '3-bed': '3-Bedroom', '4-bed': '4-Bedroom', 'office': 'Office/Commercial' };
 
+        // --- INIT ---
         document.addEventListener('DOMContentLoaded', async () => {
             await fetchPrices();
             
             // Listeners
             document.getElementById('service-type').addEventListener('change', updateCalendarMode);
             document.getElementById('property-size').addEventListener('change', calculateTotal);
+            document.getElementById('supplies').addEventListener('change', calculateTotal);
             document.getElementById('next-btn').addEventListener('click', saveAndNext);
+            
+            // Disable Enter Key on form
+            document.getElementById('booking-form').addEventListener('keydown', (e) => { if(e.key === 'Enter') e.preventDefault(); });
         });
 
-        // 1. FETCH PRICES
+        // --- GOOGLE MAPS AUTOCOMPLETE & VERIFICATION ---
+        function initAutocomplete() {
+            const input = document.getElementById("address");
+            if (!input) return;
+
+            const options = {
+                componentRestrictions: { country: "za" }, // Restrict to South Africa
+                fields: ["formatted_address", "address_components", "geometry"],
+                types: ["address"]
+            };
+
+            const autocomplete = new google.maps.places.Autocomplete(input, options);
+
+            autocomplete.addListener("place_changed", () => {
+                const place = autocomplete.getPlace();
+                const errorMsg = document.getElementById('address-error');
+                const successMsg = document.getElementById('address-success');
+
+                // 1. Check if valid Google place
+                if (!place.geometry) {
+                    input.classList.add('border-red-500');
+                    errorMsg.textContent = "Please select a valid address from the list.";
+                    errorMsg.classList.remove('hidden');
+                    successMsg.classList.add('hidden');
+                    isAddressValid = false;
+                    validateForm();
+                    return;
+                }
+
+                // 2. Check Area (Geofencing via Text Match)
+                let areaFound = false;
+                const fullAddress = place.formatted_address || "";
+                
+                // Check address components for city/suburb match
+                if (place.address_components) {
+                    for (const component of place.address_components) {
+                        const name = component.long_name;
+                        // Check against whitelist
+                        if (ALLOWED_AREAS.some(area => name.includes(area))) {
+                            areaFound = true;
+                            break;
+                        }
+                    }
+                }
+
+                // Fallback: Check full string if component check fails (sometimes data is messy)
+                if (!areaFound) {
+                    if (ALLOWED_AREAS.some(area => fullAddress.includes(area))) areaFound = true;
+                }
+
+                if (areaFound) {
+                    // Valid
+                    input.value = fullAddress;
+                    input.classList.remove('border-red-500');
+                    input.classList.add('border-green-500');
+                    errorMsg.classList.add('hidden');
+                    successMsg.classList.remove('hidden');
+                    isAddressValid = true;
+                } else {
+                    // Invalid Area
+                    input.classList.add('border-red-500');
+                    input.classList.remove('border-green-500');
+                    errorMsg.textContent = "Sorry, we do not serve this area yet.";
+                    errorMsg.classList.remove('hidden');
+                    successMsg.classList.add('hidden');
+                    isAddressValid = false;
+                }
+                validateForm();
+            });
+        }
+
+        // --- PRICING ---
         async function fetchPrices() {
             document.getElementById('loading-spinner').classList.remove('hidden');
             try {
@@ -176,7 +335,7 @@
             document.getElementById('loading-spinner').classList.add('hidden');
         }
 
-        // 2. SMART CALENDAR LOGIC
+        // --- CALENDAR LOGIC ---
         function updateCalendarMode() {
             const type = document.getElementById('service-type').value;
             const input = document.getElementById('calendar-input');
@@ -185,80 +344,77 @@
 
             if(!type) {
                 input.disabled = true;
+                input.placeholder = "Choose a plan to unlock calendar";
                 if(fpInstance) fpInstance.clear();
                 return;
             }
 
             input.disabled = false;
+            input.placeholder = "Click to select dates...";
             
-            // Define Rules
             let mode = 'single';
             let maxDates = 1;
             
             if (type === 'weekly') {
-                mode = 'multiple';
-                maxDates = 4;
-                requiredDates = 4;
-                hint.textContent = "Please select exactly 4 dates within the next month.";
+                mode = 'multiple'; maxDates = 4; requiredDates = 4;
+                hint.innerHTML = `<i class="fas fa-exclamation-circle text-primary"></i> Please select exactly <b>4 dates</b>.`;
                 counter.classList.remove('hidden');
             } else if (type === 'biweekly') {
-                mode = 'multiple';
-                maxDates = 2;
-                requiredDates = 2;
-                hint.textContent = "Please select exactly 2 dates within the next month.";
+                mode = 'multiple'; maxDates = 2; requiredDates = 2;
+                hint.innerHTML = `<i class="fas fa-exclamation-circle text-primary"></i> Please select exactly <b>2 dates</b>.`;
                 counter.classList.remove('hidden');
             } else {
-                // Monthly, Once-Off, Deep, Emergency -> Single Date
-                mode = 'single';
-                maxDates = 1;
-                requiredDates = 1;
-                hint.textContent = "Please select your preferred service date.";
+                mode = 'single'; maxDates = 1; requiredDates = 1;
+                hint.textContent = "Please select your preferred date.";
                 counter.classList.add('hidden');
             }
 
-            // Destroy old instance to change mode
             if(fpInstance) fpInstance.destroy();
 
-            // Init New Flatpickr
             fpInstance = flatpickr("#calendar-input", {
                 mode: mode,
                 minDate: "today",
-                maxDate: new Date().fp_incr(30), // Limit to 1 month from today
+                maxDate: new Date().fp_incr(60), // 2 Months limit
                 dateFormat: "Y-m-d",
                 conjunction: ", ",
-                maxDate: new Date().fp_incr(31), // Limit to 31 days ahead
                 onChange: function(selectedDates) {
-                    // Enforce Limits manually for cleaner UI interaction
                     if (mode === 'multiple' && selectedDates.length > maxDates) {
-                        this.clear(); // Or remove last
-                        alert(`You can only select ${maxDates} dates for this plan.`);
+                        selectedDates.pop(); // Remove last
+                        this.setDate(selectedDates); // Update UI
+                        alert(`Maximum ${maxDates} dates allowed for this plan.`);
                         return;
                     }
                     
-                    // Update UI
-                    document.getElementById('date-counter').textContent = `${selectedDates.length}/${requiredDates} selected`;
-                    calculateTotal();
+                    document.getElementById('date-counter').textContent = `${selectedDates.length}/${requiredDates} Selected`;
                     
-                    // Validate
+                    // Visual Validation
                     if (selectedDates.length === requiredDates) {
-                        input.style.borderColor = '#10b981'; // Green
+                        input.classList.add('border-green-500');
+                        input.classList.remove('border-gray-300', 'border-red-500');
                     } else {
-                        input.style.borderColor = '#ef4444'; // Red
+                        input.classList.remove('border-green-500');
+                        // Only show red if they picked SOME but not enough
+                        if(selectedDates.length > 0) input.classList.add('border-red-500');
                     }
+                    
+                    calculateTotal();
                 }
             });
+            calculateTotal();
         }
 
-        // 3. CALCULATE TOTAL
+        // --- TOTAL CALC ---
         function calculateTotal() {
             const sCode = document.getElementById('service-type').value;
             const pCode = document.getElementById('property-size').value;
+            const supply = document.getElementById('supplies').value;
             
             if(!sCode || !pCode || !sheetPricing || !fpInstance) return;
 
             const sName = serviceMap[sCode];
             const pName = sizeMap[pCode];
             const dates = fpInstance.selectedDates;
+            const visitCount = dates.length > 0 ? dates.length : 1; // Default to 1 for calculation visual
 
             // Get Base Price (Per Visit)
             let perVisit = 0;
@@ -266,20 +422,37 @@
                 perVisit = Number(sheetPricing[sName][pName].base); 
             }
 
-            // Emergency Multiplier
-            if (sCode === 'emergency') perVisit = perVisit; // Logic handled in backend usually, or apply here: perVisit * 1.5
+            // Supply Cost (+R150 per visit)
+            let supplyCost = 0;
+            if (supply === 'we_supply') supplyCost = 150;
 
-            const total = perVisit * dates.length;
+            const ratePerVisit = perVisit + supplyCost;
+            const total = ratePerVisit * visitCount;
 
             document.getElementById('subtotal').textContent = `R ${total.toFixed(2)}`;
-            document.getElementById('rate-breakdown').textContent = `Rate: R${perVisit} x ${dates.length} visit(s)`;
+            
+            let breakdownText = `R${perVisit} base`;
+            if(supplyCost > 0) breakdownText += ` + R150 supplies`;
+            breakdownText += ` x ${dates.length || 1} visit(s)`;
+            
+            document.getElementById('rate-breakdown').textContent = breakdownText;
 
-            // Enable Button
+            validateForm(dates.length === requiredDates, total > 0);
+        }
+
+        // --- VALIDATION ---
+        function validateForm(dateValid = false, priceValid = false) {
+            const name = document.getElementById('full-name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
             const btn = document.getElementById('next-btn');
-            const validDates = dates.length === requiredDates;
-            const validInfo = document.getElementById('full-name').value !== "";
 
-            if (validDates && total > 0 && validInfo) {
+            // Force date check if not passed
+            if (!dateValid && fpInstance) {
+                dateValid = fpInstance.selectedDates.length === requiredDates;
+            }
+
+            if (isAddressValid && dateValid && name && email && phone) {
                 btn.disabled = false;
                 btn.classList.remove('disabled-btn');
             } else {
@@ -288,13 +461,13 @@
             }
         }
 
-        // 4. SAVE & NEXT
-        function saveAndNext() {
-            const requiredIds = ['full-name', 'email', 'phone', 'address'];
-            for(let id of requiredIds) {
-                if(!document.getElementById(id).value) { alert("Please fill in all contact fields."); return; }
-            }
+        // Listen for input changes to re-validate
+        ['full-name', 'email', 'phone'].forEach(id => {
+            document.getElementById(id).addEventListener('input', () => validateForm());
+        });
 
+        // --- SAVE ---
+        function saveAndNext() {
             const dates = fpInstance.selectedDates.map(d => d.toISOString().split('T')[0]);
             
             const bookingData = {
@@ -306,8 +479,10 @@
                 propertySize: sizeMap[document.getElementById('property-size').value],
                 serviceCode: document.getElementById('service-type').value,
                 propertySizeCode: document.getElementById('property-size').value,
-                dates: dates, // Array
+                materialsOption: document.getElementById('supplies').value,
+                dates: dates,
                 time: document.getElementById('time-slot').value,
+                instructions: document.getElementById('instructions').value,
                 baseTotal: parseFloat(document.getElementById('subtotal').textContent.replace('R ',''))
             };
 
