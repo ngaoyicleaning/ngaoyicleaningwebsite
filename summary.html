@@ -25,10 +25,12 @@
     <style>
         .spinner { border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid #fff; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .receipt-row { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.9rem; }
+        
+        .receipt-row { display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.9rem; align-items: center; }
         .receipt-row:last-child { border-bottom: none; }
-        .receipt-label { color: #64748b; }
-        .receipt-value { font-weight: 600; color: #1e293b; }
+        .receipt-label { color: #64748b; font-weight: 500; }
+        .receipt-value { font-weight: 700; color: #1e293b; text-align: right; }
+        .receipt-sub { font-size: 0.75rem; color: #94a3b8; font-weight: normal; display: block; margin-top: 2px; }
     </style>
 </head>
 <body class="font-sans text-slate-800 bg-gray-50">
@@ -48,16 +50,10 @@
     <main class="py-8">
         <div class="container mx-auto px-4 mb-8">
             <div class="flex justify-center items-center text-sm font-bold">
-                <a href="booking.html" class="text-success hover:text-green-600 flex items-center gap-1 transition">
-                    <i class="fas fa-check-circle"></i> 1. Details
-                </a>
+                <a href="booking.html" class="text-success hover:text-green-600 flex items-center gap-1 transition"><i class="fas fa-check-circle"></i> 1. Details</a>
                 <span class="mx-4 text-gray-300"><i class="fas fa-chevron-right"></i></span>
-                
-                <a href="booking-addons.html" class="text-success hover:text-green-600 flex items-center gap-1 transition">
-                    <i class="fas fa-check-circle"></i> 2. Add-ons
-                </a>
+                <a href="booking-addons.html" class="text-success hover:text-green-600 flex items-center gap-1 transition"><i class="fas fa-check-circle"></i> 2. Add-ons</a>
                 <span class="mx-4 text-gray-300"><i class="fas fa-chevron-right"></i></span>
-                
                 <span class="text-primary border-b-2 border-primary pb-1">3. Payment</span>
             </div>
         </div>
@@ -71,33 +67,19 @@
 
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                         <div class="bg-blue-50 px-6 py-4 border-b border-blue-100 flex justify-between items-center">
-                            <h2 class="font-bold text-primary flex items-center gap-2">
-                                <i class="fas fa-calendar-check"></i> Service Schedule
-                            </h2>
+                            <h2 class="font-bold text-primary flex items-center gap-2"><i class="fas fa-calendar-check"></i> Service Schedule</h2>
                             <a href="booking.html" class="text-xs text-blue-600 hover:underline font-bold">Edit</a>
                         </div>
                         <div class="p-6 grid md:grid-cols-2 gap-6">
-                            <div>
-                                <p class="text-xs text-gray-400 uppercase font-bold mb-1">Plan</p>
-                                <p id="sum-service" class="font-bold text-gray-800 text-lg">-</p>
-                                <p id="sum-size" class="text-sm text-gray-500">-</p>
-                            </div>
-                            <div>
-                                <p class="text-xs text-gray-400 uppercase font-bold mb-1">Time Slot</p>
-                                <p id="sum-time" class="font-bold text-gray-800 text-lg">-</p>
-                            </div>
-                            <div class="md:col-span-2">
-                                <p class="text-xs text-gray-400 uppercase font-bold mb-2">Selected Dates</p>
-                                <div id="sum-dates-list" class="flex flex-wrap gap-2"></div>
-                            </div>
+                            <div><p class="text-xs text-gray-400 uppercase font-bold mb-1">Plan</p><p id="sum-service" class="font-bold text-gray-800 text-lg">-</p><p id="sum-size" class="text-sm text-gray-500">-</p></div>
+                            <div><p class="text-xs text-gray-400 uppercase font-bold mb-1">Time Slot</p><p id="sum-time" class="font-bold text-gray-800 text-lg">-</p></div>
+                            <div class="md:col-span-2"><p class="text-xs text-gray-400 uppercase font-bold mb-2">Selected Dates</p><div id="sum-dates-list" class="flex flex-wrap gap-2"></div></div>
                         </div>
                     </div>
 
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                         <div class="bg-gray-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center">
-                            <h2 class="font-bold text-gray-700 flex items-center gap-2">
-                                <i class="fas fa-user"></i> Contact & Location
-                            </h2>
+                            <h2 class="font-bold text-gray-700 flex items-center gap-2"><i class="fas fa-user"></i> Contact & Location</h2>
                             <a href="booking.html" class="text-xs text-blue-600 hover:underline font-bold">Edit</a>
                         </div>
                         <div class="p-6 grid md:grid-cols-2 gap-6">
@@ -117,7 +99,21 @@
                         </div>
                         
                         <div class="p-6 space-y-4">
-                            <div id="receipt-body"></div>
+                            <div id="receipt-body">
+                                </div>
+
+                            <div class="border-t border-gray-100 pt-3 space-y-2">
+                                <div class="receipt-row">
+                                    <span class="receipt-label">Assigned Cleaner</span>
+                                    <span class="receipt-value text-orange-500 text-sm">
+                                        <i class="fas fa-clock mr-1"></i> To be assigned
+                                    </span>
+                                </div>
+                                <div class="receipt-row">
+                                    <span class="receipt-label">Payment Status</span>
+                                    <span class="receipt-value text-red-500 text-sm">Unpaid</span>
+                                </div>
+                            </div>
 
                             <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 mt-4">
                                 <label class="text-xs font-bold text-gray-400 uppercase mb-2 block">Promo Code</label>
@@ -154,7 +150,7 @@
     </main>
 
     <script>
-        // 🔴 API URL
+        // 🔴 PASTE YOUR API URL
         const API_URL = "https://script.google.com/macros/s/AKfycbzQZo_rLSS86ZwuioQzdQek621SZh5vlrphB94Kql2nFVu5o_X7-p2lFr4UEHku_zgSqw/exec";
 
         let bookingData = {};
@@ -203,35 +199,42 @@
             const container = document.getElementById('receipt-body');
             let html = '';
 
-            // Base Plan
             const visitCount = bookingData.dates ? bookingData.dates.length : 1;
             const ratePerVisit = bookingData.baseTotal / visitCount; 
             
-            html += createRow('Base Cleaning Plan', `R ${bookingData.baseTotal.toFixed(2)}`);
-            html += `<div class="text-xs text-gray-400 text-right mb-2 mt-[-4px]">(${visitCount} visits @ R${ratePerVisit.toFixed(0)})</div>`;
+            // Base Plan Row
+            html += `
+                <div class="receipt-row">
+                    <span class="receipt-label">Cleaning Plan<span class="receipt-sub">${bookingData.propertySize} (${visitCount} visits)</span></span>
+                    <span class="receipt-value">R ${bookingData.baseTotal.toFixed(2)}</span>
+                </div>`;
 
-            // Add-ons
+            // Add-ons Rows
             let addonsTotal = 0;
             if(bookingData.addonsDetails) {
                 Object.keys(bookingData.addonsDetails).forEach(key => {
                     const item = bookingData.addonsDetails[key];
                     if(item.quantity > 0) {
                         const name = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-                        html += createRow(`${name} (x${item.quantity})`, `R ${item.total.toFixed(2)}`);
+                        html += `
+                            <div class="receipt-row">
+                                <span class="receipt-label">${name} <span class="receipt-sub">x${item.quantity}</span></span>
+                                <span class="receipt-value">R ${item.total.toFixed(2)}</span>
+                            </div>`;
                         addonsTotal += item.total;
                     }
                 });
             }
 
-            // Surcharge
+            const matPrice = Number(bookingData.materialsPrice || 0);
+            if(matPrice > 0) html += createRow('Cleaning Materials', `R ${matPrice.toFixed(2)}`);
+
             const surgPrice = Number(bookingData.emergencySurcharge || 0);
             if(surgPrice > 0) html += createRow('Emergency Surcharge', `R ${surgPrice.toFixed(2)}`);
 
-            // Subtotal
-            const subtotal = bookingData.baseTotal + addonsTotal + surgPrice;
+            const subtotal = bookingData.baseTotal + addonsTotal + matPrice + surgPrice;
             html += `<div class="border-t border-gray-200 my-2"></div>`;
             
-            // Discount
             if(appliedDiscount) {
                 html += createRow('Subtotal', `R ${subtotal.toFixed(2)}`);
                 html += `
@@ -260,7 +263,6 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             
             try {
-                // Calculate raw subtotal
                 const rawTotal = currentTotal + (appliedDiscount ? appliedDiscount.amount : 0);
                 const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'apply-discount', discountCode: code, subtotal: rawTotal }) });
                 const data = await res.json();
