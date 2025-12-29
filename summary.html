@@ -130,8 +130,8 @@
                             </div>
 
                             <div class="text-xs text-gray-500 flex items-start gap-2 pt-2">
-                                <input type="checkbox" id="terms" class="mt-1">
-                                <label for="terms" class="cursor-pointer">I agree to the <a href="#" class="text-blue-600 underline">Terms of Service</a> & Cancellation Policy.</label>
+                                <input type="checkbox" id="terms" class="mt-1 flex-shrink-0">
+                                <label for="terms" class="cursor-pointer">I agree to the <a href="terms.html" target="_blank" class="text-blue-600 underline hover:text-blue-800">Terms of Service</a> & <a href="privacy.html" target="_blank" class="text-blue-600 underline hover:text-blue-800">Privacy Policy</a>.</label>
                             </div>
 
                             <button id="pay-btn" disabled class="w-full bg-accent hover:bg-cyan-400 text-white py-4 rounded-lg font-bold text-lg shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2">
@@ -150,7 +150,7 @@
     </main>
 
     <script>
-        // 🔴 PASTE YOUR API URL
+        // 🔴 UPDATED API URL
         const API_URL = "https://script.google.com/macros/s/AKfycbzQZo_rLSS86ZwuioQzdQek621SZh5vlrphB94Kql2nFVu5o_X7-p2lFr4UEHku_zgSqw/exec";
 
         let bookingData = {};
