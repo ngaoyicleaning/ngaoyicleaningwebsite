@@ -167,17 +167,13 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-1">Supplies Needed? *</label>
-                                <select id="supplies" class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-primary">
-                                    <option value="customer-supply">I have supplies (Mops, brooms, chemicals)</option>
-                                    <option value="we_supply">Ngaoyi Supplies (+R150 per visit)</option>
-                                </select>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Access Notes</label>
+                                <textarea id="instructions" rows="1" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="Gate codes, key location..."></textarea>
                             </div>
                         </div>
-
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Access Notes</label>
-                            <textarea id="instructions" rows="2" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="Gate codes, key location, pets, specific focus areas..."></textarea>
+                        
+                        <div class="text-xs text-gray-500 bg-gray-50 p-2 rounded border border-gray-100 mb-6">
+                            <i class="fas fa-info-circle mr-1"></i> Please note: Ngaoyi Cleaning staff will arrive with equipment. Please ensure you have basic cleaning agents (bleach, polish) unless you selected a Deep Clean.
                         </div>
                     </div>
 
@@ -211,7 +207,7 @@
         </div>
     </footer>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDM4fAVuAB0X5dja_wwIxmu4abB6bTPrXk&libraries=places&callback=initAutocomplete" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_API_KEY&libraries=places&callback=initAutocomplete" async defer></script>
 
     <script>
         // 🔴 API URL
@@ -243,7 +239,6 @@
             // Listeners
             document.getElementById('service-type').addEventListener('change', updateCalendarMode);
             document.getElementById('property-size').addEventListener('change', calculateTotal);
-            document.getElementById('supplies').addEventListener('change', calculateTotal);
             document.getElementById('next-btn').addEventListener('click', saveAndNext);
             
             // Disable Enter Key on form
@@ -283,11 +278,9 @@
                 let areaFound = false;
                 const fullAddress = place.formatted_address || "";
                 
-                // Check address components for city/suburb match
                 if (place.address_components) {
                     for (const component of place.address_components) {
                         const name = component.long_name;
-                        // Check against whitelist
                         if (ALLOWED_AREAS.some(area => name.includes(area))) {
                             areaFound = true;
                             break;
@@ -295,13 +288,11 @@
                     }
                 }
 
-                // Fallback: Check full string if component check fails (sometimes data is messy)
                 if (!areaFound) {
                     if (ALLOWED_AREAS.some(area => fullAddress.includes(area))) areaFound = true;
                 }
 
                 if (areaFound) {
-                    // Valid
                     input.value = fullAddress;
                     input.classList.remove('border-red-500');
                     input.classList.add('border-green-500');
@@ -309,7 +300,6 @@
                     successMsg.classList.remove('hidden');
                     isAddressValid = true;
                 } else {
-                    // Invalid Area
                     input.classList.add('border-red-500');
                     input.classList.remove('border-green-500');
                     errorMsg.textContent = "Sorry, we do not serve this area yet.";
@@ -374,26 +364,24 @@
             fpInstance = flatpickr("#calendar-input", {
                 mode: mode,
                 minDate: "today",
-                maxDate: new Date().fp_incr(60), // 2 Months limit
+                maxDate: new Date().fp_incr(60), 
                 dateFormat: "Y-m-d",
                 conjunction: ", ",
                 onChange: function(selectedDates) {
                     if (mode === 'multiple' && selectedDates.length > maxDates) {
-                        selectedDates.pop(); // Remove last
-                        this.setDate(selectedDates); // Update UI
+                        selectedDates.pop(); 
+                        this.setDate(selectedDates); 
                         alert(`Maximum ${maxDates} dates allowed for this plan.`);
                         return;
                     }
                     
                     document.getElementById('date-counter').textContent = `${selectedDates.length}/${requiredDates} Selected`;
                     
-                    // Visual Validation
                     if (selectedDates.length === requiredDates) {
                         input.classList.add('border-green-500');
                         input.classList.remove('border-gray-300', 'border-red-500');
                     } else {
                         input.classList.remove('border-green-500');
-                        // Only show red if they picked SOME but not enough
                         if(selectedDates.length > 0) input.classList.add('border-red-500');
                     }
                     
@@ -407,14 +395,13 @@
         function calculateTotal() {
             const sCode = document.getElementById('service-type').value;
             const pCode = document.getElementById('property-size').value;
-            const supply = document.getElementById('supplies').value;
             
             if(!sCode || !pCode || !sheetPricing || !fpInstance) return;
 
             const sName = serviceMap[sCode];
             const pName = sizeMap[pCode];
             const dates = fpInstance.selectedDates;
-            const visitCount = dates.length > 0 ? dates.length : 1; // Default to 1 for calculation visual
+            const visitCount = dates.length > 0 ? dates.length : 1; 
 
             // Get Base Price (Per Visit)
             let perVisit = 0;
@@ -422,18 +409,11 @@
                 perVisit = Number(sheetPricing[sName][pName].base); 
             }
 
-            // Supply Cost (+R150 per visit)
-            let supplyCost = 0;
-            if (supply === 'we_supply') supplyCost = 150;
-
-            const ratePerVisit = perVisit + supplyCost;
-            const total = ratePerVisit * visitCount;
+            const total = perVisit * visitCount;
 
             document.getElementById('subtotal').textContent = `R ${total.toFixed(2)}`;
             
-            let breakdownText = `R${perVisit} base`;
-            if(supplyCost > 0) breakdownText += ` + R150 supplies`;
-            breakdownText += ` x ${dates.length || 1} visit(s)`;
+            let breakdownText = `R${perVisit} base x ${dates.length || 1} visit(s)`;
             
             document.getElementById('rate-breakdown').textContent = breakdownText;
 
@@ -447,7 +427,6 @@
             const phone = document.getElementById('phone').value;
             const btn = document.getElementById('next-btn');
 
-            // Force date check if not passed
             if (!dateValid && fpInstance) {
                 dateValid = fpInstance.selectedDates.length === requiredDates;
             }
@@ -479,7 +458,7 @@
                 propertySize: sizeMap[document.getElementById('property-size').value],
                 serviceCode: document.getElementById('service-type').value,
                 propertySizeCode: document.getElementById('property-size').value,
-                materialsOption: document.getElementById('supplies').value,
+                materialsOption: 'customer-supply', // Defaulted
                 dates: dates,
                 time: document.getElementById('time-slot').value,
                 instructions: document.getElementById('instructions').value,
