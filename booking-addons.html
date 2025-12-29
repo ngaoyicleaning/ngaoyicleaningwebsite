@@ -161,7 +161,7 @@
                             <span id="grand-total">R 0.00</span>
                         </div>
                     </div>
-                    <p class="text-xs text-gray-400 mt-2">* Add-ons are charged per item, not multiplied by visits.</p>
+                    <p class="text-xs text-gray-400 mt-2">* Add-ons are specific one-time fees added to your total.</p>
                 </div>
 
                 <div class="flex justify-between">
@@ -176,20 +176,25 @@
     </main>
 
     <script>
-        // 🔴 PASTE API URL
+        // 🔴 API URL (Ensure this matches your backend deployment)
         const API_URL = 'https://script.google.com/macros/s/AKfycbzQZo_rLSS86ZwuioQzdQek621SZh5vlrphB94Kql2nFVu5o_X7-p2lFr4UEHku_zgSqw/exec';
 
-        let visitCount = 1;
         let bookingData = {};
         
+        // Prices (Default, updated by API)
         let prices = {
             'window_cleaning': 150, 'oven_cleaning': 180, 'fridge_cleaning': 100,
             'laundry_service': 80, 'carpet_cleaning': 200, 'blind_cleaning': 120
         };
 
+        // Selection State (Tracks Quantity & Total)
         let cart = {
-            'window_cleaning': 0, 'oven_cleaning': 0, 'fridge_cleaning': 0,
-            'laundry_service': 0, 'carpet_cleaning': 0, 'blind_cleaning': 0
+            'window_cleaning': { quantity: 0, total: 0 },
+            'oven_cleaning': { quantity: 0, total: 0 },
+            'fridge_cleaning': { quantity: 0, total: 0 },
+            'laundry_service': { quantity: 0, total: 0 },
+            'carpet_cleaning': { quantity: 0, total: 0 },
+            'blind_cleaning': { quantity: 0, total: 0 }
         };
 
         document.addEventListener('DOMContentLoaded', async () => {
@@ -197,12 +202,12 @@
             if(!stored) { window.location.href = 'booking.html'; return; }
             bookingData = JSON.parse(stored);
             
-            visitCount = bookingData.dates ? bookingData.dates.length : 1;
             document.getElementById('base-total').textContent = `R ${bookingData.baseTotal.toFixed(2)}`;
 
             await fetchPrices();
             updateTotals();
 
+            // Setup Buttons
             document.querySelectorAll('.btn-plus').forEach(b => b.addEventListener('click', () => changeQty(b.dataset.id, 1)));
             document.querySelectorAll('.btn-minus').forEach(b => b.addEventListener('click', () => changeQty(b.dataset.id, -1)));
             document.getElementById('next-btn').addEventListener('click', saveAndNext);
@@ -214,8 +219,10 @@
                 const data = await res.json();
                 if(data.success && data.addons) {
                     data.addons.forEach(a => {
+                        // Map sheet names to keys (optional if keys match)
                         if(prices[a.name]) prices[a.name] = Number(a.price);
                     });
+                    // Refresh Display Prices
                     for(let k in prices) {
                         const el = document.querySelector(`[data-price-key="${k}"]`);
                         if(el) el.textContent = `R ${prices[k]}`;
@@ -225,11 +232,17 @@
         }
 
         function changeQty(id, delta) {
-            const newQty = cart[id] + delta;
+            const currentQty = cart[id].quantity;
+            const newQty = currentQty + delta;
+            
             if(newQty >= 0) {
-                cart[id] = newQty;
+                cart[id].quantity = newQty;
+                cart[id].total = newQty * prices[id];
+
+                // Update Visuals
                 document.querySelector(`.qty-display[data-id="${id}"]`).textContent = newQty;
-                document.querySelector(`.total-display[data-id="${id}"]`).textContent = `R ${newQty * prices[id]}`;
+                document.querySelector(`.total-display[data-id="${id}"]`).textContent = `R ${cart[id].total}`;
+                
                 updateTotals();
             }
         }
@@ -237,9 +250,9 @@
         function updateTotals() {
             let totalAddons = 0;
             for(let k in cart) {
-                totalAddons += (cart[k] * prices[k]);
+                totalAddons += cart[k].total;
             }
-            // NO MULTIPLIER (Calculated as absolute sum)
+            
             const grandTotal = bookingData.baseTotal + totalAddons;
 
             document.getElementById('addons-total').textContent = `R ${totalAddons.toFixed(2)}`;
@@ -247,18 +260,25 @@
         }
 
         function saveAndNext() {
+            // 1. Build simple array for Backend: ['oven', 'oven']
             let addonArray = [];
             for(let k in cart) {
-                for(let i=0; i<cart[k]; i++) {
+                for(let i=0; i<cart[k].quantity; i++) {
                     addonArray.push(k);
                 }
             }
 
-            bookingData.addons = addonArray;
+            // 2. Save Simplified Data for Backend logic
+            bookingData.addons = addonArray; 
             bookingData.addonsTotal = parseFloat(document.getElementById('addons-total').textContent.replace('R ',''));
             bookingData.estimatedGrandTotal = parseFloat(document.getElementById('grand-total').textContent.replace('R ',''));
 
+            // 3. 🔴 CRITICAL FIX: Save Detailed Cart for Summary Page Display
+            localStorage.setItem('bookingAddons', JSON.stringify(cart));
+            
+            // 4. Save Main Data
             localStorage.setItem('bookingData', JSON.stringify(bookingData));
+            
             window.location.href = 'summary.html';
         }
     </script>
