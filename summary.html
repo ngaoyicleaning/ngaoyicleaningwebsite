@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Review Booking | Ngaoyi Cleaning</title>
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
     <script>
         tailwind.config = {
             theme: {
@@ -19,7 +17,7 @@
                         'success': '#10b981',
                         'bg-light': '#f8fafc'
                     },
-                    fontFamily: { 'sans': ['Segoe UI', 'sans-serif'] }
+                    fontFamily: { 'sans': ['Segoe UI', 'Tahoma', 'sans-serif'] }
                 }
             }
         }
@@ -38,20 +36,29 @@
     <header class="sticky top-0 z-40 bg-white shadow-md">
         <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <img src="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png" class="w-10 h-10">
-                <h1 class="text-2xl font-bold text-primary">Ngaoyi Cleaning</h1>
+                <img src="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png" class="w-10 h-10 object-contain">
+                <div>
+                    <h1 class="text-2xl font-bold text-primary leading-none">Ngaoyi Cleaning</h1>
+                    <p class="text-xs text-gray-500 font-semibold tracking-wide">GAUTENG</p>
+                </div>
             </div>
         </nav>
     </header>
 
     <main class="py-8">
         <div class="container mx-auto px-4 mb-8">
-            <div class="flex justify-center items-center text-sm font-bold text-gray-400">
-                <span class="text-success"><i class="fas fa-check-circle"></i> Details</span>
-                <span class="mx-4 text-primary">----------</span>
-                <span class="text-success"><i class="fas fa-check-circle"></i> Add-ons</span>
-                <span class="mx-4 text-primary">----------</span>
-                <span class="text-primary font-extrabold">3. Summary</span>
+            <div class="flex justify-center items-center text-sm font-bold">
+                <a href="booking.html" class="text-success hover:text-green-600 flex items-center gap-1 transition">
+                    <i class="fas fa-check-circle"></i> 1. Details
+                </a>
+                <span class="mx-4 text-gray-300"><i class="fas fa-chevron-right"></i></span>
+                
+                <a href="booking-addons.html" class="text-success hover:text-green-600 flex items-center gap-1 transition">
+                    <i class="fas fa-check-circle"></i> 2. Add-ons
+                </a>
+                <span class="mx-4 text-gray-300"><i class="fas fa-chevron-right"></i></span>
+                
+                <span class="text-primary border-b-2 border-primary pb-1">3. Payment</span>
             </div>
         </div>
 
@@ -81,8 +88,7 @@
                             </div>
                             <div class="md:col-span-2">
                                 <p class="text-xs text-gray-400 uppercase font-bold mb-2">Selected Dates</p>
-                                <div id="sum-dates-list" class="flex flex-wrap gap-2">
-                                    </div>
+                                <div id="sum-dates-list" class="flex flex-wrap gap-2"></div>
                             </div>
                         </div>
                     </div>
@@ -95,26 +101,11 @@
                             <a href="booking.html" class="text-xs text-blue-600 hover:underline font-bold">Edit</a>
                         </div>
                         <div class="p-6 grid md:grid-cols-2 gap-6">
-                            <div>
-                                <p class="text-xs text-gray-400 uppercase font-bold mb-1">Full Name</p>
-                                <p id="sum-name" class="font-medium">-</p>
-                            </div>
-                            <div>
-                                <p class="text-xs text-gray-400 uppercase font-bold mb-1">Phone</p>
-                                <p id="sum-phone" class="font-medium">-</p>
-                            </div>
-                            <div class="md:col-span-2">
-                                <p class="text-xs text-gray-400 uppercase font-bold mb-1">Email</p>
-                                <p id="sum-email" class="font-medium">-</p>
-                            </div>
-                            <div class="md:col-span-2">
-                                <p class="text-xs text-gray-400 uppercase font-bold mb-1">Address</p>
-                                <p id="sum-address" class="font-medium text-gray-800 bg-gray-50 p-2 rounded border border-gray-200">-</p>
-                            </div>
-                            <div class="md:col-span-2">
-                                <p class="text-xs text-gray-400 uppercase font-bold mb-1">Special Instructions</p>
-                                <p id="sum-notes" class="text-sm text-gray-500 italic">None provided.</p>
-                            </div>
+                            <div><p class="text-xs text-gray-400 uppercase font-bold mb-1">Full Name</p><p id="sum-name" class="font-medium">-</p></div>
+                            <div><p class="text-xs text-gray-400 uppercase font-bold mb-1">Phone</p><p id="sum-phone" class="font-medium">-</p></div>
+                            <div class="md:col-span-2"><p class="text-xs text-gray-400 uppercase font-bold mb-1">Email</p><p id="sum-email" class="font-medium">-</p></div>
+                            <div class="md:col-span-2"><p class="text-xs text-gray-400 uppercase font-bold mb-1">Address</p><p id="sum-address" class="font-medium text-gray-800 bg-gray-50 p-2 rounded border border-gray-200">-</p></div>
+                            <div class="md:col-span-2"><p class="text-xs text-gray-400 uppercase font-bold mb-1">Access Notes</p><p id="sum-notes" class="text-sm text-gray-500 italic">None provided.</p></div>
                         </div>
                     </div>
                 </div>
@@ -126,8 +117,7 @@
                         </div>
                         
                         <div class="p-6 space-y-4">
-                            <div id="receipt-body">
-                                </div>
+                            <div id="receipt-body"></div>
 
                             <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 mt-4">
                                 <label class="text-xs font-bold text-gray-400 uppercase mb-2 block">Promo Code</label>
@@ -139,13 +129,8 @@
                             </div>
 
                             <div class="border-t-2 border-gray-100 pt-4 flex justify-between items-end">
-                                <div>
-                                    <p class="text-sm text-gray-500">Total Due</p>
-                                    <p class="text-xs text-gray-400">(incl. VAT)</p>
-                                </div>
-                                <div class="text-right">
-                                    <span id="display-total" class="text-3xl font-extrabold text-primary">R 0.00</span>
-                                </div>
+                                <div><p class="text-sm text-gray-500">Total Due</p><p class="text-xs text-gray-400">(incl. VAT)</p></div>
+                                <div class="text-right"><span id="display-total" class="text-3xl font-extrabold text-primary">R 0.00</span></div>
                             </div>
 
                             <div class="text-xs text-gray-500 flex items-start gap-2 pt-2">
@@ -153,14 +138,12 @@
                                 <label for="terms" class="cursor-pointer">I agree to the <a href="#" class="text-blue-600 underline">Terms of Service</a> & Cancellation Policy.</label>
                             </div>
 
-                            <button id="pay-btn" disabled class="w-full bg-gradient-to-r from-primary to-accent text-white py-4 rounded-lg font-bold text-lg shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition flex justify-center items-center gap-2">
+                            <button id="pay-btn" disabled class="w-full bg-accent hover:bg-cyan-400 text-white py-4 rounded-lg font-bold text-lg shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2">
                                 <i class="fas fa-lock text-sm"></i> Pay Securely
                             </button>
                             
                             <div class="text-center">
-                                <span class="text-xs text-gray-400 flex justify-center items-center gap-1">
-                                    <i class="fas fa-shield-alt"></i> Secure Payment by Yoco
-                                </span>
+                                <span class="text-xs text-gray-400 flex justify-center items-center gap-1"><i class="fas fa-shield-alt"></i> Secure Payment by Yoco</span>
                             </div>
                         </div>
                     </div>
@@ -171,7 +154,7 @@
     </main>
 
     <script>
-        // 🔴 PASTE YOUR API URL HERE
+        // 🔴 API URL
         const API_URL = "https://script.google.com/macros/s/AKfycbzQZo_rLSS86ZwuioQzdQek621SZh5vlrphB94Kql2nFVu5o_X7-p2lFr4UEHku_zgSqw/exec";
 
         let bookingData = {};
@@ -180,8 +163,6 @@
 
         document.addEventListener("DOMContentLoaded", () => {
             loadData();
-            
-            // Listeners
             document.getElementById('apply-btn').addEventListener('click', applyDiscount);
             document.getElementById('terms').addEventListener('change', (e) => {
                 document.getElementById('pay-btn').disabled = !e.target.checked;
@@ -193,12 +174,9 @@
             const raw = localStorage.getItem('bookingData');
             if(!raw) { window.location.href = "booking.html"; return; }
             bookingData = JSON.parse(raw);
-            
-            // Load Addons separately
             const addonRaw = localStorage.getItem('bookingAddons');
             if(addonRaw) bookingData.addonsDetails = JSON.parse(addonRaw);
 
-            // 1. FILL TEXT FIELDS
             setText('sum-name', bookingData.name);
             setText('sum-phone', bookingData.phone);
             setText('sum-email', bookingData.email);
@@ -208,7 +186,6 @@
             setText('sum-time', bookingData.time);
             setText('sum-notes', bookingData.notes || "None provided.");
 
-            // 2. FILL DATES
             const datesDiv = document.getElementById('sum-dates-list');
             if (Array.isArray(bookingData.dates) && bookingData.dates.length > 0) {
                 bookingData.dates.forEach(d => {
@@ -217,11 +194,8 @@
                     badge.textContent = d;
                     datesDiv.appendChild(badge);
                 });
-            } else {
-                datesDiv.innerHTML = '<span class="text-gray-400 italic">No dates selected</span>';
-            }
+            } else { datesDiv.innerHTML = '<span class="text-gray-400 italic">No dates selected</span>'; }
 
-            // 3. GENERATE ITEMIZED RECEIPT
             generateReceipt();
         }
 
@@ -229,16 +203,14 @@
             const container = document.getElementById('receipt-body');
             let html = '';
 
-            // A. Base Plan
+            // Base Plan
             const visitCount = bookingData.dates ? bookingData.dates.length : 1;
-            // Note: bookingData.baseTotal from Page 1 includes (Rate * Visits)
-            // We want to show the breakdown: "Rate x Visits"
             const ratePerVisit = bookingData.baseTotal / visitCount; 
             
             html += createRow('Base Cleaning Plan', `R ${bookingData.baseTotal.toFixed(2)}`);
             html += `<div class="text-xs text-gray-400 text-right mb-2 mt-[-4px]">(${visitCount} visits @ R${ratePerVisit.toFixed(0)})</div>`;
 
-            // B. Add-ons
+            // Add-ons
             let addonsTotal = 0;
             if(bookingData.addonsDetails) {
                 Object.keys(bookingData.addonsDetails).forEach(key => {
@@ -251,18 +223,15 @@
                 });
             }
 
-            // C. Materials / Surcharge
-            const matPrice = Number(bookingData.materialsPrice || 0);
-            if(matPrice > 0) html += createRow('Cleaning Materials', `R ${matPrice.toFixed(2)}`);
-
+            // Surcharge
             const surgPrice = Number(bookingData.emergencySurcharge || 0);
             if(surgPrice > 0) html += createRow('Emergency Surcharge', `R ${surgPrice.toFixed(2)}`);
 
-            // D. Subtotal
-            const subtotal = bookingData.baseTotal + addonsTotal + matPrice + surgPrice;
+            // Subtotal
+            const subtotal = bookingData.baseTotal + addonsTotal + surgPrice;
             html += `<div class="border-t border-gray-200 my-2"></div>`;
             
-            // E. Discount
+            // Discount
             if(appliedDiscount) {
                 html += createRow('Subtotal', `R ${subtotal.toFixed(2)}`);
                 html += `
@@ -280,56 +249,42 @@
         }
 
         function createRow(label, value) {
-            return `
-                <div class="receipt-row">
-                    <span class="receipt-label">${label}</span>
-                    <span class="receipt-value">${value}</span>
-                </div>
-            `;
+            return `<div class="receipt-row"><span class="receipt-label">${label}</span><span class="receipt-value">${value}</span></div>`;
         }
 
-        // --- DISCOUNT LOGIC ---
         async function applyDiscount() {
             const code = document.getElementById('discount-code').value.trim();
             if(!code) return;
-            
             const btn = document.getElementById('apply-btn');
             const msg = document.getElementById('discount-msg');
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             
             try {
-                // Calculate raw subtotal to send to backend for verification
+                // Calculate raw subtotal
                 const rawTotal = currentTotal + (appliedDiscount ? appliedDiscount.amount : 0);
-                
-                const res = await fetch(API_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ action: 'apply-discount', discountCode: code, subtotal: rawTotal })
-                });
+                const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'apply-discount', discountCode: code, subtotal: rawTotal }) });
                 const data = await res.json();
 
                 if(data.success) {
                     appliedDiscount = { code: code, amount: data.discountAmount, percent: data.discountPercent };
                     msg.textContent = "Discount Applied!";
                     msg.className = "text-xs mt-1 text-green-600 font-bold block";
-                    generateReceipt(); // Re-render receipt
+                    generateReceipt();
                 } else {
                     msg.textContent = "Invalid Code";
                     msg.className = "text-xs mt-1 text-red-500 font-bold block";
                     appliedDiscount = null;
                     generateReceipt();
                 }
-            } catch(e) { console.error(e); }
+            } catch(e) {}
             btn.innerHTML = 'APPLY';
         }
 
-        // --- CHECKOUT LOGIC ---
         async function initiateCheckout() {
             const btn = document.getElementById('pay-btn');
             btn.disabled = true;
             btn.innerHTML = `<div class="spinner mr-2"></div> Processing...`;
 
-            // Prepare Payload
-            // Convert Addons Object to simple array for backend: ['oven', 'oven']
             let addonArray = [];
             if(bookingData.addonsDetails) {
                 Object.keys(bookingData.addonsDetails).forEach(k => {
@@ -350,15 +305,13 @@
                 propertySize: bookingData.propertySize,
                 addons: addonArray,
                 discountCode: appliedDiscount ? appliedDiscount.code : "",
-                materials: bookingData.materialsOption || 'customer-supply'
+                materials: 'customer-supply'
             };
 
             try {
                 const res = await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
                 const data = await res.json();
-
                 if(data.success && data.redirectUrl) {
-                    // Clear Data & Redirect
                     localStorage.removeItem('bookingData');
                     localStorage.removeItem('bookingAddons');
                     window.location.href = data.redirectUrl;
