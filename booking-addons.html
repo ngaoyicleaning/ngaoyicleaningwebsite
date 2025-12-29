@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add-on Services | Ngaoyi Cleaning</title>
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
     <script>
         tailwind.config = {
             theme: {
@@ -18,126 +16,133 @@
                         'accent': '#00c6ff',
                         'success': '#10b981'
                     },
-                    fontFamily: { 'sans': ['Segoe UI', 'sans-serif'] }
+                    fontFamily: { 'sans': ['Segoe UI', 'Tahoma', 'sans-serif'] }
                 }
             }
         }
     </script>
 </head>
-<body class="font-sans text-gray-700 bg-white">
+<body class="font-sans text-gray-700 bg-gray-50">
     
     <header class="sticky top-0 z-40 bg-white shadow-md">
         <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <img src="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png" class="w-10 h-10">
-                <h1 class="text-2xl font-bold text-primary">Ngaoyi Cleaning</h1>
+                <img src="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png" class="w-10 h-10 object-contain">
+                <div>
+                    <h1 class="text-2xl font-bold text-primary leading-none">Ngaoyi Cleaning</h1>
+                    <p class="text-xs text-gray-500 font-semibold tracking-wide">GAUTENG</p>
+                </div>
             </div>
         </nav>
     </header>
 
     <main class="py-8">
         <div class="container mx-auto px-4 mb-8">
-            <div class="flex justify-center items-center text-sm font-bold text-gray-400">
-                <span class="text-success"><i class="fas fa-check-circle"></i> Details</span>
-                <span class="mx-4 text-primary">----------</span>
-                <span class="text-primary">2. Add-ons</span>
-                <span class="mx-4 text-gray-300">----------</span>
-                <span>3. Pay</span>
+            <div class="flex justify-center items-center text-sm font-bold">
+                <a href="booking.html" class="text-success hover:text-green-600 flex items-center gap-1 transition">
+                    <i class="fas fa-check-circle"></i> 1. Details
+                </a>
+                <span class="mx-4 text-gray-300"><i class="fas fa-chevron-right"></i></span>
+                
+                <span class="text-primary border-b-2 border-primary pb-1">2. Add-ons</span>
+                <span class="mx-4 text-gray-300"><i class="fas fa-chevron-right"></i></span>
+                
+                <span class="text-gray-400">3. Payment</span>
             </div>
         </div>
 
         <section class="container mx-auto px-4 max-w-4xl">
             <h1 class="text-3xl font-bold text-primary mb-2">Enhance Your Clean</h1>
-            <p class="text-gray-600 mb-8">Select extra services for any of your scheduled dates.</p>
+            <p class="text-gray-600 mb-8">Select extra services. <span id="visit-indicator" class="font-bold text-accent"></span></p>
             
-            <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+            <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 border border-gray-100">
                 
                 <div class="grid md:grid-cols-2 gap-6 mb-8">
-                    <div class="border rounded-lg p-4 hover:border-primary transition-colors flex flex-col justify-between">
+                    <div class="border rounded-lg p-4 hover:border-primary transition-colors flex flex-col justify-between group">
                         <div class="flex justify-between mb-2">
-                            <div><h3 class="font-bold text-primary">Window Cleaning</h3><p class="text-xs text-gray-500">Interior & accessible exterior</p></div>
-                            <div class="text-primary font-bold" data-price-key="window_cleaning">R 150</div>
+                            <div><h3 class="font-bold text-primary group-hover:text-blue-600 transition">Window Cleaning</h3><p class="text-xs text-gray-500">Interior & accessible exterior</p></div>
+                            <div class="text-primary font-bold bg-blue-50 px-2 py-1 rounded text-sm h-fit" data-price-key="window_cleaning">R 150</div>
                         </div>
                         <div class="flex justify-between items-center mt-2">
                             <div class="flex items-center gap-3">
-                                <button class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 font-bold btn-minus" data-id="window_cleaning">-</button>
-                                <span class="font-bold w-4 text-center qty-display" data-id="window_cleaning">0</span>
-                                <button class="w-8 h-8 rounded-full bg-primary text-white hover:bg-primary-light font-bold btn-plus" data-id="window_cleaning">+</button>
+                                <button class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold btn-minus transition" data-id="window_cleaning">-</button>
+                                <span class="font-bold w-4 text-center qty-display text-lg" data-id="window_cleaning">0</span>
+                                <button class="w-8 h-8 rounded-full bg-primary text-white hover:bg-primary-light font-bold btn-plus transition shadow-md" data-id="window_cleaning">+</button>
                             </div>
                             <div class="font-bold text-accent total-display" data-id="window_cleaning">R 0</div>
                         </div>
                     </div>
 
-                    <div class="border rounded-lg p-4 hover:border-primary transition-colors flex flex-col justify-between">
+                    <div class="border rounded-lg p-4 hover:border-primary transition-colors flex flex-col justify-between group">
                         <div class="flex justify-between mb-2">
-                            <div><h3 class="font-bold text-primary">Oven Cleaning</h3><p class="text-xs text-gray-500">Deep clean & degrease</p></div>
-                            <div class="text-primary font-bold" data-price-key="oven_cleaning">R 180</div>
+                            <div><h3 class="font-bold text-primary group-hover:text-blue-600 transition">Oven Cleaning</h3><p class="text-xs text-gray-500">Deep clean & degrease</p></div>
+                            <div class="text-primary font-bold bg-blue-50 px-2 py-1 rounded text-sm h-fit" data-price-key="oven_cleaning">R 180</div>
                         </div>
                         <div class="flex justify-between items-center mt-2">
                             <div class="flex items-center gap-3">
-                                <button class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 font-bold btn-minus" data-id="oven_cleaning">-</button>
-                                <span class="font-bold w-4 text-center qty-display" data-id="oven_cleaning">0</span>
-                                <button class="w-8 h-8 rounded-full bg-primary text-white hover:bg-primary-light font-bold btn-plus" data-id="oven_cleaning">+</button>
+                                <button class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold btn-minus transition" data-id="oven_cleaning">-</button>
+                                <span class="font-bold w-4 text-center qty-display text-lg" data-id="oven_cleaning">0</span>
+                                <button class="w-8 h-8 rounded-full bg-primary text-white hover:bg-primary-light font-bold btn-plus transition shadow-md" data-id="oven_cleaning">+</button>
                             </div>
                             <div class="font-bold text-accent total-display" data-id="oven_cleaning">R 0</div>
                         </div>
                     </div>
 
-                    <div class="border rounded-lg p-4 hover:border-primary transition-colors flex flex-col justify-between">
+                    <div class="border rounded-lg p-4 hover:border-primary transition-colors flex flex-col justify-between group">
                         <div class="flex justify-between mb-2">
-                            <div><h3 class="font-bold text-primary">Fridge Cleaning</h3><p class="text-xs text-gray-500">Interior wipe down</p></div>
-                            <div class="text-primary font-bold" data-price-key="fridge_cleaning">R 100</div>
+                            <div><h3 class="font-bold text-primary group-hover:text-blue-600 transition">Fridge Cleaning</h3><p class="text-xs text-gray-500">Interior wipe down</p></div>
+                            <div class="text-primary font-bold bg-blue-50 px-2 py-1 rounded text-sm h-fit" data-price-key="fridge_cleaning">R 100</div>
                         </div>
                         <div class="flex justify-between items-center mt-2">
                             <div class="flex items-center gap-3">
-                                <button class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 font-bold btn-minus" data-id="fridge_cleaning">-</button>
-                                <span class="font-bold w-4 text-center qty-display" data-id="fridge_cleaning">0</span>
-                                <button class="w-8 h-8 rounded-full bg-primary text-white hover:bg-primary-light font-bold btn-plus" data-id="fridge_cleaning">+</button>
+                                <button class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold btn-minus transition" data-id="fridge_cleaning">-</button>
+                                <span class="font-bold w-4 text-center qty-display text-lg" data-id="fridge_cleaning">0</span>
+                                <button class="w-8 h-8 rounded-full bg-primary text-white hover:bg-primary-light font-bold btn-plus transition shadow-md" data-id="fridge_cleaning">+</button>
                             </div>
                             <div class="font-bold text-accent total-display" data-id="fridge_cleaning">R 0</div>
                         </div>
                     </div>
 
-                    <div class="border rounded-lg p-4 hover:border-primary transition-colors flex flex-col justify-between">
+                    <div class="border rounded-lg p-4 hover:border-primary transition-colors flex flex-col justify-between group">
                         <div class="flex justify-between mb-2">
-                            <div><h3 class="font-bold text-primary">Laundry Service</h3><p class="text-xs text-gray-500">Wash, dry & fold (per load)</p></div>
-                            <div class="text-primary font-bold" data-price-key="laundry_service">R 80</div>
+                            <div><h3 class="font-bold text-primary group-hover:text-blue-600 transition">Laundry Service</h3><p class="text-xs text-gray-500">Wash, dry & fold (per load)</p></div>
+                            <div class="text-primary font-bold bg-blue-50 px-2 py-1 rounded text-sm h-fit" data-price-key="laundry_service">R 80</div>
                         </div>
                         <div class="flex justify-between items-center mt-2">
                             <div class="flex items-center gap-3">
-                                <button class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 font-bold btn-minus" data-id="laundry_service">-</button>
-                                <span class="font-bold w-4 text-center qty-display" data-id="laundry_service">0</span>
-                                <button class="w-8 h-8 rounded-full bg-primary text-white hover:bg-primary-light font-bold btn-plus" data-id="laundry_service">+</button>
+                                <button class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold btn-minus transition" data-id="laundry_service">-</button>
+                                <span class="font-bold w-4 text-center qty-display text-lg" data-id="laundry_service">0</span>
+                                <button class="w-8 h-8 rounded-full bg-primary text-white hover:bg-primary-light font-bold btn-plus transition shadow-md" data-id="laundry_service">+</button>
                             </div>
                             <div class="font-bold text-accent total-display" data-id="laundry_service">R 0</div>
                         </div>
                     </div>
 
-                    <div class="border rounded-lg p-4 hover:border-primary transition-colors flex flex-col justify-between">
+                    <div class="border rounded-lg p-4 hover:border-primary transition-colors flex flex-col justify-between group">
                         <div class="flex justify-between mb-2">
-                            <div><h3 class="font-bold text-primary">Carpet Cleaning</h3><p class="text-xs text-gray-500">Deep shampoo (per room)</p></div>
-                            <div class="text-primary font-bold" data-price-key="carpet_cleaning">R 200</div>
+                            <div><h3 class="font-bold text-primary group-hover:text-blue-600 transition">Carpet Cleaning</h3><p class="text-xs text-gray-500">Deep shampoo (per room)</p></div>
+                            <div class="text-primary font-bold bg-blue-50 px-2 py-1 rounded text-sm h-fit" data-price-key="carpet_cleaning">R 200</div>
                         </div>
                         <div class="flex justify-between items-center mt-2">
                             <div class="flex items-center gap-3">
-                                <button class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 font-bold btn-minus" data-id="carpet_cleaning">-</button>
-                                <span class="font-bold w-4 text-center qty-display" data-id="carpet_cleaning">0</span>
-                                <button class="w-8 h-8 rounded-full bg-primary text-white hover:bg-primary-light font-bold btn-plus" data-id="carpet_cleaning">+</button>
+                                <button class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold btn-minus transition" data-id="carpet_cleaning">-</button>
+                                <span class="font-bold w-4 text-center qty-display text-lg" data-id="carpet_cleaning">0</span>
+                                <button class="w-8 h-8 rounded-full bg-primary text-white hover:bg-primary-light font-bold btn-plus transition shadow-md" data-id="carpet_cleaning">+</button>
                             </div>
                             <div class="font-bold text-accent total-display" data-id="carpet_cleaning">R 0</div>
                         </div>
                     </div>
 
-                    <div class="border rounded-lg p-4 hover:border-primary transition-colors flex flex-col justify-between">
+                    <div class="border rounded-lg p-4 hover:border-primary transition-colors flex flex-col justify-between group">
                         <div class="flex justify-between mb-2">
-                            <div><h3 class="font-bold text-primary">Blind Cleaning</h3><p class="text-xs text-gray-500">Dust & wipe (per set)</p></div>
-                            <div class="text-primary font-bold" data-price-key="blind_cleaning">R 120</div>
+                            <div><h3 class="font-bold text-primary group-hover:text-blue-600 transition">Blind Cleaning</h3><p class="text-xs text-gray-500">Dust & wipe (per set)</p></div>
+                            <div class="text-primary font-bold bg-blue-50 px-2 py-1 rounded text-sm h-fit" data-price-key="blind_cleaning">R 120</div>
                         </div>
                         <div class="flex justify-between items-center mt-2">
                             <div class="flex items-center gap-3">
-                                <button class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 font-bold btn-minus" data-id="blind_cleaning">-</button>
-                                <span class="font-bold w-4 text-center qty-display" data-id="blind_cleaning">0</span>
-                                <button class="w-8 h-8 rounded-full bg-primary text-white hover:bg-primary-light font-bold btn-plus" data-id="blind_cleaning">+</button>
+                                <button class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold btn-minus transition" data-id="blind_cleaning">-</button>
+                                <span class="font-bold w-4 text-center qty-display text-lg" data-id="blind_cleaning">0</span>
+                                <button class="w-8 h-8 rounded-full bg-primary text-white hover:bg-primary-light font-bold btn-plus transition shadow-md" data-id="blind_cleaning">+</button>
                             </div>
                             <div class="font-bold text-accent total-display" data-id="blind_cleaning">R 0</div>
                         </div>
@@ -145,7 +150,7 @@
                 </div>
 
                 <div class="bg-gray-50 p-6 rounded-lg mb-8 border border-gray-200">
-                    <h3 class="text-lg font-bold text-primary mb-4">Estimate Summary</h3>
+                    <h3 class="text-lg font-bold text-primary mb-4">Current Estimate</h3>
                     
                     <div class="space-y-2 text-sm">
                         <div class="flex justify-between">
@@ -161,12 +166,11 @@
                             <span id="grand-total">R 0.00</span>
                         </div>
                     </div>
-                    <p class="text-xs text-gray-400 mt-2">* Add-ons are specific one-time fees added to your total.</p>
                 </div>
 
                 <div class="flex justify-between">
-                    <a href="booking.html" class="text-primary font-bold flex items-center hover:underline"><i class="fas fa-arrow-left mr-2"></i> Back</a>
-                    <button id="next-btn" class="bg-gradient-to-r from-primary to-accent text-white px-8 py-3 rounded-full font-bold hover:shadow-lg transition-all">
+                    <a href="booking.html" class="text-gray-500 font-bold flex items-center hover:text-primary transition"><i class="fas fa-arrow-left mr-2"></i> Back</a>
+                    <button id="next-btn" class="bg-accent hover:bg-cyan-400 text-white px-8 py-3 rounded-full font-bold shadow-lg transition-all transform hover:-translate-y-1">
                         Review & Pay <i class="fas fa-arrow-right ml-2"></i>
                     </button>
                 </div>
@@ -175,19 +179,25 @@
         </section>
     </main>
 
+    <footer class="bg-slate-900 text-white py-8 text-center border-t border-slate-800">
+        <div class="container mx-auto px-4">
+            <p class="text-gray-400 text-sm">Need help? Call <a href="tel:0707643709" class="text-accent font-bold">070 764 3709</a></p>
+            <p class="text-gray-600 text-xs mt-4">&copy; 2025 Ngaoyi Cleaning. All rights reserved.</p>
+        </div>
+    </footer>
+
     <script>
-        // 🔴 API URL (Ensure this matches your backend deployment)
+        // 🔴 API URL
         const API_URL = 'https://script.google.com/macros/s/AKfycbzQZo_rLSS86ZwuioQzdQek621SZh5vlrphB94Kql2nFVu5o_X7-p2lFr4UEHku_zgSqw/exec';
 
+        let visitCount = 1;
         let bookingData = {};
         
-        // Prices (Default, updated by API)
         let prices = {
             'window_cleaning': 150, 'oven_cleaning': 180, 'fridge_cleaning': 100,
             'laundry_service': 80, 'carpet_cleaning': 200, 'blind_cleaning': 120
         };
 
-        // Selection State (Tracks Quantity & Total)
         let cart = {
             'window_cleaning': { quantity: 0, total: 0 },
             'oven_cleaning': { quantity: 0, total: 0 },
@@ -202,12 +212,13 @@
             if(!stored) { window.location.href = 'booking.html'; return; }
             bookingData = JSON.parse(stored);
             
+            // Show Base Total
             document.getElementById('base-total').textContent = `R ${bookingData.baseTotal.toFixed(2)}`;
 
             await fetchPrices();
             updateTotals();
 
-            // Setup Buttons
+            // Button Listeners
             document.querySelectorAll('.btn-plus').forEach(b => b.addEventListener('click', () => changeQty(b.dataset.id, 1)));
             document.querySelectorAll('.btn-minus').forEach(b => b.addEventListener('click', () => changeQty(b.dataset.id, -1)));
             document.getElementById('next-btn').addEventListener('click', saveAndNext);
@@ -219,10 +230,8 @@
                 const data = await res.json();
                 if(data.success && data.addons) {
                     data.addons.forEach(a => {
-                        // Map sheet names to keys (optional if keys match)
                         if(prices[a.name]) prices[a.name] = Number(a.price);
                     });
-                    // Refresh Display Prices
                     for(let k in prices) {
                         const el = document.querySelector(`[data-price-key="${k}"]`);
                         if(el) el.textContent = `R ${prices[k]}`;
@@ -239,7 +248,6 @@
                 cart[id].quantity = newQty;
                 cart[id].total = newQty * prices[id];
 
-                // Update Visuals
                 document.querySelector(`.qty-display[data-id="${id}"]`).textContent = newQty;
                 document.querySelector(`.total-display[data-id="${id}"]`).textContent = `R ${cart[id].total}`;
                 
@@ -260,7 +268,6 @@
         }
 
         function saveAndNext() {
-            // 1. Build simple array for Backend: ['oven', 'oven']
             let addonArray = [];
             for(let k in cart) {
                 for(let i=0; i<cart[k].quantity; i++) {
@@ -268,15 +275,12 @@
                 }
             }
 
-            // 2. Save Simplified Data for Backend logic
-            bookingData.addons = addonArray; 
+            bookingData.addons = addonArray;
             bookingData.addonsTotal = parseFloat(document.getElementById('addons-total').textContent.replace('R ',''));
             bookingData.estimatedGrandTotal = parseFloat(document.getElementById('grand-total').textContent.replace('R ',''));
 
-            // 3. 🔴 CRITICAL FIX: Save Detailed Cart for Summary Page Display
+            // 🔴 Save Cart for Summary Itemization
             localStorage.setItem('bookingAddons', JSON.stringify(cart));
-            
-            // 4. Save Main Data
             localStorage.setItem('bookingData', JSON.stringify(bookingData));
             
             window.location.href = 'summary.html';
