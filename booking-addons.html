@@ -48,12 +48,11 @@
 
         <section class="container mx-auto px-4 max-w-4xl">
             <h1 class="text-3xl font-bold text-primary mb-2">Enhance Your Clean</h1>
-            <p class="text-gray-600 mb-8">Select extra services. <span id="visit-indicator" class="font-bold text-accent"></span></p>
+            <p class="text-gray-600 mb-8">Select extra services for any of your scheduled dates.</p>
             
             <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
                 
                 <div class="grid md:grid-cols-2 gap-6 mb-8">
-                    
                     <div class="border rounded-lg p-4 hover:border-primary transition-colors flex flex-col justify-between">
                         <div class="flex justify-between mb-2">
                             <div><h3 class="font-bold text-primary">Window Cleaning</h3><p class="text-xs text-gray-500">Interior & accessible exterior</p></div>
@@ -143,7 +142,6 @@
                             <div class="font-bold text-accent total-display" data-id="blind_cleaning">R 0</div>
                         </div>
                     </div>
-
                 </div>
 
                 <div class="bg-gray-50 p-6 rounded-lg mb-8 border border-gray-200">
@@ -151,11 +149,11 @@
                     
                     <div class="space-y-2 text-sm">
                         <div class="flex justify-between">
-                            <span class="text-gray-600">Base Service (x<span id="visit-count-disp">1</span>):</span>
+                            <span class="text-gray-600">Base Service:</span>
                             <span class="font-semibold" id="base-total">R 0.00</span>
                         </div>
                         <div class="flex justify-between text-accent">
-                            <span class="text-gray-600">Add-ons Total:</span>
+                            <span class="text-gray-600">Total Add-ons:</span>
                             <span class="font-semibold" id="addons-total">R 0.00</span>
                         </div>
                         <div class="border-t border-gray-300 mt-2 pt-2 flex justify-between text-xl font-bold text-primary">
@@ -163,7 +161,7 @@
                             <span id="grand-total">R 0.00</span>
                         </div>
                     </div>
-                    <p class="text-xs text-gray-400 mt-2">* Add-ons are applied per visit for recurring plans.</p>
+                    <p class="text-xs text-gray-400 mt-2">* Add-ons are charged per item, not multiplied by visits.</p>
                 </div>
 
                 <div class="flex justify-between">
@@ -178,44 +176,33 @@
     </main>
 
     <script>
-        // 🔴 API URL
+        // 🔴 PASTE API URL
         const API_URL = 'https://script.google.com/macros/s/AKfycbzQZo_rLSS86ZwuioQzdQek621SZh5vlrphB94Kql2nFVu5o_X7-p2lFr4UEHku_zgSqw/exec';
 
-        // STATE
         let visitCount = 1;
         let bookingData = {};
         
-        // Prices (Default, updated by API)
         let prices = {
             'window_cleaning': 150, 'oven_cleaning': 180, 'fridge_cleaning': 100,
             'laundry_service': 80, 'carpet_cleaning': 200, 'blind_cleaning': 120
         };
 
-        // Selection State
         let cart = {
             'window_cleaning': 0, 'oven_cleaning': 0, 'fridge_cleaning': 0,
             'laundry_service': 0, 'carpet_cleaning': 0, 'blind_cleaning': 0
         };
 
         document.addEventListener('DOMContentLoaded', async () => {
-            // 1. Load Data
             const stored = localStorage.getItem('bookingData');
             if(!stored) { window.location.href = 'booking.html'; return; }
             bookingData = JSON.parse(stored);
             
-            // 2. Set Visit Count
             visitCount = bookingData.dates ? bookingData.dates.length : 1;
-            document.getElementById('visit-count-disp').textContent = visitCount;
-            document.getElementById('visit-indicator').textContent = `(Applied to ${visitCount} visit${visitCount>1?'s':''})`;
             document.getElementById('base-total').textContent = `R ${bookingData.baseTotal.toFixed(2)}`;
 
-            // 3. Fetch Real Prices
             await fetchPrices();
-
-            // 4. Update UI
             updateTotals();
 
-            // 5. Listeners
             document.querySelectorAll('.btn-plus').forEach(b => b.addEventListener('click', () => changeQty(b.dataset.id, 1)));
             document.querySelectorAll('.btn-minus').forEach(b => b.addEventListener('click', () => changeQty(b.dataset.id, -1)));
             document.getElementById('next-btn').addEventListener('click', saveAndNext);
@@ -227,13 +214,8 @@
                 const data = await res.json();
                 if(data.success && data.addons) {
                     data.addons.forEach(a => {
-                        // Map sheet names (clean format) to IDs
-                        const id = a.name.toLowerCase().replace(/ /g, '_'); 
-                        // Or utilize exact mapping if sheet has IDs
-                        // Assuming sheet returns exact IDs based on v18 logic:
                         if(prices[a.name]) prices[a.name] = Number(a.price);
                     });
-                    // Refresh Display
                     for(let k in prices) {
                         const el = document.querySelector(`[data-price-key="${k}"]`);
                         if(el) el.textContent = `R ${prices[k]}`;
@@ -246,7 +228,6 @@
             const newQty = cart[id] + delta;
             if(newQty >= 0) {
                 cart[id] = newQty;
-                // Update specific row UI
                 document.querySelector(`.qty-display[data-id="${id}"]`).textContent = newQty;
                 document.querySelector(`.total-display[data-id="${id}"]`).textContent = `R ${newQty * prices[id]}`;
                 updateTotals();
@@ -254,13 +235,11 @@
         }
 
         function updateTotals() {
-            let addonSumPerVisit = 0;
+            let totalAddons = 0;
             for(let k in cart) {
-                addonSumPerVisit += (cart[k] * prices[k]);
+                totalAddons += (cart[k] * prices[k]);
             }
-            
-            // Total Addons = (Price * Qty) * VisitCount
-            const totalAddons = addonSumPerVisit * visitCount;
+            // NO MULTIPLIER (Calculated as absolute sum)
             const grandTotal = bookingData.baseTotal + totalAddons;
 
             document.getElementById('addons-total').textContent = `R ${totalAddons.toFixed(2)}`;
@@ -268,7 +247,6 @@
         }
 
         function saveAndNext() {
-            // Convert Cart {fridge: 2} -> Array ['fridge_cleaning', 'fridge_cleaning']
             let addonArray = [];
             for(let k in cart) {
                 for(let i=0; i<cart[k]; i++) {
