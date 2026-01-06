@@ -3,177 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Successful | Ngaoyi Cleaning</title>
+    <title>Apply to Join - Ngaoyi Cleaning</title>
+    
+    <meta http-equiv="refresh" content="3;url=https://docs.google.com/forms/d/e/1FAIpQLScIcAcm8iFYpY_hDvcL2wo6Qkj2yaRwxwN2oNS9WC3rXRMadw/viewform?usp=header">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-</head>
-<body class="font-sans bg-gray-50 min-h-screen flex items-center justify-center p-4">
-    <div class="max-w-md w-full bg-white rounded-xl shadow-lg p-8 text-center">
-        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <i class="fas fa-check text-green-600 text-3xl"></i>
-        </div>
-        
-        <h1 class="text-2xl font-bold text-gray-800 mb-4">Payment Successful!</h1>
-        
-        <div id="loading" class="mb-6">
-            <p class="text-gray-600 mb-4">Completing your booking...</p>
-            <div class="w-full bg-gray-200 rounded-full h-2">
-                <div class="bg-blue-600 h-2 rounded-full animate-pulse"></div>
-            </div>
-        </div>
-        
-        <div id="success" class="hidden">
-            <p class="text-gray-600 mb-6">
-                Thank you for your payment! Your booking has been confirmed and emails have been sent.
-            </p>
-            
-            <div class="bg-gray-50 p-4 rounded-lg mb-6 text-left">
-                <p class="font-semibold mb-2">Booking Details:</p>
-                <p id="booking-ref" class="text-blue-600 font-bold"></p>
-                <p id="booking-details" class="text-sm text-gray-600"></p>
-            </div>
-            
-            <div class="space-y-3">
-                <div class="flex items-start">
-                    <i class="fas fa-envelope text-blue-500 mt-1 mr-3"></i>
-                    <div class="text-left">
-                        <p class="font-medium">Check your email</p>
-                        <p class="text-sm text-gray-600">We've sent a confirmation email with all details</p>
-                    </div>
-                </div>
-                
-                <div class="flex items-start">
-                    <i class="fas fa-phone text-blue-500 mt-1 mr-3"></i>
-                    <div class="text-left">
-                        <p class="font-medium">Expect a call</p>
-                        <p class="text-sm text-gray-600">Our consultant will contact you within 30 minutes</p>
-                    </div>
-                </div>
-                
-                <div class="flex items-start">
-                    <i class="fas fa-user text-blue-500 mt-1 mr-3"></i>
-                    <div class="text-left">
-                        <p class="font-medium">Cleaner assignment</p>
-                        <p class="text-sm text-gray-600">You'll receive cleaner details in the confirmation email</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="mt-8 pt-6 border-t">
-                <p class="text-sm text-gray-500 mb-4">
-                    Need immediate assistance? Call us at <a href="tel:0707643709" class="text-blue-600">070 764 3709</a>
-                </p>
-                <a href="/" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-                    Return to Homepage
-                </a>
-            </div>
-        </div>
-        
-        <div id="error" class="hidden">
-            <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <i class="fas fa-exclamation-triangle text-red-600 text-3xl"></i>
-            </div>
-            <p class="text-gray-600 mb-4" id="error-message"></p>
-            <a href="/summary.html" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-                Try Again
-            </a>
-        </div>
-    </div>
-
+    
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const bookingRef = urlParams.get('ref');
-            const checkoutId = urlParams.get('checkoutId');
-            
-            // Get booking data from localStorage
-            const bookingData = JSON.parse(localStorage.getItem('bookingData') || '{}');
-            const addonsData = JSON.parse(localStorage.getItem('bookingAddons') || '{}');
-            const totalAmount = parseFloat(localStorage.getItem('bookingSubtotal') || '0');
-            
-            if (!bookingRef || !checkoutId || !bookingData.fullName) {
-                showError('Invalid booking information. Please contact support.');
-                return;
-            }
-            
-            // Save booking to backend
-            saveBooking(bookingRef, checkoutId, bookingData, addonsData, totalAmount);
-        });
-        
-        async function saveBooking(bookingRef, checkoutId, bookingData, addonsData, totalAmount) {
-            try {
-                const paymentData = {
-                    checkoutId: checkoutId,
-                    paymentId: 'PY-' + Date.now(),
-                    status: 'paid'
-                };
-                
-                const bookingPayload = {
-                    bookingRef: bookingRef,
-                    customer: {
-                        name: bookingData.fullName,
-                        email: bookingData.email,
-                        phone: bookingData.phone
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#003b6f',
+                        'primary-light': '#0056a3',
+                        'secondary': '#000000',
+                        'accent': '#00c6ff',
+                        'light-gray': '#e9ecef'
                     },
-                    address: bookingData.address,
-                    cleaningDate: bookingData.cleaningDate,
-                    timeSlot: bookingData.timeSlot,
-                    serviceType: bookingData.serviceType,
-                    propertySize: bookingData.propertySize,
-                    materialOption: bookingData.materialsOption,
-                    instructions: bookingData.instructions,
-                    totalAmount: totalAmount,
-                    discountCode: localStorage.getItem('discountCode') || '',
-                    discountPercent: parseFloat(localStorage.getItem('discountPercent') || '0'),
-                    addons: addonsData
-                };
-                
-                const response = await fetch('GAS_ENDPOINT_URL', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        action: 'save_booking',
-                        bookingData: bookingPayload,
-                        paymentData: paymentData
-                    })
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    // Show success message
-                    document.getElementById('loading').classList.add('hidden');
-                    document.getElementById('success').classList.remove('hidden');
-                    
-                    // Display booking details
-                    document.getElementById('booking-ref').textContent = `Reference: ${bookingRef}`;
-                    document.getElementById('booking-details').textContent = 
-                        `${bookingData.serviceType} for ${bookingData.propertySize} on ${new Date(bookingData.cleaningDate).toLocaleDateString('en-ZA', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
-                    
-                    // Clear localStorage
-                    localStorage.removeItem('bookingData');
-                    localStorage.removeItem('bookingAddons');
-                    localStorage.removeItem('bookingSubtotal');
-                    localStorage.removeItem('discountCode');
-                    localStorage.removeItem('discountPercent');
-                    
-                } else {
-                    showError(result.error?.message || 'Failed to save booking. Please contact support.');
+                    fontFamily: {
+                        'sans': ['Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif']
+                    }
                 }
-                
-            } catch (error) {
-                console.error('Error saving booking:', error);
-                showError('Network error. Please contact us at 070 764 3709 to confirm your booking.');
             }
-        }
-        
-        function showError(message) {
-            document.getElementById('loading').classList.add('hidden');
-            document.getElementById('error').classList.remove('hidden');
-            document.getElementById('error-message').textContent = message;
         }
     </script>
+</head>
+<body class="font-sans text-gray-700 bg-gray-50 flex flex-col min-h-screen">
+
+    <header class="bg-white shadow-md">
+        <nav class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-white rounded-full overflow-hidden flex items-center justify-center border border-gray-100 shadow-sm">
+                        <img src="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png" 
+                             alt="Ngaoyi Cleaning Logo" class="w-full h-full object-contain p-1">
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-primary leading-none">Ngaoyi Cleaning</h1>
+                        <p class="text-xs text-gray-500 font-semibold tracking-wide">CAREERS</p>
+                    </div>
+                </div>
+                <a href="index.html" class="text-primary hover:text-accent font-medium transition-colors">Back to Home</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex-grow flex items-center justify-center p-4">
+        <div class="bg-white p-8 md:p-12 rounded-2xl shadow-xl max-w-lg w-full text-center border-t-4 border-accent">
+            
+            <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-file-signature text-primary text-3xl"></i>
+            </div>
+
+            <h1 class="text-3xl font-bold text-primary mb-2">Join the Team!</h1>
+            <p class="text-gray-500 mb-8">We are redirecting you to our official application form...</p>
+
+            <div class="flex justify-center mb-8">
+                <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-accent"></div>
+            </div>
+
+            <div class="bg-blue-50 p-4 rounded-lg border border-blue-100 mb-6">
+                <p class="text-sm text-blue-800 font-semibold">
+                    <i class="fas fa-info-circle mr-1"></i> Please have your ID and references ready.
+                </p>
+            </div>
+
+            <p class="text-sm text-gray-400 mb-3">If you are not redirected automatically:</p>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLScIcAcm8iFYpY_hDvcL2wo6Qkj2yaRwxwN2oNS9WC3rXRMadw/viewform?usp=header" 
+               class="block w-full bg-primary text-white font-bold py-3 rounded-lg hover:bg-primary-light transition shadow-lg">
+                Go to Application Form <i class="fas fa-external-link-alt ml-2"></i>
+            </a>
+
+        </div>
+    </main>
+
+    <footer class="bg-secondary text-white py-6 border-t-4 border-accent text-center">
+        <p class="text-sm text-gray-400">&copy; 2025 Ngaoyi Cleaning. All rights reserved.</p>
+    </footer>
+
+    <script>
+        setTimeout(function() {
+            window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLScIcAcm8iFYpY_hDvcL2wo6Qkj2yaRwxwN2oNS9WC3rXRMadw/viewform?usp=header";
+        }, 3000); // 3 seconds delay
+    </script>
+
 </body>
 </html>
