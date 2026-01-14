@@ -3,50 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ngaoyi Cleaning | Professional Cleaning Services in Gauteng</title>
+    <meta name="description" content="Book trusted cleaners instantly in Gauteng. Flexible schedules, recurring plans, and emergency services available. Verified on Google.">
     
-    <title>Book Cleaning Services Gauteng | Instant Online Quote | Ngaoyi Cleaning</title>
-    
-    <meta name="description" content="Get an instant price for domestic cleaning in Johannesburg, Pretoria, Sandton & Midrand. Book vetted cleaners online in 60 seconds. Secure & Reliable.">
-    
-    <meta property="og:title" content="Book Trusted Cleaners in Gauteng | Ngaoyi Cleaning">
-    <meta property="og:description" content="Instant online quotes. Vetted staff. Book your home cleaning today.">
-    <meta property="og:image" content="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png">
-    <meta property="og:url" content="https://ngaoyicleaning.co.za/booking.html">
+    <meta property="og:title" content="Ngaoyi Cleaning | Professional Cleaning Services in Gauteng">
+    <meta property="og:description" content="Book trusted cleaners instantly in Gauteng. Quality cleaning for homes, offices, and events.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/display1.png">
+    <meta property="og:url" content="https://ngaoyicleaning.co.za">
     <meta property="og:type" content="website">
-    <link rel="canonical" href="https://ngaoyicleaning.co.za/booking.html">
-
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5V9NJTNT1N"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-5V9NJTNT1N');
-    </script>
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "CleaningService",
-      "name": "Ngaoyi Cleaning",
-      "image": "https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png",
-      "description": "Professional domestic and commercial cleaning services in Gauteng.",
-      "address": {
-        "@type": "PostalAddress",
-        "addressRegion": "Gauteng",
-        "addressCountry": "ZA"
-      },
-      "areaServed": ["Johannesburg", "Pretoria", "Sandton", "Midrand", "Centurion"],
-      "priceRange": "$$"
-    }
-    </script>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
     <script>
         tailwind.config = {
             theme: {
@@ -54,487 +22,463 @@
                     colors: {
                         'primary': '#003b6f',
                         'primary-light': '#0056a3',
+                        'secondary': '#000000',
                         'accent': '#00c6ff',
-                        'success': '#10b981'
+                        'light-gray': '#e9ecef'
                     },
-                    fontFamily: { 'sans': ['Segoe UI', 'Tahoma', 'sans-serif'] }
+                    fontFamily: {
+                        'sans': ['Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif']
+                    }
                 }
             }
         }
     </script>
+    
     <style>
-        .flatpickr-day.selected { background: #003b6f !important; border-color: #003b6f !important; }
-        .disabled-btn { opacity: 0.5; cursor: not-allowed; filter: grayscale(100%); }
-        
-        /* Google Autocomplete Styling */
-        .pac-container { 
-            border-radius: 8px; 
-            margin-top: 5px; 
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); 
-            border: 1px solid #e2e8f0; 
-            font-family: 'Segoe UI', sans-serif; 
-            z-index: 9999 !important;
-        }
-        .pac-item { padding: 10px 15px; font-size: 14px; cursor: pointer; border-top: 1px solid #f1f5f9; }
-        .pac-item:hover { background-color: #f8fafc; }
-        .pac-item-query { font-size: 14px; color: #003b6f; font-weight: 600; }
-        .pac-icon { display: none; }
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .modal-overlay { background-color: rgba(0, 59, 111, 0.8); backdrop-filter: blur(5px); }
+        .hero-overlay { background: linear-gradient(90deg, rgba(0,59,111,0.9) 0%, rgba(0,59,111,0.6) 50%, rgba(0,59,111,0.3) 100%); }
     </style>
 </head>
-<body class="font-sans text-gray-700 bg-gray-50">
-    
+<body class="font-sans text-gray-700 bg-white">
+
+    <div id="promo-bar" class="bg-accent text-white text-sm font-bold py-2 px-4 text-center relative z-50 shadow-md">
+        <span class="mr-2">🎉 Januworry Special:</span> 
+        Use code <span class="bg-white text-accent px-1 rounded border border-white border-dashed mx-1 cursor-pointer hover:scale-105 transition" onclick="copyCode('FRESH15')">FRESH15</span> for 15% Off Bi-Weekly 
+        <span class="opacity-75 mx-1">|</span> 
+        <span class="bg-white text-accent px-1 rounded border border-white border-dashed mx-1 cursor-pointer hover:scale-105 transition" onclick="copyCode('JANUWORRY10')">JANUWORRY10</span> for 10% Off Weekly!
+        <button onclick="document.getElementById('promo-bar').style.display='none'" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-primary"><i class="fas fa-times"></i></button>
+    </div>
+
     <header class="sticky top-0 z-40 bg-white shadow-md">
-        <nav class="container mx-auto px-4 py-3 flex justify-center md:justify-start items-center">
-            <div class="flex items-center space-x-3">
-                <img src="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png" class="w-10 h-10 object-contain" alt="Ngaoyi Cleaning Logo">
-                <div>
-                    <h1 class="text-2xl font-bold text-primary leading-none">Ngaoyi Cleaning</h1>
-                    <p class="text-xs text-gray-500 font-semibold tracking-wide">GAUTENG</p>
+        <nav class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-white rounded-full overflow-hidden flex items-center justify-center border border-gray-100 shadow-sm">
+                        <img src="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png" 
+                             alt="Ngaoyi Cleaning Logo" class="w-full h-full object-contain p-1">
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-primary leading-none">Ngaoyi Cleaning</h1>
+                        <p class="text-xs text-gray-500 font-semibold tracking-wide">GAUTENG</p>
+                    </div>
                 </div>
+                
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="index.html" class="text-primary font-bold border-b-2 border-primary">Home</a>
+                    <a href="services.html" class="text-gray-700 hover:text-primary font-medium transition-colors">Services</a>
+                    <a href="pricing.html" class="text-gray-700 hover:text-primary font-medium transition-colors">Pricing</a>
+                    <a href="booking.html" class="bg-primary hover:bg-primary-light text-white px-6 py-2 rounded-full font-semibold shadow-md transition-all transform hover:-translate-y-0.5">Book Now</a>
+                </div>
+                
+                <button id="mobile-menu-toggle" class="md:hidden text-primary text-2xl"><i class="fas fa-bars"></i></button>
+            </div>
+            
+            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-4 pb-4 border-t pt-4">
+                <a href="index.html" class="block text-primary font-bold">Home</a>
+                <a href="services.html" class="block text-gray-700 font-medium">Services</a>
+                <a href="pricing.html" class="block text-gray-700 font-medium">Pricing</a>
+                <a href="booking.html" class="block bg-primary text-white px-4 py-2 rounded-lg text-center font-bold">Book Now</a>
             </div>
         </nav>
     </header>
 
-    <main class="py-8">
-        <div class="container mx-auto px-4 mb-8">
-            <div class="flex justify-center items-center text-sm font-bold text-gray-400">
-                <span class="text-primary border-b-2 border-primary pb-1">1. Customize</span>
-                <span class="mx-4 text-gray-300"><i class="fas fa-chevron-right"></i></span>
-                <span>2. Details</span>
-                <span class="mx-4 text-gray-300"><i class="fas fa-chevron-right"></i></span>
-                <span>3. Payment</span>
+    <main>
+        <section class="relative h-[650px] flex items-center">
+            <div class="absolute inset-0 z-0">
+                <img src="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/display1.png" class="w-full h-full object-cover" alt="Ngaoyi Cleaning Display">
+                <div class="absolute inset-0 hero-overlay"></div>
             </div>
-        </div>
 
-        <section class="container mx-auto px-4 max-w-4xl">
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
-                
-                <div class="bg-primary px-6 py-6 text-center md:text-left">
-                    <h2 class="text-2xl font-bold text-white mb-2">
-                        Get Your Free Instant Quote
-                    </h2>
-                    <div class="flex flex-wrap justify-center md:justify-start gap-4 text-blue-100 text-xs font-semibold uppercase tracking-wide">
-                        <span class="bg-primary-light px-2 py-1 rounded"><i class="fas fa-check-circle mr-1"></i> Vetted Staff</span>
-                        <span class="bg-primary-light px-2 py-1 rounded"><i class="fas fa-shield-alt mr-1"></i> Insured</span>
-                        <span class="bg-primary-light px-2 py-1 rounded"><i class="fas fa-star mr-1"></i> 5-Star Service</span>
+            <div class="container mx-auto px-4 relative z-10 text-white">
+                <div class="max-w-2xl animate-fade-in">
+                    <div class="inline-block bg-accent/20 backdrop-blur-sm border border-accent/30 rounded-full px-4 py-1 text-sm font-bold mb-4">
+                        <i class="fas fa-map-marker-alt mr-2"></i> Serving Johannesburg, Pretoria & Surrounds
+                    </div>
+                    <h2 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">Expert Cleaning,<br>Personal Touch.</h2>
+                    <p class="text-xl mb-8 text-blue-50 font-light drop-shadow-md">
+                        We don't just clean; we care. Secure, vetted, and highly trained professionals ready to transform your home or office.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="booking.html" class="bg-accent text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-cyan-500 transition shadow-lg flex items-center justify-center transform hover:-translate-y-1">
+                            Get Instant Quote <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                        <a href="pricing.html" class="bg-white/10 backdrop-blur border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-primary transition flex items-center justify-center">
+                            View Pricing
+                        </a>
+                    </div>
+                    
+                    <div class="mt-8 flex items-center gap-6 text-sm font-medium text-blue-100">
+                        <div class="flex items-center"><i class="fas fa-shield-alt text-accent mr-2"></i> Fully Vetted Staff</div>
+                        <div class="flex items-center"><i class="fas fa-user-lock text-accent mr-2"></i> Secure Booking</div>
+                        <div class="flex items-center"><i class="fab fa-google text-accent mr-2"></i> Verified Business</div>
                     </div>
                 </div>
-                
-                <form id="booking-form" class="p-6 md:p-8">
-                    
-                    <div class="mb-8">
-                        <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-                            <span class="bg-accent text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">1</span> 
-                            Customize Your Clean
-                        </h2>
-                        
-                        <div class="grid md:grid-cols-2 gap-6 mb-6">
-                            <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-1">Service Plan *</label>
-                                <select id="service-type" class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-primary shadow-sm">
-                                    <option value="">Select a Plan...</option>
-                                    <option value="weekly">Weekly Recurring (Best Value)</option>
-                                    <option value="biweekly">Bi-weekly Recurring</option>
-                                    <option value="monthly">Monthly Recurring</option>
-                                    <option value="once-off">Once-Off / Spring Clean</option>
-                                    <option value="deep">Deep Cleaning (Intensive)</option>
-                                    <option value="emergency">Emergency Service</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-1">Property Size *</label>
-                                <select id="property-size" class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-primary shadow-sm">
-                                    <option value="">Select Size...</option>
-                                    <option value="1-bed">1-Bedroom</option>
-                                    <option value="2-bed">2-Bedroom</option>
-                                    <option value="3-bed">3-Bedroom</option>
-                                    <option value="4-bed">4-Bedroom</option>
-                                    <option value="office">Office/Commercial</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="mb-6 p-5 bg-blue-50 rounded-xl border border-blue-100 transition-all">
-                            <div class="flex justify-between items-center mb-2">
-                                <label class="text-sm font-bold text-primary">Select Date(s) *</label>
-                                <span id="date-counter" class="text-xs font-bold text-white bg-primary px-2 py-1 rounded hidden">0 Selected</span>
-                            </div>
-                            
-                            <div class="relative">
-                                <i class="fas fa-calendar-alt absolute left-3 top-3.5 text-gray-400"></i>
-                                <input type="text" id="calendar-input" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg bg-white cursor-pointer focus:ring-2 focus:ring-primary shadow-sm" placeholder="Choose a plan to unlock calendar" disabled>
-                            </div>
-                            <p id="calendar-hint" class="text-xs text-gray-500 mt-2 flex items-center gap-1">
-                                <i class="fas fa-info-circle"></i> Please select a service plan first.
-                            </p>
-                        </div>
-
-                        <div class="grid md:grid-cols-2 gap-6 mb-6">
-                            <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-1">Start Time *</label>
-                                <select id="time-slot" class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-primary shadow-sm">
-                                    <option value="08:00">08:00 AM</option>
-                                    <option value="09:00">09:00 AM</option>
-                                    <option value="10:00">10:00 AM</option>
-                                    <option value="11:00">11:00 AM</option>
-                                    <option value="12:00">12:00 PM</option>
-                                    <option value="13:00">01:00 PM</option>
-                                    <option value="14:00">02:00 PM</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-1">Access Notes</label>
-                                <textarea id="instructions" rows="1" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none shadow-sm" placeholder="Gate codes, key location..."></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <hr class="border-gray-100 mb-8">
-
-                    <div class="mb-8">
-                        <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-                            <span class="bg-gray-200 text-gray-600 w-6 h-6 rounded-full flex items-center justify-center text-xs">2</span> 
-                            Contact Information
-                        </h2>
-                        
-                        <div class="mb-6">
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Service Address *</label>
-                            <div class="relative">
-                                <i class="fas fa-map-marker-alt absolute left-3 top-3.5 text-gray-400 z-10"></i>
-                                <input type="text" id="address" required autocomplete="off"
-                                       class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none transition shadow-sm" 
-                                       placeholder="Start typing your street address...">
-                            </div>
-                            <p class="text-xs text-blue-600 mt-2 font-medium flex items-center gap-1">
-                                <i class="fas fa-hand-pointer"></i> Select your exact address from the dropdown list.
-                            </p>
-                            <p id="address-error" class="text-xs text-red-500 mt-1 hidden font-bold"><i class="fas fa-times-circle"></i> We do not serve this area yet.</p>
-                            <p id="address-success" class="text-xs text-green-600 mt-1 hidden font-bold"><i class="fas fa-check-circle"></i> Location Verified</p>
-                        </div>
-
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-1">Full Name *</label>
-                                <input type="text" id="full-name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none transition shadow-sm" placeholder="John Doe">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-1">Email Address *</label>
-                                <input type="email" id="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none transition shadow-sm" placeholder="john@example.com">
-                            </div>
-                            <div class="md:col-span-2">
-                                <label class="block text-sm font-bold text-gray-700 mb-1">Phone Number *</label>
-                                <input type="tel" id="phone" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none transition shadow-sm" placeholder="072 123 4567">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-slate-900 text-white p-6 rounded-xl flex flex-col md:flex-row justify-between items-center shadow-lg">
-                        <div class="mb-4 md:mb-0 text-center md:text-left">
-                            <p class="text-gray-400 text-xs uppercase font-bold tracking-wider">Estimated Total</p>
-                            <div class="flex items-baseline gap-2 justify-center md:justify-start">
-                                <h3 class="text-3xl font-bold" id="subtotal">R 0.00</h3>
-                                <span class="text-sm text-gray-400 font-medium" id="rate-breakdown"></span>
-                            </div>
-                            <p class="text-xs text-accent mt-1"><i class="fas fa-lock"></i> Secure checkout</p>
-                        </div>
-                        
-                        <div id="loading-spinner" class="hidden text-accent mr-4">
-                            <i class="fas fa-circle-notch fa-spin text-2xl"></i>
-                        </div>
-
-                        <button type="button" id="next-btn" class="bg-accent hover:bg-cyan-400 text-white px-8 py-4 rounded-full font-bold shadow-lg transition-all transform hover:-translate-y-1 disabled-btn w-full md:w-auto" disabled>
-                            Continue to Add-ons <i class="fas fa-arrow-right ml-2"></i>
-                        </button>
-                    </div>
-
-                </form>
             </div>
+        </section>
+
+        <section class="py-16 bg-white border-b border-gray-100">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-10">
+                    <h2 class="text-primary font-bold text-2xl uppercase tracking-wide">Simple Process</h2>
+                    <h3 class="text-3xl font-bold text-gray-800">How It Works</h3>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 text-center relative">
+                    <div class="hidden md:block absolute top-12 left-0 w-full h-1 bg-gray-100 -z-10 transform scale-x-75"></div>
+                    
+                    <div class="bg-white p-4">
+                        <div class="w-20 h-20 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold border-4 border-white shadow-lg">1</div>
+                        <h4 class="font-bold text-xl text-gray-800 mb-2">Book Online</h4>
+                        <p class="text-gray-500">Select your service, customize your schedule, and see your price instantly. No hidden fees.</p>
+                    </div>
+                    <div class="bg-white p-4">
+                        <div class="w-20 h-20 bg-accent text-white rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold border-4 border-white shadow-lg">2</div>
+                        <h4 class="font-bold text-xl text-gray-800 mb-2">We Clean</h4>
+                        <p class="text-gray-500">Our vetted, background-checked professional arrives on time, fully prepared to make your space sparkle.</p>
+                    </div>
+                    <div class="bg-white p-4">
+                        <div class="w-20 h-20 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold border-4 border-white shadow-lg">3</div>
+                        <h4 class="font-bold text-xl text-gray-800 mb-2">You Relax</h4>
+                        <p class="text-gray-500">Enjoy your free time. We handle the mess, so you can come home to a fresh, clean environment.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 bg-blue-50">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="md:w-1/2">
+                        <h2 class="text-accent font-bold text-sm uppercase mb-2">Why Ngaoyi?</h2>
+                        <h3 class="text-3xl md:text-4xl font-bold text-primary mb-6">More Than Just A Cleaning Service</h3>
+                        <p class="text-gray-600 mb-6 leading-relaxed">
+                            We understand that inviting someone into your home requires trust. That's why we've built our business on three pillars: Security, Quality, and Reliability.
+                        </p>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="bg-white p-2 rounded shadow-sm mr-4 text-accent"><i class="fas fa-id-card"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800">Strictly Vetted Staff</h4>
+                                    <p class="text-sm text-gray-500">Every cleaner undergoes a rigorous background check and interview process.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-white p-2 rounded shadow-sm mr-4 text-accent"><i class="fas fa-clipboard-check"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800">Quality Guaranteed</h4>
+                                    <p class="text-sm text-gray-500">Not happy? Let us know within 24 hours and we'll fix it.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-white p-2 rounded shadow-sm mr-4 text-accent"><i class="fas fa-lock"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800">Secure Payments</h4>
+                                    <p class="text-sm text-gray-500">Cashless, secure online payments for your peace of mind.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2">
+                         <img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?q=80&w=1600&auto=format&fit=crop" alt="Kitchen Cleaning" class="rounded-2xl shadow-2xl border-4 border-white">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-primary font-bold text-3xl md:text-4xl mb-4">Our Service Plans</h2>
+                    <p class="text-gray-500 max-w-2xl mx-auto">Transparent pricing with no hidden costs. Choose the plan that fits your lifestyle.</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white rounded-2xl shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300 flex flex-col overflow-hidden group">
+                        <div class="bg-blue-50 p-6 text-center">
+                            <h3 class="text-xl font-bold text-primary mb-2">Recurring Plans</h3>
+                            <p class="text-sm text-gray-500">Weekly • Bi-Weekly • Monthly</p>
+                        </div>
+                        <div class="p-8 flex-grow">
+                            <ul class="space-y-3 text-sm text-gray-600 mb-6">
+                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Dusting surfaces & skirting</li>
+                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Vacuuming & Mopping</li>
+                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Bathroom sanitization</li>
+                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Kitchen surfaces & sinks</li>
+                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Bin emptying</li>
+                            </ul>
+                        </div>
+                        <div class="p-6 bg-gray-50 border-t border-gray-100 flex justify-between items-center">
+                             <div>
+                                 <span class="text-xs text-gray-400 block">Starting at</span>
+                                 <span class="text-primary font-bold text-lg">R240</span>
+                             </div>
+                             <a href="services.html" class="text-accent font-bold text-sm hover:underline">View Details</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-lg border-2 border-accent transform md:-translate-y-4 flex flex-col overflow-hidden relative">
+                        <div class="absolute top-0 right-0 bg-accent text-white text-xs font-bold px-3 py-1 rounded-bl">RECOMMENDED</div>
+                        <div class="bg-blue-50 p-6 text-center">
+                            <h3 class="text-xl font-bold text-primary mb-2">Once-Off / Deep Clean</h3>
+                            <p class="text-sm text-gray-500">Move-In • Spring Clean • Events</p>
+                        </div>
+                        <div class="p-8 flex-grow">
+                            <ul class="space-y-3 text-sm text-gray-600 mb-6">
+                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> <b>Everything in Standard +</b></li>
+                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Inside cabinets (empty)</li>
+                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Window sills & tracks</li>
+                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Light switches & door handles</li>
+                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Appliance exteriors polished</li>
+                            </ul>
+                        </div>
+                         <div class="p-6 bg-gray-50 border-t border-gray-100 flex justify-between items-center">
+                             <div>
+                                 <span class="text-xs text-gray-400 block">Starting at</span>
+                                 <span class="text-primary font-bold text-lg">R350</span>
+                             </div>
+                             <a href="services.html" class="text-accent font-bold text-sm hover:underline">View Details</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300 flex flex-col overflow-hidden">
+                        <div class="bg-blue-50 p-6 text-center">
+                            <h3 class="text-xl font-bold text-primary mb-2">Office & Commercial</h3>
+                            <p class="text-sm text-gray-500">Offices • Showrooms • Retail</p>
+                        </div>
+                        <div class="p-8 flex-grow">
+                            <ul class="space-y-3 text-sm text-gray-600 mb-6">
+                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Desk & Workstation cleaning</li>
+                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Common area maintenance</li>
+                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Restroom supply restocking</li>
+                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Kitchen/Canteen management</li>
+                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Trash removal</li>
+                            </ul>
+                        </div>
+                         <div class="p-6 bg-gray-50 border-t border-gray-100 flex justify-between items-center">
+                             <div>
+                                 <span class="text-xs text-gray-400 block">Pricing</span>
+                                 <span class="text-primary font-bold text-lg">Custom</span>
+                             </div>
+                             <a href="mailto:ngaoyicleaning@gmail.com" class="text-accent font-bold text-sm hover:underline">Request Quote</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 bg-gray-50">
+            <div class="container mx-auto px-4 max-w-3xl">
+                <div class="text-center mb-10">
+                    <h2 class="text-primary font-bold text-3xl">Frequently Asked Questions</h2>
+                    <p class="text-gray-500">Everything you need to know before you book.</p>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="bg-white rounded-lg p-6 shadow-sm">
+                        <h4 class="font-bold text-gray-800 mb-2"><i class="fas fa-question-circle text-accent mr-2"></i> Do I need to provide cleaning supplies?</h4>
+                        <p class="text-sm text-gray-600">By default, our standard rates assume you provide basic equipment (mop, broom, bucket) and liquids. However, we can bring our own professional supplies for a small additional fee. You can select this option during checkout.</p>
+                    </div>
+                    <div class="bg-white rounded-lg p-6 shadow-sm">
+                        <h4 class="font-bold text-gray-800 mb-2"><i class="fas fa-question-circle text-accent mr-2"></i> Do I need to be home during the clean?</h4>
+                        <p class="text-sm text-gray-600">Not necessarily! Many clients leave a key or gate code in the "Access Notes" section when booking. We are vetted professionals, so your home is safe with us.</p>
+                    </div>
+                    <div class="bg-white rounded-lg p-6 shadow-sm">
+                        <h4 class="font-bold text-gray-800 mb-2"><i class="fas fa-question-circle text-accent mr-2"></i> What if I'm not happy with the service?</h4>
+                        <p class="text-sm text-gray-600">Customer satisfaction is our priority. If you are unsatisfied, please contact us within 24 hours, and we will arrange a re-clean or address the issue immediately.</p>
+                    </div>
+                     <div class="bg-white rounded-lg p-6 shadow-sm">
+                        <h4 class="font-bold text-gray-800 mb-2"><i class="fas fa-question-circle text-accent mr-2"></i> How do I pay?</h4>
+                        <p class="text-sm text-gray-600">We accept secure online payments (EFT/Card) via our booking platform. For recurring clients, we can set up automated monthly invoicing.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+                     <div>
+                        <h2 class="text-3xl font-bold text-primary mb-2">Trusted by Gauteng</h2>
+                        <p class="text-gray-500">See what our community is saying.</p>
+                     </div>
+                     <a href="https://share.google/0YB0Nwk2nl58VvMB7" target="_blank" class="mt-4 md:mt-0 inline-flex items-center text-sm font-bold text-gray-600 hover:text-primary border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-50 transition">
+                         <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" class="w-4 h-4 mr-2">
+                         Verify Reviews on Google
+                     </a>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div class="bg-gray-50 p-8 rounded-2xl border border-gray-100 relative">
+                        <i class="fas fa-quote-right absolute top-8 right-8 text-gray-200 text-4xl"></i>
+                        <div class="flex text-yellow-400 mb-4 text-sm">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="text-gray-600 italic mb-6">"Ngaoyi Cleaning transformed my apartment. The cleaner was on time, polite, and thorough. I've already booked my next session!"</p>
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold mr-3">TS</div>
+                            <div>
+                                <p class="font-bold text-primary text-sm">Thandi S.</p>
+                                <p class="text-xs text-gray-500">Sandton</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-8 rounded-2xl border border-gray-100 relative">
+                        <i class="fas fa-quote-right absolute top-8 right-8 text-gray-200 text-4xl"></i>
+                        <div class="flex text-yellow-400 mb-4 text-sm">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="text-gray-600 italic mb-6">"The weekly plan is a lifesaver. Coming home to a clean house on Fridays is the best feeling. Professional and secure."</p>
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-accent text-white rounded-full flex items-center justify-center font-bold mr-3">MJ</div>
+                            <div>
+                                <p class="font-bold text-primary text-sm">Michael J.</p>
+                                <p class="text-xs text-gray-500">Midrand</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="relative py-20 bg-primary overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-20 -mt-20"></div>
+            <div class="absolute bottom-0 left-0 w-40 h-40 bg-white/5 rounded-full -ml-10 -mb-10"></div>
             
-            <div class="text-center mt-6 text-gray-400 text-xs">
-                <p><i class="fas fa-lock"></i> Your personal information is securely encrypted.</p>
+            <div class="container mx-auto px-4 relative z-10 text-center">
+                <h2 class="text-3xl font-bold text-white mb-6">Ready for a cleaner space?</h2>
+                <div class="flex justify-center gap-4">
+                     <a href="booking.html" class="bg-white text-primary px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition shadow-lg">
+                        Book a Cleaner Now
+                    </a>
+                    <a href="mailto:ngaoyicleaning@gmail.com?subject=Cleaner Application" class="border border-white text-white px-8 py-3 rounded-full font-bold hover:bg-white hover:text-primary transition">
+                        Join Our Team
+                    </a>
+                </div>
             </div>
         </section>
     </main>
 
-    <footer class="bg-white py-6 text-center border-t border-gray-100 mt-8">
+    <footer class="bg-secondary text-white pt-12 border-t-4 border-accent">
         <div class="container mx-auto px-4">
-            <p class="text-gray-400 text-sm">Need help booking? Call <a href="tel:0707643709" class="text-primary font-bold">070 764 3709</a></p>
-            <p class="text-gray-300 text-xs mt-2">&copy; 2025 Ngaoyi Cleaning.</p>
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-4">Ngaoyi Cleaning</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">Professional, reliable cleaning services available across Gauteng. We take the stress out of the mess.</p>
+                    <div class="flex space-x-4">
+                        <a href="https://share.google/0YB0Nwk2nl58VvMB7" target="_blank" class="w-8 h-8 rounded bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-white hover:text-red-500 transition" title="Google Business Profile"><i class="fab fa-google"></i></a>
+                        <a href="#" class="w-8 h-8 rounded bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-accent hover:text-white transition"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-8 h-8 rounded bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-accent hover:text-white transition"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="index.html" class="hover:text-accent transition">Home</a></li>
+                        <li><a href="services.html" class="hover:text-accent transition">Services</a></li>
+                        <li><a href="booking.html" class="hover:text-accent transition">Book Now</a></li>
+                        <li><a href="dashboard.html" class="hover:text-accent transition">Admin Login</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">Contact</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-center"><i class="fas fa-phone mr-3 text-accent"></i> 070 764 3709</li>
+                        <li class="flex items-center"><i class="fas fa-envelope mr-3 text-accent"></i> ngaoyicleaning@gmail.com</li>
+                        <li class="flex items-center"><i class="fas fa-map-marker-alt mr-3 text-accent"></i> Gauteng, South Africa</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">Book Online</h4>
+                    <p class="text-gray-400 text-sm mb-4">Secure your slot in 60 seconds.</p>
+                    <a href="booking.html" class="block bg-accent text-white text-center py-2 rounded font-bold hover:bg-cyan-400 transition">Book Now</a>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 py-6 text-center">
+                 <p class="text-xs text-gray-500 font-bold mb-2 uppercase tracking-wide">Areas We Serve</p>
+                 <p class="text-xs text-gray-600 leading-relaxed max-w-4xl mx-auto">
+                     Johannesburg | Pretoria | Sandton | Midrand | Centurion | Fourways | Randburg | Roodepoort | Kempton Park | Germiston | Alberton | Edenvale | Bedfordview | Boksburg | Benoni | Soweto
+                 </p>
+            </div>
+            
+            <div class="border-t border-gray-800 py-6 text-center text-xs text-gray-500">
+                <p>&copy; 2025 Ngaoyi Cleaning. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 
-    <script 
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDM4fAVuAB0X5dja_wwIxmu4abB6bTPrXk&libraries=places&callback=initAutocomplete" 
-        async 
-        defer>
-    </script>
+    <a href="https://wa.me/27707643709" target="_blank" class="fixed bottom-6 right-6 w-14 h-14 bg-green-500 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform z-50">
+        <i class="fab fa-whatsapp text-3xl"></i>
+    </a>
+
+    <div id="promo-modal" class="fixed inset-0 z-50 flex items-center justify-center px-4 hidden modal-overlay">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden transform scale-95 opacity-0 transition-all duration-300" id="modal-content">
+            <div class="bg-primary p-6 text-center relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-full -mr-10 -mt-10"></div>
+                <button onclick="closeModal()" class="absolute top-4 right-4 text-white/70 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+                <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-white/30 backdrop-blur-sm">
+                    <i class="fas fa-percentage text-white text-3xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-white mb-1">Januworry Savings!</h2>
+                <p class="text-blue-100 text-sm">Start the year fresh with cleaner spaces.</p>
+            </div>
+            
+            <div class="p-6 space-y-4 bg-gray-50">
+                <div class="bg-white border border-dashed border-blue-200 rounded-xl p-4 relative group cursor-pointer hover:border-accent transition" onclick="copyCode('FRESH15')">
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-xs font-bold text-accent uppercase tracking-wider">Best Value</span>
+                        <span class="text-xs text-gray-400"><i class="far fa-copy"></i> Copy</span>
+                    </div>
+                    <h3 class="font-bold text-gray-800 text-lg">15% OFF Bi-Weekly Plans</h3>
+                    <div class="mt-2 bg-blue-50 text-primary font-mono font-bold text-center py-2 rounded border border-blue-100">FRESH15</div>
+                </div>
+
+                <div class="bg-white border border-dashed border-orange-200 rounded-xl p-4 relative group cursor-pointer hover:border-orange-400 transition" onclick="copyCode('JANUWORRY10')">
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-xs font-bold text-orange-500 uppercase tracking-wider">Popular</span>
+                        <span class="text-xs text-gray-400"><i class="far fa-copy"></i> Copy</span>
+                    </div>
+                    <h3 class="font-bold text-gray-800 text-lg">10% OFF Weekly Plans</h3>
+                    <div class="mt-2 bg-orange-50 text-orange-600 font-mono font-bold text-center py-2 rounded border border-orange-100">JANUWORRY10</div>
+                </div>
+
+                <a href="booking.html" class="block w-full bg-primary text-white text-center font-bold py-3 rounded-xl hover:bg-primary-light transition shadow-lg mt-2">
+                    Book & Save Now
+                </a>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // SCRIPT URL
-        const API_URL = 'https://script.google.com/macros/s/AKfycbycs4Rnz7UOcGtZlKc6pGEiykbCWkqO4UpwsGZU-VrM_e5Qa8oKKmG2k2fejnN43oym/exec';
-
-        let sheetPricing = null;
-        let fpInstance = null;
-        let requiredDates = 1;
-        let isAddressValid = false;
-
-        // ALLOWED AREAS (Geofencing)
-        const ALLOWED_AREAS = [
-            'Johannesburg', 'Pretoria', 'Sandton', 'Midrand', 'Centurion', 
-            'Fourways', 'Randburg', 'Roodepoort', 'Kempton Park', 'Germiston', 
-            'Alberton', 'Edenvale', 'Bedfordview', 'Boksburg', 'Benoni', 'Soweto'
-        ];
-
-        // MAPPINGS
-        const serviceMap = {
-            'weekly': 'Weekly Recurring',
-            'biweekly': 'Bi-weekly Recurring',
-            'monthly': 'Monthly Recurring',
-            'once-off': 'Once-Off Cleaning',
-            'deep': 'Deep Cleaning',
-            'emergency': 'Emergency Service'
-        };
-        const sizeMap = { '1-bed': '1-Bedroom', '2-bed': '2-Bedroom', '3-bed': '3-Bedroom', '4-bed': '4-Bedroom', 'office': 'Office/Commercial' };
-
-        // --- INIT ---
-        document.addEventListener('DOMContentLoaded', async () => {
-            await fetchPrices();
-            
-            document.getElementById('service-type').addEventListener('change', updateCalendarMode);
-            document.getElementById('property-size').addEventListener('change', calculateTotal);
-            document.getElementById('next-btn').addEventListener('click', saveAndNext);
-            
-            document.getElementById('booking-form').addEventListener('keydown', (e) => { if(e.key === 'Enter') e.preventDefault(); });
+        // Mobile Menu
+        document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
         });
 
-        // --- GOOGLE MAPS ---
-        function initAutocomplete() {
-            const input = document.getElementById("address");
-            if (!input) return;
-
-            const options = {
-                componentRestrictions: { country: "za" },
-                fields: ["formatted_address", "address_components", "geometry"],
-                types: ["address"]
-            };
-
-            const autocomplete = new google.maps.places.Autocomplete(input, options);
-
-            autocomplete.addListener("place_changed", () => {
-                const place = autocomplete.getPlace();
-                const errorMsg = document.getElementById('address-error');
-                const successMsg = document.getElementById('address-success');
-
-                if (!place.geometry) {
-                    input.classList.add('border-red-500');
-                    errorMsg.textContent = "Please select a valid address from the list.";
-                    errorMsg.classList.remove('hidden');
-                    successMsg.classList.add('hidden');
-                    isAddressValid = false;
-                    validateForm();
-                    return;
-                }
-
-                let areaFound = false;
-                const fullAddress = place.formatted_address || "";
-                
-                if (place.address_components) {
-                    for (const component of place.address_components) {
-                        if (ALLOWED_AREAS.some(area => component.long_name.includes(area))) {
-                            areaFound = true;
-                            break;
-                        }
-                    }
-                }
-                if (!areaFound && ALLOWED_AREAS.some(area => fullAddress.includes(area))) areaFound = true;
-
-                if (areaFound) {
-                    input.value = fullAddress;
-                    input.classList.remove('border-red-500');
-                    input.classList.add('border-green-500');
-                    errorMsg.classList.add('hidden');
-                    successMsg.classList.remove('hidden');
-                    isAddressValid = true;
-                } else {
-                    input.classList.add('border-red-500');
-                    input.classList.remove('border-green-500');
-                    errorMsg.textContent = "Sorry, we do not serve this area yet.";
-                    errorMsg.classList.remove('hidden');
-                    successMsg.classList.add('hidden');
-                    isAddressValid = false;
-                }
-                validateForm();
-            });
-        }
-
-        // --- PRICING FETCH ---
-        async function fetchPrices() {
-            document.getElementById('loading-spinner').classList.remove('hidden');
-            try {
-                const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'get-pricing' }) });
-                const data = await res.json();
-                if(data.success) {
-                    sheetPricing = data.pricing;
-                    console.log("Prices Loaded");
-                }
-            } catch(e) { console.error("Pricing Error:", e); }
-            document.getElementById('loading-spinner').classList.add('hidden');
-        }
-
-        // --- CALENDAR ---
-        function updateCalendarMode() {
-            const type = document.getElementById('service-type').value;
-            const input = document.getElementById('calendar-input');
-            const hint = document.getElementById('calendar-hint');
-            const counter = document.getElementById('date-counter');
-
-            if(!type) {
-                input.disabled = true;
-                input.placeholder = "Choose a plan to unlock calendar";
-                if(fpInstance) fpInstance.clear();
-                return;
-            }
-
-            input.disabled = false;
-            input.placeholder = "Click to select dates...";
-            
-            let mode = 'single';
-            let maxDates = 1;
-            
-            if (type === 'weekly') {
-                mode = 'multiple'; maxDates = 4; requiredDates = 4;
-                hint.innerHTML = `<i class="fas fa-exclamation-circle text-primary"></i> Select exactly <b>4 dates</b>.`;
-                counter.classList.remove('hidden');
-            } else if (type === 'biweekly') {
-                mode = 'multiple'; maxDates = 2; requiredDates = 2;
-                hint.innerHTML = `<i class="fas fa-exclamation-circle text-primary"></i> Select exactly <b>2 dates</b>.`;
-                counter.classList.remove('hidden');
-            } else {
-                mode = 'single'; maxDates = 1; requiredDates = 1;
-                hint.textContent = "Please select your preferred date.";
-                counter.classList.add('hidden');
-            }
-
-            if(fpInstance) fpInstance.destroy();
-
-            fpInstance = flatpickr("#calendar-input", {
-                mode: mode,
-                minDate: "today",
-                maxDate: new Date().fp_incr(60), 
-                dateFormat: "Y-m-d",
-                conjunction: ", ",
-                onChange: function(selectedDates) {
-                    if (mode === 'multiple' && selectedDates.length > maxDates) {
-                        selectedDates.pop(); 
-                        this.setDate(selectedDates); 
-                        alert(`Maximum ${maxDates} dates allowed.`);
-                        return;
-                    }
-                    
-                    document.getElementById('date-counter').textContent = `${selectedDates.length}/${requiredDates} Selected`;
-                    
-                    if (selectedDates.length === requiredDates) {
-                        input.classList.add('border-green-500');
-                        input.classList.remove('border-gray-300', 'border-red-500');
-                    } else {
-                        input.classList.remove('border-green-500');
-                        if(selectedDates.length > 0) input.classList.add('border-red-500');
-                    }
-                    calculateTotal();
-                }
-            });
-            calculateTotal();
-        }
-
-        function calculateTotal() {
-            const sCode = document.getElementById('service-type').value;
-            const pCode = document.getElementById('property-size').value;
-            
-            if(!sCode || !pCode || !sheetPricing || !fpInstance) return;
-
-            const sName = serviceMap[sCode];
-            const pName = sizeMap[pCode];
-            const dates = fpInstance.selectedDates;
-            const visitCount = dates.length > 0 ? dates.length : 1; 
-
-            let perVisit = 0;
-            if (sheetPricing[sName] && sheetPricing[sName][pName]) {
-                perVisit = Number(sheetPricing[sName][pName].base); 
-            }
-
-            const total = perVisit * visitCount;
-            document.getElementById('subtotal').textContent = `R ${total.toFixed(2)}`;
-            document.getElementById('rate-breakdown').textContent = `R${perVisit} base x ${dates.length || 1} visit(s)`;
-
-            validateForm(dates.length === requiredDates, total > 0);
-        }
-
-        // --- VALIDATION & SAVE ---
-        function validateForm(dateValid = false, priceValid = false) {
-            const name = document.getElementById('full-name').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const btn = document.getElementById('next-btn');
-
-            if (!dateValid && fpInstance) {
-                dateValid = fpInstance.selectedDates.length === requiredDates;
-            }
-
-            // Price must be > 0 to proceed
-            const currentTotal = parseFloat(document.getElementById('subtotal').textContent.replace('R ',''));
-            if(currentTotal > 0) priceValid = true;
-
-            if (isAddressValid && dateValid && priceValid && name && email && phone) {
-                btn.disabled = false;
-                btn.classList.remove('disabled-btn');
-            } else {
-                btn.disabled = true;
-                btn.classList.add('disabled-btn');
+        // Modal Logic
+        window.onload = function() {
+            if(!sessionStorage.getItem('seenJanuworry')) {
+                const modal = document.getElementById('promo-modal');
+                const content = document.getElementById('modal-content');
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    content.classList.remove('scale-95', 'opacity-0');
+                    content.classList.add('scale-100', 'opacity-100');
+                }, 100);
             }
         }
 
-        ['full-name', 'email', 'phone'].forEach(id => {
-            document.getElementById(id).addEventListener('input', () => validateForm());
-        });
+        function closeModal() {
+            document.getElementById('promo-modal').classList.add('hidden');
+            sessionStorage.setItem('seenJanuworry', 'true');
+        }
 
-        function saveAndNext() {
-            const dates = fpInstance.selectedDates.map(d => d.toISOString().split('T')[0]);
-            
-            // ANALYTICS DATA
-            const serviceName = serviceMap[document.getElementById('service-type').value];
-            const priceValue = parseFloat(document.getElementById('subtotal').textContent.replace('R ',''));
-
-            // SEND EVENT TO GOOGLE ANALYTICS
-            if(typeof gtag === 'function') {
-                gtag('event', 'begin_checkout', {
-                    'currency': 'ZAR',
-                    'value': priceValue,
-                    'items': [{
-                        'item_id': document.getElementById('service-type').value,
-                        'item_name': serviceName,
-                        'item_category': 'Cleaning Service'
-                    }]
-                });
-            }
-
-            const bookingData = {
-                name: document.getElementById('full-name').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                address: document.getElementById('address').value,
-                serviceType: serviceName,
-                propertySize: sizeMap[document.getElementById('property-size').value],
-                serviceCode: document.getElementById('service-type').value,
-                propertySizeCode: document.getElementById('property-size').value,
-                materialsOption: 'customer-supply',
-                dates: dates,
-                time: document.getElementById('time-slot').value,
-                instructions: document.getElementById('instructions').value,
-                baseTotal: priceValue
-            };
-
-            localStorage.setItem('bookingData', JSON.stringify(bookingData));
-            window.location.href = 'booking-addons.html';
+        function copyCode(code) {
+            navigator.clipboard.writeText(code);
+            alert("Promo Code " + code + " copied!");
         }
     </script>
 </body>
