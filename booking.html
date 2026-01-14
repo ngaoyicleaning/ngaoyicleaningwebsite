@@ -3,8 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Cleaning Service | Ngaoyi Cleaning</title>
-    <meta name="description" content="Book professional cleaning services in Gauteng. Secure your slot online.">
+    
+    <title>Book Cleaning Services Gauteng | Instant Online Quote | Ngaoyi Cleaning</title>
+    
+    <meta name="description" content="Get an instant price for domestic cleaning in Johannesburg, Pretoria, Sandton & Midrand. Book vetted cleaners online in 60 seconds. Secure & Reliable.">
+    
+    <meta property="og:title" content="Book Trusted Cleaners in Gauteng | Ngaoyi Cleaning">
+    <meta property="og:description" content="Instant online quotes. Vetted staff. Book your home cleaning today.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png">
+    <meta property="og:url" content="https://ngaoyicleaning.co.za/booking.html">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://ngaoyicleaning.co.za/booking.html">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5V9NJTNT1N"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-5V9NJTNT1N');
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CleaningService",
+      "name": "Ngaoyi Cleaning",
+      "image": "https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png",
+      "description": "Professional domestic and commercial cleaning services in Gauteng.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressRegion": "Gauteng",
+        "addressCountry": "ZA"
+      },
+      "areaServed": ["Johannesburg", "Pretoria", "Sandton", "Midrand", "Centurion"],
+      "priceRange": "$$"
+    }
+    </script>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -51,13 +86,13 @@
     <header class="sticky top-0 z-40 bg-white shadow-md">
         <nav class="container mx-auto px-4 py-3 flex justify-center md:justify-start items-center">
             <div class="flex items-center space-x-3">
-                <img src="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png" class="w-10 h-10 object-contain">
+                <img src="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png" class="w-10 h-10 object-contain" alt="Ngaoyi Cleaning Logo">
                 <div>
                     <h1 class="text-2xl font-bold text-primary leading-none">Ngaoyi Cleaning</h1>
                     <p class="text-xs text-gray-500 font-semibold tracking-wide">GAUTENG</p>
                 </div>
             </div>
-            </nav>
+        </nav>
     </header>
 
     <main class="py-8">
@@ -75,9 +110,9 @@
             <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
                 
                 <div class="bg-primary px-6 py-6 text-center md:text-left">
-                    <h1 class="text-2xl font-bold text-white mb-2">
-                        Get Your Free Quote
-                    </h1>
+                    <h2 class="text-2xl font-bold text-white mb-2">
+                        Get Your Free Instant Quote
+                    </h2>
                     <div class="flex flex-wrap justify-center md:justify-start gap-4 text-blue-100 text-xs font-semibold uppercase tracking-wide">
                         <span class="bg-primary-light px-2 py-1 rounded"><i class="fas fa-check-circle mr-1"></i> Vetted Staff</span>
                         <span class="bg-primary-light px-2 py-1 rounded"><i class="fas fa-shield-alt mr-1"></i> Insured</span>
@@ -235,7 +270,7 @@
     </script>
 
     <script>
-        // SCRIPT URL (UNCHANGED)
+        // SCRIPT URL
         const API_URL = 'https://script.google.com/macros/s/AKfycbycs4Rnz7UOcGtZlKc6pGEiykbCWkqO4UpwsGZU-VrM_e5Qa8oKKmG2k2fejnN43oym/exec';
 
         let sheetPricing = null;
@@ -465,12 +500,29 @@
         function saveAndNext() {
             const dates = fpInstance.selectedDates.map(d => d.toISOString().split('T')[0]);
             
+            // ANALYTICS DATA
+            const serviceName = serviceMap[document.getElementById('service-type').value];
+            const priceValue = parseFloat(document.getElementById('subtotal').textContent.replace('R ',''));
+
+            // SEND EVENT TO GOOGLE ANALYTICS
+            if(typeof gtag === 'function') {
+                gtag('event', 'begin_checkout', {
+                    'currency': 'ZAR',
+                    'value': priceValue,
+                    'items': [{
+                        'item_id': document.getElementById('service-type').value,
+                        'item_name': serviceName,
+                        'item_category': 'Cleaning Service'
+                    }]
+                });
+            }
+
             const bookingData = {
                 name: document.getElementById('full-name').value,
                 email: document.getElementById('email').value,
                 phone: document.getElementById('phone').value,
                 address: document.getElementById('address').value,
-                serviceType: serviceMap[document.getElementById('service-type').value],
+                serviceType: serviceName,
                 propertySize: sizeMap[document.getElementById('property-size').value],
                 serviceCode: document.getElementById('service-type').value,
                 propertySizeCode: document.getElementById('property-size').value,
@@ -478,7 +530,7 @@
                 dates: dates,
                 time: document.getElementById('time-slot').value,
                 instructions: document.getElementById('instructions').value,
-                baseTotal: parseFloat(document.getElementById('subtotal').textContent.replace('R ',''))
+                baseTotal: priceValue
             };
 
             localStorage.setItem('bookingData', JSON.stringify(bookingData));
