@@ -6,7 +6,6 @@
     <title>Cleaning Services | Ngaoyi Cleaning | Gauteng</title>
     <meta name="description" content="Professional cleaning services in Gauteng: Recurring plans, deep cleaning, commercial cleaning, emergency services, and add-on services.">
     
-    <!-- Structured Data -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -23,7 +22,6 @@
     }
     </script>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
@@ -31,10 +29,18 @@
         .menu-hidden {
             display: none;
         }
+        /* Loading pulse for prices */
+        .price-loading {
+            opacity: 0.5;
+            animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.2; }
+        }
     </style>
 </head>
 <body class="font-sans text-gray-700 bg-white">
-    <!-- Navigation -->
     <header class="sticky top-0 z-40 bg-white shadow-md">
         <nav class="container mx-auto px-4 py-3">
             <div class="flex justify-between items-center">
@@ -49,7 +55,6 @@
                     </div>
                 </div>
                 
-                <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-6">
                     <a href="/ngaoyicleaningwebsite/index.html" class="text-gray-700 hover:text-blue-700 font-medium">Home</a>
                     <a href="/ngaoyicleaningwebsite/services.html" class="text-blue-700 font-medium">Services</a>
@@ -58,13 +63,11 @@
                     <a href="/ngaoyicleaningwebsite/booking.html" class="bg-gradient-to-r from-blue-700 to-blue-500 text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg transition-all">Book Now</a>
                 </div>
                 
-                <!-- Mobile Menu Button -->
                 <button id="mobile-menu-toggle" class="md:hidden text-blue-700 text-2xl">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
             
-            <!-- Mobile Menu -->
             <div id="mobile-menu" class="md:hidden mt-4 space-y-4 hidden">
                 <a href="/ngaoyicleaningwebsite/index.html" class="block text-gray-700 font-medium hover:text-blue-700">Home</a>
                 <a href="/ngaoyicleaningwebsite/services.html" class="block text-blue-700 font-medium">Services</a>
@@ -76,7 +79,6 @@
     </header>
 
     <main class="py-8">
-        <!-- Page Header -->
         <section class="bg-gradient-to-r from-blue-700 to-blue-900 text-white py-12">
             <div class="container mx-auto px-4">
                 <h1 class="text-4xl font-bold text-center mb-4">Our Cleaning Services</h1>
@@ -84,20 +86,24 @@
             </div>
         </section>
 
-        <!-- Recurring Plans -->
         <section id="recurring" class="py-16 bg-gray-50">
             <div class="container mx-auto px-4">
-                <div class="flex items-center mb-8">
-                    <div class="w-12 h-12 bg-blue-700 rounded-full flex items-center justify-center mr-4">
-                        <i class="fas fa-calendar-check text-white text-xl"></i>
+                <div class="flex justify-between items-end mb-8">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-blue-700 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-calendar-check text-white text-xl"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-blue-700">Recurring Plans</h2>
                     </div>
-                    <h2 class="text-3xl font-bold text-blue-700">Recurring Cleaning Plans</h2>
+                    <div id="sync-indicator" class="text-sm text-gray-500 flex items-center gap-2 hidden md:flex">
+                        <i class="fas fa-circle-notch fa-spin"></i> Syncing prices...
+                    </div>
                 </div>
                 
                 <p class="text-gray-600 mb-8 max-w-3xl">Perfect for maintaining consistent cleanliness in your home or office. Choose from weekly, bi-weekly, or monthly schedules.</p>
                 
                 <div class="grid md:grid-cols-3 gap-8 mb-12">
-                    <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
+                    <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 transform hover:-translate-y-1 transition-transform">
                         <div class="text-center mb-6">
                             <div class="text-lg font-bold text-blue-700 mb-2">Weekly</div>
                             <span class="bg-green-100 text-green-800 text-sm font-semibold px-3 py-1 rounded-full">Save 15%</span>
@@ -105,19 +111,19 @@
                         <div class="space-y-4 mb-6">
                             <div class="flex justify-between items-center border-b pb-2">
                                 <span class="text-gray-600">1-Bedroom</span>
-                                <span class="font-bold text-blue-700">R 240</span>
+                                <span class="font-bold text-blue-700 price-loading" id="price-weekly-1-bedroom">Loading...</span>
                             </div>
                             <div class="flex justify-between items-center border-b pb-2">
                                 <span class="text-gray-600">2-Bedroom</span>
-                                <span class="font-bold text-blue-700">R 320</span>
+                                <span class="font-bold text-blue-700 price-loading" id="price-weekly-2-bedroom">Loading...</span>
                             </div>
                             <div class="flex justify-between items-center border-b pb-2">
                                 <span class="text-gray-600">3-Bedroom</span>
-                                <span class="font-bold text-blue-700">R 380</span>
+                                <span class="font-bold text-blue-700 price-loading" id="price-weekly-3-bedroom">Loading...</span>
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-gray-600">4-Bedroom</span>
-                                <span class="font-bold text-blue-700">R 440</span>
+                                <span class="font-bold text-blue-700 price-loading" id="price-weekly-4-bedroom">Loading...</span>
                             </div>
                         </div>
                         <a href="/ngaoyicleaningwebsite/booking.html" class="block w-full bg-blue-700 text-white py-3 rounded-lg font-semibold text-center hover:bg-blue-800 transition-colors">
@@ -125,7 +131,7 @@
                         </a>
                     </div>
                     
-                    <div class="bg-white p-6 rounded-xl shadow-lg border border-blue-200 relative">
+                    <div class="bg-white p-6 rounded-xl shadow-lg border border-blue-200 relative transform hover:-translate-y-1 transition-transform">
                         <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
                             <span class="bg-blue-500 text-white text-xs font-bold px-4 py-1 rounded-full">MOST POPULAR</span>
                         </div>
@@ -136,19 +142,19 @@
                         <div class="space-y-4 mb-6">
                             <div class="flex justify-between items-center border-b pb-2">
                                 <span class="text-gray-600">1-Bedroom</span>
-                                <span class="font-bold text-blue-700">R 300</span>
+                                <span class="font-bold text-blue-700 price-loading" id="price-biweekly-1-bedroom">Loading...</span>
                             </div>
                             <div class="flex justify-between items-center border-b pb-2">
                                 <span class="text-gray-600">2-Bedroom</span>
-                                <span class="font-bold text-blue-700">R 400</span>
+                                <span class="font-bold text-blue-700 price-loading" id="price-biweekly-2-bedroom">Loading...</span>
                             </div>
                             <div class="flex justify-between items-center border-b pb-2">
                                 <span class="text-gray-600">3-Bedroom</span>
-                                <span class="font-bold text-blue-700">R 470</span>
+                                <span class="font-bold text-blue-700 price-loading" id="price-biweekly-3-bedroom">Loading...</span>
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-gray-600">4-Bedroom</span>
-                                <span class="font-bold text-blue-700">R 540</span>
+                                <span class="font-bold text-blue-700 price-loading" id="price-biweekly-4-bedroom">Loading...</span>
                             </div>
                         </div>
                         <a href="/ngaoyicleaningwebsite/booking.html" class="block w-full bg-blue-700 text-white py-3 rounded-lg font-semibold text-center hover:bg-blue-800 transition-colors">
@@ -156,7 +162,7 @@
                         </a>
                     </div>
                     
-                    <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
+                    <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 transform hover:-translate-y-1 transition-transform">
                         <div class="text-center mb-6">
                             <div class="text-lg font-bold text-blue-700 mb-2">Monthly</div>
                             <span class="bg-green-100 text-green-800 text-sm font-semibold px-3 py-1 rounded-full">Save 5%</span>
@@ -164,19 +170,19 @@
                         <div class="space-y-4 mb-6">
                             <div class="flex justify-between items-center border-b pb-2">
                                 <span class="text-gray-600">1-Bedroom</span>
-                                <span class="font-bold text-blue-700">R 360</span>
+                                <span class="font-bold text-blue-700 price-loading" id="price-monthly-1-bedroom">Loading...</span>
                             </div>
                             <div class="flex justify-between items-center border-b pb-2">
                                 <span class="text-gray-600">2-Bedroom</span>
-                                <span class="font-bold text-blue-700">R 480</span>
+                                <span class="font-bold text-blue-700 price-loading" id="price-monthly-2-bedroom">Loading...</span>
                             </div>
                             <div class="flex justify-between items-center border-b pb-2">
                                 <span class="text-gray-600">3-Bedroom</span>
-                                <span class="font-bold text-blue-700">R 560</span>
+                                <span class="font-bold text-blue-700 price-loading" id="price-monthly-3-bedroom">Loading...</span>
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-gray-600">4-Bedroom</span>
-                                <span class="font-bold text-blue-700">R 640</span>
+                                <span class="font-bold text-blue-700 price-loading" id="price-monthly-4-bedroom">Loading...</span>
                             </div>
                         </div>
                         <a href="/ngaoyicleaningwebsite/booking.html" class="block w-full bg-blue-700 text-white py-3 rounded-lg font-semibold text-center hover:bg-blue-800 transition-colors">
@@ -187,7 +193,6 @@
             </div>
         </section>
 
-        <!-- Once-Off Cleaning -->
         <section id="once-off" class="py-16">
             <div class="container mx-auto px-4">
                 <div class="flex items-center mb-8">
@@ -228,28 +233,20 @@
                         <h3 class="text-xl font-semibold text-blue-700 mb-4">Pricing:</h3>
                         <div class="space-y-4">
                             <div class="flex justify-between items-center border-b pb-3">
-                                <div>
-                                    <div class="font-medium">1-Bedroom</div>
-                                </div>
-                                <div class="text-right">
-                                    <div class="font-bold text-blue-700">R350</div>
-                                </div>
+                                <div><div class="font-medium">1-Bedroom</div></div>
+                                <div class="text-right"><div class="font-bold text-blue-700 price-loading" id="price-onceoff-1-bedroom">Loading...</div></div>
                             </div>
                             <div class="flex justify-between items-center border-b pb-3">
-                                <div>
-                                    <div class="font-medium">2-Bedroom</div>
-                                </div>
-                                <div class="text-right">
-                                    <div class="font-bold text-blue-700">R450</div>
-                                </div>
+                                <div><div class="font-medium">2-Bedroom</div></div>
+                                <div class="text-right"><div class="font-bold text-blue-700 price-loading" id="price-onceoff-2-bedroom">Loading...</div></div>
+                            </div>
+                            <div class="flex justify-between items-center border-b pb-3">
+                                <div><div class="font-medium">3-Bedroom</div></div>
+                                <div class="text-right"><div class="font-bold text-blue-700 price-loading" id="price-onceoff-3-bedroom">Loading...</div></div>
                             </div>
                             <div class="flex justify-between items-center">
-                                <div>
-                                    <div class="font-medium">3-Bedroom</div>
-                                </div>
-                                <div class="text-right">
-                                    <div class="font-bold text-blue-700">R550</div>
-                                </div>
+                                <div><div class="font-medium">4-Bedroom</div></div>
+                                <div class="text-right"><div class="font-bold text-blue-700 price-loading" id="price-onceoff-4-bedroom">Loading...</div></div>
                             </div>
                         </div>
                         
@@ -261,7 +258,6 @@
             </div>
         </section>
 
-        <!-- Deep Cleaning -->
         <section id="deep" class="py-16 bg-gray-50">
             <div class="container mx-auto px-4">
                 <div class="flex items-center mb-8">
@@ -302,28 +298,20 @@
                         <h3 class="text-xl font-semibold text-blue-700 mb-4">Pricing:</h3>
                         <div class="space-y-4 mb-6">
                             <div class="flex justify-between items-center border-b pb-3">
-                                <div>
-                                    <div class="font-medium">1-Bedroom</div>
-                                </div>
-                                <div class="text-right">
-                                    <div class="font-bold text-blue-700">R1200</div>
-                                </div>
+                                <div><div class="font-medium">1-Bedroom</div></div>
+                                <div class="text-right"><div class="font-bold text-blue-700 price-loading" id="price-deep-1-bedroom">Loading...</div></div>
                             </div>
                             <div class="flex justify-between items-center border-b pb-3">
-                                <div>
-                                    <div class="font-medium">2-Bedroom</div>
-                                </div>
-                                <div class="text-right">
-                                    <div class="font-bold text-blue-700">R1750</div>
-                                </div>
+                                <div><div class="font-medium">2-Bedroom</div></div>
+                                <div class="text-right"><div class="font-bold text-blue-700 price-loading" id="price-deep-2-bedroom">Loading...</div></div>
+                            </div>
+                            <div class="flex justify-between items-center border-b pb-3">
+                                <div><div class="font-medium">3-Bedroom</div></div>
+                                <div class="text-right"><div class="font-bold text-blue-700 price-loading" id="price-deep-3-bedroom">Loading...</div></div>
                             </div>
                             <div class="flex justify-between items-center">
-                                <div>
-                                    <div class="font-medium">3-Bedroom</div>
-                                </div>
-                                <div class="text-right">
-                                    <div class="font-bold text-blue-700">R2300</div>
-                                </div>
+                                <div><div class="font-medium">4-Bedroom</div></div>
+                                <div class="text-right"><div class="font-bold text-blue-700 price-loading" id="price-deep-4-bedroom">Loading...</div></div>
                             </div>
                         </div>
                         
@@ -335,7 +323,6 @@
             </div>
         </section>
 
-        <!-- Emergency Services -->
         <section id="emergency" class="py-16">
             <div class="container mx-auto px-4">
                 <div class="flex items-center mb-8">
@@ -397,7 +384,6 @@
             </div>
         </section>
 
-        <!-- CTA Section -->
         <section class="py-16 bg-gradient-to-r from-blue-700 to-blue-900 text-white">
             <div class="container mx-auto px-4 text-center">
                 <h2 class="text-3xl font-bold mb-6">Ready to Book Your Cleaning Service?</h2>
@@ -414,7 +400,6 @@
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="bg-black text-white py-12">
         <div class="container mx-auto px-4">
             <div class="grid md:grid-cols-4 gap-8 mb-8">
@@ -460,8 +445,15 @@
     </footer>
 
     <script>
-        // Mobile menu toggle
-        document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
+        // 1. Define API URL
+        const API_URL = "https://script.google.com/macros/s/AKfycbycs4Rnz7UOcGtZlKc6pGEiykbCWkqO4UpwsGZU-VrM_e5Qa8oKKmG2k2fejnN43oym/exec";
+
+        // 2. DOM Elements
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const syncIndicator = document.getElementById('sync-indicator');
+
+        // 3. Mobile menu toggle
+        mobileMenuToggle.addEventListener('click', function() {
             const menu = document.getElementById('mobile-menu');
             const icon = this.querySelector('i');
             
@@ -472,6 +464,69 @@
                 icon.classList.replace('fa-bars', 'fa-times');
             }
         });
+
+        // 4. Fetch Pricing Data on Load
+        document.addEventListener('DOMContentLoaded', async () => {
+            await fetchAndUpdatePrices();
+        });
+
+        async function fetchAndUpdatePrices() {
+            try {
+                // Fetch data
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'get-pricing' })
+                });
+                const data = await response.json();
+
+                if (data.success && data.pricing) {
+                    updateServicePrices(data.pricing);
+                    
+                    // Update sync indicator
+                    if(syncIndicator) {
+                        syncIndicator.innerHTML = '<i class="fas fa-check-circle text-green-500"></i> Live Prices';
+                    }
+                } else {
+                    console.error("API Error or no pricing data.");
+                }
+            } catch (e) {
+                console.error("Network Error:", e);
+                // Keep loading text or set error text if desired
+            }
+        }
+
+        // 5. Map API Data to HTML IDs
+        function updateServicePrices(pricing) {
+            const sizes = ['1-Bedroom', '2-Bedroom', '3-Bedroom', '4-Bedroom'];
+            
+            // Map: API Key -> HTML ID prefix
+            const serviceMap = {
+                'Weekly Recurring': 'weekly',
+                'Bi-weekly Recurring': 'biweekly',
+                'Monthly Recurring': 'monthly',
+                'Once-Off Cleaning': 'onceoff',
+                'Deep Cleaning': 'deep'
+            };
+
+            // Loop through services and sizes to update HTML
+            for (const [apiKey, idPrefix] of Object.entries(serviceMap)) {
+                if (pricing[apiKey]) {
+                    sizes.forEach(size => {
+                        if (pricing[apiKey][size]) {
+                            // Construct HTML ID (e.g., price-weekly-1-bedroom)
+                            const elementId = `price-${idPrefix}-${size.toLowerCase()}`;
+                            const element = document.getElementById(elementId);
+                            
+                            if (element) {
+                                // Update text and remove loading class
+                                element.textContent = `R ${pricing[apiKey][size].base}`;
+                                element.classList.remove('price-loading');
+                            }
+                        }
+                    });
+                }
+            }
+        }
     </script>
 </body>
 </html>
