@@ -160,7 +160,6 @@
     </main>
 
     <script>
-        // 🔴 UPDATED API URL
         const API_URL = "https://script.google.com/macros/s/AKfycbycs4Rnz7UOcGtZlKc6pGEiykbCWkqO4UpwsGZU-VrM_e5Qa8oKKmG2k2fejnN43oym/exec";
 
         let bookingData = {};
@@ -323,9 +322,17 @@
             try {
                 const res = await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
                 const data = await res.json();
+                
                 if(data.success && data.redirectUrl) {
+                    // === CRITICAL FIX FOR TRACKING ===
+                    // Save total price for success.html to report to Google Ads
+                    localStorage.setItem('bookingSubtotal', currentTotal);
+                    
+                    // Clear other data
                     localStorage.removeItem('bookingData');
                     localStorage.removeItem('bookingAddons');
+                    
+                    // Redirect to payment
                     window.location.href = data.redirectUrl;
                 } else {
                     alert("Payment Error: " + (data.error || "Unknown"));
