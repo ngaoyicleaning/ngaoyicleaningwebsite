@@ -19,7 +19,7 @@
       gtag('js', new Date());
 
       gtag('config', 'G-5V9NJTNT1N');
-      gtag('config', 'AW-17863685838'); // Added Google Ads Config
+      gtag('config', 'AW-17863685838'); 
     </script>
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -45,85 +45,124 @@
     </script>
     
     <style>
-        .fade-in { animation: fadeIn 0.5s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        .modal-overlay { background-color: rgba(0, 59, 111, 0.8); backdrop-filter: blur(5px); }
-        .hero-overlay { background: linear-gradient(90deg, rgba(0,59,111,0.9) 0%, rgba(0,59,111,0.6) 50%, rgba(0,59,111,0.3) 100%); }
+        .fade-in-up { animation: fadeInUp 0.8s ease-out forwards; opacity: 0; transform: translateY(20px); }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        
+        .modal-overlay { background-color: rgba(0, 59, 111, 0.85); backdrop-filter: blur(8px); }
+        .hero-overlay { background: linear-gradient(90deg, rgba(0,59,111,0.92) 0%, rgba(0,59,111,0.7) 60%, rgba(0,59,111,0.4) 100%); }
+        
+        /* Smooth Scroll */
+        html { scroll-behavior: smooth; }
+        
+        /* Pulse Animation for CTA */
+        .pulse-btn { animation: pulse-blue 2s infinite; }
+        @keyframes pulse-blue {
+            0% { box-shadow: 0 0 0 0 rgba(0, 198, 255, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 198, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 198, 255, 0); }
+        }
     </style>
 </head>
-<body class="font-sans text-gray-700 bg-white">
-
-    <div id="promo-bar" class="bg-accent text-white text-sm font-bold py-2 px-4 text-center relative z-50 shadow-md">
-        <span class="mr-2">🎉 Januworry Special:</span> 
-        Use code <span class="bg-white text-accent px-1 rounded border border-white border-dashed mx-1 cursor-pointer hover:scale-105 transition" onclick="copyCode('FRESH15')">FRESH15</span> for 15% Off Bi-Weekly 
-        <span class="opacity-75 mx-1">|</span> 
-        <span class="bg-white text-accent px-1 rounded border border-white border-dashed mx-1 cursor-pointer hover:scale-105 transition" onclick="copyCode('JANUWORRY10')">JANUWORRY10</span> for 10% Off Weekly!
-        <button onclick="document.getElementById('promo-bar').style.display='none'" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-primary"><i class="fas fa-times"></i></button>
+<body class="font-sans text-gray-700 bg-white pb-16 md:pb-0"> <div id="promo-bar" class="bg-accent text-white text-sm font-bold py-2 px-4 text-center relative z-50 shadow-md">
+        <div class="container mx-auto flex justify-center items-center flex-wrap gap-2">
+            <span>🎉 Januworry Special:</span> 
+            <span class="whitespace-nowrap">
+                Use <span class="bg-white text-accent px-1.5 py-0.5 rounded border border-white border-dashed font-mono cursor-pointer hover:bg-blue-50" onclick="copyCode('FRESH15', this)">FRESH15</span> for 15% Off
+            </span>
+            <button onclick="document.getElementById('promo-bar').style.display='none'" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-white/80 hover:text-white p-2">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
     </div>
 
-    <header class="sticky top-0 z-40 bg-white shadow-md">
+    <header class="sticky top-0 z-40 bg-white shadow-md transition-all duration-300" id="navbar">
         <nav class="container mx-auto px-4 py-3">
             <div class="flex justify-between items-center">
                 <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 bg-white rounded-full overflow-hidden flex items-center justify-center border border-gray-100 shadow-sm">
-                        <img src="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png" 
-                             alt="Ngaoyi Cleaning Logo" class="w-full h-full object-contain p-1">
-                    </div>
-                    <div>
-                        <h1 class="text-2xl font-bold text-primary leading-none">Ngaoyi Cleaning</h1>
-                        <p class="text-xs text-gray-500 font-semibold tracking-wide">GAUTENG</p>
-                    </div>
+                    <a href="index.html" class="flex items-center space-x-3 group">
+                        <div class="w-12 h-12 bg-white rounded-full overflow-hidden flex items-center justify-center border border-gray-100 shadow-sm group-hover:shadow-md transition">
+                            <img src="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/logo.png" 
+                                 alt="Ngaoyi Cleaning Logo" class="w-full h-full object-contain p-1">
+                        </div>
+                        <div>
+                            <h1 class="text-2xl font-bold text-primary leading-none group-hover:text-primary-light transition">Ngaoyi Cleaning</h1>
+                            <p class="text-[10px] text-gray-500 font-bold tracking-widest uppercase">Gauteng's Finest</p>
+                        </div>
+                    </a>
                 </div>
                 
                 <div class="hidden md:flex items-center space-x-6">
-                    <a href="index.html" class="text-primary font-bold border-b-2 border-primary">Home</a>
-                    <a href="https://www.ngaoyicleaning.co.za/pricing.html" class="text-gray-700 hover:text-primary font-medium transition-colors">Pricing</a>
-                    <a href="mailto:ngaoyicleaning@gmail.com?subject=Cleaner Application" class="text-gray-700 hover:text-accent font-medium transition-colors border border-gray-200 px-4 py-1.5 rounded-full hover:border-accent">Apply to Work</a>
-                    <a href="booking.html" class="bg-primary hover:bg-primary-light text-white px-6 py-2 rounded-full font-semibold shadow-md transition-all transform hover:-translate-y-0.5">Book Now</a>
+                    <a href="index.html" class="text-primary font-bold">Home</a>
+                    <a href="https://www.ngaoyicleaning.co.za/pricing.html" class="text-gray-600 hover:text-primary font-medium transition-colors">Pricing</a>
+                    <a href="#services" class="text-gray-600 hover:text-primary font-medium transition-colors">Services</a>
+                    <a href="mailto:ngaoyicleaning@gmail.com?subject=Cleaner Application" class="text-gray-600 hover:text-accent font-medium transition-colors">Apply to Work</a>
+                    <a href="booking.html" class="bg-primary hover:bg-primary-light text-white px-6 py-2.5 rounded-full font-bold shadow-md transition-all transform hover:-translate-y-0.5 hover:shadow-lg flex items-center gap-2">
+                        <i class="fas fa-calendar-check"></i> Book Now
+                    </a>
                 </div>
                 
-                <button id="mobile-menu-toggle" class="md:hidden text-primary text-2xl"><i class="fas fa-bars"></i></button>
+                <button id="mobile-menu-toggle" class="md:hidden text-primary text-2xl p-2">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
             
-            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-4 pb-4 border-t pt-4">
-                <a href="index.html" class="block text-primary font-bold">Home</a>
-                <a href="https://www.ngaoyicleaning.co.za/pricing.html" class="block text-gray-700 font-medium">Pricing</a>
-                <a href="mailto:ngaoyicleaning@gmail.com?subject=Cleaner Application" class="block text-gray-700 font-medium">Apply to Work</a>
-                <a href="booking.html" class="block bg-primary text-white px-4 py-2 rounded-lg text-center font-bold">Book Now</a>
+            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2 pb-4 border-t pt-4 bg-gray-50 -mx-4 px-4 shadow-inner">
+                <a href="index.html" class="block text-primary font-bold py-2">Home</a>
+                <a href="https://www.ngaoyicleaning.co.za/pricing.html" class="block text-gray-700 font-medium py-2">Pricing</a>
+                <a href="booking.html" class="block text-gray-700 font-medium py-2">Book a Service</a>
+                <a href="mailto:ngaoyicleaning@gmail.com" class="block text-gray-700 font-medium py-2">Contact Us</a>
             </div>
         </nav>
     </header>
 
     <main>
-        <section class="relative h-[650px] flex items-center">
+        <section class="relative h-[650px] flex items-center overflow-hidden">
             <div class="absolute inset-0 z-0">
-                <img src="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/display1.png" class="w-full h-full object-cover" alt="Ngaoyi Cleaning Display">
+                <img src="https://raw.githubusercontent.com/ngaoyicleaning/ngaoyicleaning/main/assets/display1.png" class="w-full h-full object-cover transform scale-105" alt="Ngaoyi Cleaning Display">
                 <div class="absolute inset-0 hero-overlay"></div>
             </div>
 
             <div class="container mx-auto px-4 relative z-10 text-white">
-                <div class="max-w-2xl animate-fade-in">
-                    <div class="inline-block bg-accent/20 backdrop-blur-sm border border-accent/30 rounded-full px-4 py-1 text-sm font-bold mb-4">
-                        <i class="fas fa-map-marker-alt mr-2"></i> Serving Johannesburg, Pretoria & Surrounds
+                <div class="max-w-2xl">
+                    <div class="fade-in-up">
+                        <div class="inline-flex items-center bg-accent/20 backdrop-blur-md border border-accent/40 rounded-full px-4 py-1.5 text-xs font-bold mb-6 text-cyan-100">
+                            <span class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
+                            Available in JHB, Pretoria & Surrounds
+                        </div>
+                        <h2 class="text-5xl md:text-6xl font-extrabold mb-6 leading-tight">
+                            Expert Cleaning,<br>
+                            <span class="text-accent">Personal Touch.</span>
+                        </h2>
+                        <p class="text-xl mb-8 text-blue-50 font-light leading-relaxed max-w-lg">
+                            We don't just clean; we care. Secure, vetted, and highly trained professionals ready to transform your home or office.
+                        </p>
                     </div>
-                    <h2 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">Expert Cleaning,<br>Personal Touch.</h2>
-                    <p class="text-xl mb-8 text-blue-50 font-light drop-shadow-md">
-                        We don't just clean; we care. Secure, vetted, and highly trained professionals ready to transform your home or office.
-                    </p>
                     
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="booking.html" class="bg-accent text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-cyan-500 transition shadow-lg flex items-center justify-center transform hover:-translate-y-1">
+                    <div class="flex flex-col sm:flex-row gap-4 fade-in-up delay-100">
+                        <a href="booking.html" class="pulse-btn bg-accent text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-cyan-500 transition shadow-xl flex items-center justify-center transform hover:-translate-y-1">
                             Get Instant Quote <i class="fas fa-arrow-right ml-2"></i>
                         </a>
-                        <a href="https://www.ngaoyicleaning.co.za/pricing.html" class="bg-white/10 backdrop-blur border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-primary transition flex items-center justify-center">
+                        <a href="https://www.ngaoyicleaning.co.za/pricing.html" class="bg-white/10 backdrop-blur-md border border-white/50 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-primary transition flex items-center justify-center">
                             View Pricing
                         </a>
                     </div>
                     
-                    <div class="mt-8 flex items-center gap-6 text-sm font-medium text-blue-100">
-                        <div class="flex items-center"><i class="fas fa-shield-alt text-accent mr-2"></i> Fully Vetted Staff</div>
-                        <div class="flex items-center"><i class="fas fa-user-lock text-accent mr-2"></i> Secure Booking</div>
-                        <div class="flex items-center"><i class="fab fa-google text-accent mr-2"></i> Verified Business</div>
+                    <div class="mt-10 grid grid-cols-3 gap-4 border-t border-white/10 pt-6 fade-in-up delay-200">
+                        <div class="text-center sm:text-left">
+                            <div class="text-2xl font-bold text-accent">500+</div>
+                            <div class="text-xs text-blue-200 uppercase tracking-wide">Cleans Done</div>
+                        </div>
+                        <div class="text-center sm:text-left">
+                            <div class="text-2xl font-bold text-accent">4.8/5</div>
+                            <div class="text-xs text-blue-200 uppercase tracking-wide">Rating</div>
+                        </div>
+                        <div class="text-center sm:text-left">
+                            <div class="text-2xl font-bold text-accent">100%</div>
+                            <div class="text-xs text-blue-200 uppercase tracking-wide">Vetted Staff</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -131,27 +170,33 @@
 
         <section class="py-16 bg-white border-b border-gray-100">
             <div class="container mx-auto px-4">
-                <div class="text-center mb-10">
-                    <h2 class="text-primary font-bold text-2xl uppercase tracking-wide">Simple Process</h2>
+                <div class="text-center mb-12">
+                    <h2 class="text-primary font-bold text-sm uppercase tracking-widest mb-2">Simple Process</h2>
                     <h3 class="text-3xl font-bold text-gray-800">How It Works</h3>
                 </div>
-                <div class="grid md:grid-cols-3 gap-8 text-center relative">
-                    <div class="hidden md:block absolute top-12 left-0 w-full h-1 bg-gray-100 -z-10 transform scale-x-75"></div>
+                <div class="grid md:grid-cols-3 gap-8 text-center relative max-w-5xl mx-auto">
+                    <div class="hidden md:block absolute top-10 left-16 right-16 h-0.5 bg-gray-100 -z-10"></div>
                     
-                    <div class="bg-white p-4">
-                        <div class="w-20 h-20 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold border-4 border-white shadow-lg">1</div>
-                        <h4 class="font-bold text-xl text-gray-800 mb-2">Book Online</h4>
-                        <p class="text-gray-500">Select your service, customize your schedule, and see your price instantly. No hidden fees.</p>
+                    <div class="bg-white p-6 group">
+                        <div class="w-20 h-20 bg-primary text-white rounded-2xl rotate-3 flex items-center justify-center mx-auto mb-6 text-2xl font-bold shadow-lg group-hover:rotate-6 transition duration-300">
+                            <i class="fas fa-mouse-pointer"></i>
+                        </div>
+                        <h4 class="font-bold text-xl text-gray-800 mb-2">1. Book Online</h4>
+                        <p class="text-gray-500 text-sm leading-relaxed">Select your service, customize your schedule, and see your price instantly. No hidden fees.</p>
                     </div>
-                    <div class="bg-white p-4">
-                        <div class="w-20 h-20 bg-accent text-white rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold border-4 border-white shadow-lg">2</div>
-                        <h4 class="font-bold text-xl text-gray-800 mb-2">We Clean</h4>
-                        <p class="text-gray-500">Our vetted, background-checked professional arrives on time, fully prepared to make your space sparkle.</p>
+                    <div class="bg-white p-6 group">
+                        <div class="w-20 h-20 bg-accent text-white rounded-2xl -rotate-3 flex items-center justify-center mx-auto mb-6 text-2xl font-bold shadow-lg group-hover:-rotate-6 transition duration-300">
+                            <i class="fas fa-broom"></i>
+                        </div>
+                        <h4 class="font-bold text-xl text-gray-800 mb-2">2. We Clean</h4>
+                        <p class="text-gray-500 text-sm leading-relaxed">Our vetted, background-checked professional arrives on time, fully prepared to make your space sparkle.</p>
                     </div>
-                    <div class="bg-white p-4">
-                        <div class="w-20 h-20 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold border-4 border-white shadow-lg">3</div>
-                        <h4 class="font-bold text-xl text-gray-800 mb-2">You Relax</h4>
-                        <p class="text-gray-500">Enjoy your free time. We handle the mess, so you can come home to a fresh, clean environment.</p>
+                    <div class="bg-white p-6 group">
+                        <div class="w-20 h-20 bg-primary text-white rounded-2xl rotate-3 flex items-center justify-center mx-auto mb-6 text-2xl font-bold shadow-lg group-hover:rotate-6 transition duration-300">
+                            <i class="fas fa-smile-beam"></i>
+                        </div>
+                        <h4 class="font-bold text-xl text-gray-800 mb-2">3. You Relax</h4>
+                        <p class="text-gray-500 text-sm leading-relaxed">Enjoy your free time. We handle the mess, so you can come home to a fresh, clean environment.</p>
                     </div>
                 </div>
             </div>
@@ -159,120 +204,120 @@
 
         <section class="py-16 bg-blue-50">
             <div class="container mx-auto px-4">
-                <div class="flex flex-col md:flex-row items-center gap-12">
-                    <div class="md:w-1/2">
-                        <h2 class="text-accent font-bold text-sm uppercase mb-2">Why Ngaoyi?</h2>
+                <div class="flex flex-col lg:flex-row items-center gap-12">
+                    <div class="lg:w-1/2">
+                        <div class="inline-block bg-white text-primary px-3 py-1 rounded text-xs font-bold mb-4 shadow-sm">Why Ngaoyi?</div>
                         <h3 class="text-3xl md:text-4xl font-bold text-primary mb-6">More Than Just A Cleaning Service</h3>
-                        <p class="text-gray-600 mb-6 leading-relaxed">
+                        <p class="text-gray-600 mb-8 leading-relaxed text-lg">
                             We understand that inviting someone into your home requires trust. That's why we've built our business on three pillars: Security, Quality, and Reliability.
                         </p>
                         
-                        <div class="space-y-4">
-                            <div class="flex items-start">
-                                <div class="bg-white p-2 rounded shadow-sm mr-4 text-accent"><i class="fas fa-id-card"></i></div>
-                                <div>
-                                    <h4 class="font-bold text-gray-800">Strictly Vetted Staff</h4>
-                                    <p class="text-sm text-gray-500">Every cleaner undergoes a rigorous background check and interview process.</p>
-                                </div>
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div class="bg-white p-5 rounded-xl shadow-sm border border-blue-100 hover:shadow-md transition">
+                                <div class="text-accent text-2xl mb-3"><i class="fas fa-user-shield"></i></div>
+                                <h4 class="font-bold text-gray-800 mb-1">Strictly Vetted</h4>
+                                <p class="text-sm text-gray-500">Every cleaner undergoes a rigorous background check and interview process.</p>
                             </div>
-                            <div class="flex items-start">
-                                <div class="bg-white p-2 rounded shadow-sm mr-4 text-accent"><i class="fas fa-clipboard-check"></i></div>
-                                <div>
-                                    <h4 class="font-bold text-gray-800">Quality Guaranteed</h4>
-                                    <p class="text-sm text-gray-500">Not happy? Let us know within 24 hours and we'll fix it.</p>
-                                </div>
+                            <div class="bg-white p-5 rounded-xl shadow-sm border border-blue-100 hover:shadow-md transition">
+                                <div class="text-accent text-2xl mb-3"><i class="fas fa-star"></i></div>
+                                <h4 class="font-bold text-gray-800 mb-1">Quality Guaranteed</h4>
+                                <p class="text-sm text-gray-500">Not happy? Let us know within 24 hours and we'll fix it for free.</p>
                             </div>
-                            <div class="flex items-start">
-                                <div class="bg-white p-2 rounded shadow-sm mr-4 text-accent"><i class="fas fa-lock"></i></div>
-                                <div>
-                                    <h4 class="font-bold text-gray-800">Secure Payments</h4>
-                                    <p class="text-sm text-gray-500">Cashless, secure online payments for your peace of mind.</p>
-                                </div>
+                            <div class="bg-white p-5 rounded-xl shadow-sm border border-blue-100 hover:shadow-md transition">
+                                <div class="text-accent text-2xl mb-3"><i class="fas fa-lock"></i></div>
+                                <h4 class="font-bold text-gray-800 mb-1">Secure Payments</h4>
+                                <p class="text-sm text-gray-500">Cashless, secure online payments via Yoco for your peace of mind.</p>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl shadow-sm border border-blue-100 hover:shadow-md transition">
+                                <div class="text-accent text-2xl mb-3"><i class="fas fa-clock"></i></div>
+                                <h4 class="font-bold text-gray-800 mb-1">Reliable Timing</h4>
+                                <p class="text-sm text-gray-500">We respect your schedule. Our team arrives on time, every time.</p>
                             </div>
                         </div>
                     </div>
-                    <div class="md:w-1/2">
-                         <img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?q=80&w=1600&auto=format&fit=crop" alt="Kitchen Cleaning" class="rounded-2xl shadow-2xl border-4 border-white">
+                    <div class="lg:w-1/2 relative">
+                         <div class="absolute -inset-4 bg-accent/20 rounded-2xl blur-lg"></div>
+                         <img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?q=80&w=1600&auto=format&fit=crop" alt="Kitchen Cleaning" class="relative rounded-2xl shadow-2xl border-4 border-white transform hover:scale-[1.01] transition duration-500">
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="py-20 bg-white">
+        <section id="services" class="py-20 bg-white">
             <div class="container mx-auto px-4">
                 <div class="text-center mb-16">
-                    <h2 class="text-primary font-bold text-3xl md:text-4xl mb-4">Our Service Plans</h2>
+                    <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4">Our Service Plans</h2>
                     <p class="text-gray-500 max-w-2xl mx-auto">Transparent pricing with no hidden costs. Choose the plan that fits your lifestyle.</p>
                 </div>
 
                 <div class="grid md:grid-cols-3 gap-8">
-                    <div class="bg-white rounded-2xl shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300 flex flex-col overflow-hidden group">
-                        <div class="bg-blue-50 p-6 text-center">
-                            <h3 class="text-xl font-bold text-primary mb-2">Recurring Plans</h3>
-                            <p class="text-sm text-gray-500">Weekly • Bi-Weekly • Monthly</p>
+                    <div class="bg-white rounded-2xl shadow-lg border border-gray-100 hover:shadow-2xl hover:border-blue-200 transition-all duration-300 flex flex-col overflow-hidden group">
+                        <div class="bg-gray-50 p-6 text-center border-b border-gray-100">
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">Recurring Plans</h3>
+                            <p class="text-sm text-gray-500 font-medium">Weekly • Bi-Weekly • Monthly</p>
                         </div>
                         <div class="p-8 flex-grow">
                             <ul class="space-y-3 text-sm text-gray-600 mb-6">
-                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Dusting surfaces & skirting</li>
-                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Vacuuming & Mopping</li>
-                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Bathroom sanitization</li>
-                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Kitchen surfaces & sinks</li>
-                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Bin emptying</li>
+                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i> Dusting surfaces & skirting</li>
+                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i> Vacuuming & Mopping</li>
+                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i> Bathroom sanitization</li>
+                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i> Kitchen surfaces & sinks</li>
+                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i> Bin emptying</li>
                             </ul>
                         </div>
-                        <div class="p-6 bg-gray-50 border-t border-gray-100 flex justify-between items-center">
+                        <div class="p-6 bg-gray-50 border-t border-gray-100 flex justify-between items-center group-hover:bg-blue-50 transition">
                              <div>
-                                 <span class="text-xs text-gray-400 block">Starting at</span>
-                                 <span class="text-primary font-bold text-lg">R220 per visit</span>
+                                 <span class="text-xs text-gray-400 block font-bold uppercase">From</span>
+                                 <span class="text-primary font-bold text-xl">R220 <span class="text-sm font-normal text-gray-500">/visit</span></span>
                              </div>
-                             <a href="https://www.ngaoyicleaning.co.za/pricing.html" class="text-accent font-bold text-sm hover:underline">View Details</a>
+                             <a href="booking.html" class="bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-bold hover:bg-primary hover:text-white hover:border-primary transition">Select</a>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-2xl shadow-lg border-2 border-accent transform md:-translate-y-4 flex flex-col overflow-hidden relative">
-                        <div class="absolute top-0 right-0 bg-accent text-white text-xs font-bold px-3 py-1 rounded-bl">RECOMMENDED</div>
-                        <div class="bg-blue-50 p-6 text-center">
+                    <div class="bg-white rounded-2xl shadow-xl border-2 border-accent transform md:-translate-y-4 flex flex-col overflow-hidden relative z-10">
+                        <div class="absolute top-0 right-0 bg-accent text-white text-xs font-bold px-3 py-1 rounded-bl shadow-sm">MOST POPULAR</div>
+                        <div class="bg-blue-50 p-6 text-center border-b border-blue-100">
                             <h3 class="text-xl font-bold text-primary mb-2">Once-Off / Deep Clean</h3>
-                            <p class="text-sm text-gray-500">Move-In • Spring Clean • Events</p>
+                            <p class="text-sm text-gray-500 font-medium">Move-In • Spring Clean • Events</p>
                         </div>
                         <div class="p-8 flex-grow">
                             <ul class="space-y-3 text-sm text-gray-600 mb-6">
-                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> <b>Everything in Standard +</b></li>
-                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Inside cabinets (empty)</li>
-                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Window sills & tracks</li>
-                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Light switches & door handles</li>
-                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Appliance exteriors polished</li>
+                                <li class="flex items-center font-bold text-primary"><i class="fas fa-check-circle text-accent mr-3"></i> Everything in Standard +</li>
+                                <li class="flex items-center"><i class="fas fa-check-circle text-accent mr-3"></i> Inside cabinets (empty)</li>
+                                <li class="flex items-center"><i class="fas fa-check-circle text-accent mr-3"></i> Window sills & tracks</li>
+                                <li class="flex items-center"><i class="fas fa-check-circle text-accent mr-3"></i> Light switches & handles</li>
+                                <li class="flex items-center"><i class="fas fa-check-circle text-accent mr-3"></i> Appliance exteriors</li>
                             </ul>
                         </div>
-                         <div class="p-6 bg-gray-50 border-t border-gray-100 flex justify-between items-center">
+                         <div class="p-6 bg-blue-50 border-t border-blue-100 flex justify-between items-center">
                              <div>
-                                 <span class="text-xs text-gray-400 block">Starting at</span>
-                                 <span class="text-primary font-bold text-lg">R250 per visit</span>
+                                 <span class="text-xs text-gray-400 block font-bold uppercase">From</span>
+                                 <span class="text-primary font-bold text-xl">R250 <span class="text-sm font-normal text-gray-500">/visit</span></span>
                              </div>
-                             <a href="https://www.ngaoyicleaning.co.za/pricing.html" class="text-accent font-bold text-sm hover:underline">View Details</a>
+                             <a href="booking.html" class="bg-accent text-white px-6 py-2 rounded-lg text-sm font-bold hover:bg-cyan-500 shadow-md transition">Book Now</a>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-2xl shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300 flex flex-col overflow-hidden">
-                        <div class="bg-blue-50 p-6 text-center">
-                            <h3 class="text-xl font-bold text-primary mb-2">Office & Commercial</h3>
-                            <p class="text-sm text-gray-500">Offices • Showrooms • Retail</p>
+                    <div class="bg-white rounded-2xl shadow-lg border border-gray-100 hover:shadow-2xl hover:border-blue-200 transition-all duration-300 flex flex-col overflow-hidden group">
+                        <div class="bg-gray-50 p-6 text-center border-b border-gray-100">
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">Office & Commercial</h3>
+                            <p class="text-sm text-gray-500 font-medium">Offices • Showrooms • Retail</p>
                         </div>
                         <div class="p-8 flex-grow">
                             <ul class="space-y-3 text-sm text-gray-600 mb-6">
-                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Desk & Workstation cleaning</li>
-                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Common area maintenance</li>
-                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Restroom supply restocking</li>
-                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Kitchen/Canteen management</li>
-                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Trash removal</li>
+                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i> Desk & Workstation cleaning</li>
+                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i> Common area maintenance</li>
+                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i> Restroom supply restocking</li>
+                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i> Kitchen management</li>
+                                <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i> Trash removal</li>
                             </ul>
                         </div>
-                         <div class="p-6 bg-gray-50 border-t border-gray-100 flex justify-between items-center">
+                         <div class="p-6 bg-gray-50 border-t border-gray-100 flex justify-between items-center group-hover:bg-blue-50 transition">
                              <div>
-                                 <span class="text-xs text-gray-400 block">Pricing</span>
+                                 <span class="text-xs text-gray-400 block font-bold uppercase">Pricing</span>
                                  <span class="text-primary font-bold text-lg">Custom</span>
                              </div>
-                             <a href="mailto:ngaoyicleaning@gmail.com" class="text-accent font-bold text-sm hover:underline">Request Quote</a>
+                             <a href="mailto:ngaoyicleaning@gmail.com" class="text-primary font-bold text-sm hover:underline">Request Quote</a>
                         </div>
                     </div>
                 </div>
@@ -287,21 +332,21 @@
                 </div>
                 
                 <div class="space-y-4">
-                    <div class="bg-white rounded-lg p-6 shadow-sm">
-                        <h4 class="font-bold text-gray-800 mb-2"><i class="fas fa-question-circle text-accent mr-2"></i> Do I need to provide cleaning supplies?</h4>
-                        <p class="text-sm text-gray-600">By default, our standard rates assume you provide basic equipment (mop, broom, bucket) and liquids. However, we can bring our own professional supplies for a small additional fee. You can select this option during checkout.</p>
+                    <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-100 hover:border-blue-200 transition">
+                        <h4 class="font-bold text-gray-800 mb-2 flex items-center"><i class="fas fa-question-circle text-accent mr-2"></i> Do I need to provide cleaning supplies?</h4>
+                        <p class="text-sm text-gray-600 pl-6">By default, our standard rates assume you provide basic equipment (mop, broom, bucket) and liquids. However, we can bring our own professional supplies for a small additional fee. You can select this option during checkout.</p>
                     </div>
-                    <div class="bg-white rounded-lg p-6 shadow-sm">
-                        <h4 class="font-bold text-gray-800 mb-2"><i class="fas fa-question-circle text-accent mr-2"></i> Do I need to be home during the clean?</h4>
-                        <p class="text-sm text-gray-600">Not necessarily! Many clients leave a key or gate code in the "Access Notes" section when booking. We are vetted professionals, so your home is safe with us.</p>
+                    <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-100 hover:border-blue-200 transition">
+                        <h4 class="font-bold text-gray-800 mb-2 flex items-center"><i class="fas fa-question-circle text-accent mr-2"></i> Do I need to be home during the clean?</h4>
+                        <p class="text-sm text-gray-600 pl-6">Not necessarily! Many clients leave a key or gate code in the "Access Notes" section when booking. We are vetted professionals, so your home is safe with us.</p>
                     </div>
-                    <div class="bg-white rounded-lg p-6 shadow-sm">
-                        <h4 class="font-bold text-gray-800 mb-2"><i class="fas fa-question-circle text-accent mr-2"></i> What if I'm not happy with the service?</h4>
-                        <p class="text-sm text-gray-600">Customer satisfaction is our priority. If you are unsatisfied, please contact us within 24 hours, and we will arrange a re-clean or address the issue immediately.</p>
+                    <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-100 hover:border-blue-200 transition">
+                        <h4 class="font-bold text-gray-800 mb-2 flex items-center"><i class="fas fa-question-circle text-accent mr-2"></i> What if I'm not happy with the service?</h4>
+                        <p class="text-sm text-gray-600 pl-6">Customer satisfaction is our priority. If you are unsatisfied, please contact us within 24 hours, and we will arrange a re-clean or address the issue immediately.</p>
                     </div>
-                     <div class="bg-white rounded-lg p-6 shadow-sm">
-                        <h4 class="font-bold text-gray-800 mb-2"><i class="fas fa-question-circle text-accent mr-2"></i> How do I pay?</h4>
-                        <p class="text-sm text-gray-600">We accept secure online payments (EFT/Card) via our booking platform. For recurring clients, we can set up automated monthly invoicing.</p>
+                     <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-100 hover:border-blue-200 transition">
+                        <h4 class="font-bold text-gray-800 mb-2 flex items-center"><i class="fas fa-question-circle text-accent mr-2"></i> How do I pay?</h4>
+                        <p class="text-sm text-gray-600 pl-6">We accept secure online payments (EFT/Card) via our booking platform. For recurring clients, we can set up automated monthly invoicing.</p>
                     </div>
                 </div>
             </div>
@@ -326,28 +371,28 @@
                 </div>
 
                 <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                    <div class="bg-gray-50 p-8 rounded-2xl border border-gray-100 relative">
+                    <div class="bg-gray-50 p-8 rounded-2xl border border-gray-100 relative hover:shadow-md transition">
                         <i class="fas fa-quote-right absolute top-8 right-8 text-gray-200 text-4xl"></i>
                         <div class="flex text-yellow-400 mb-4 text-sm">
                             <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                         </div>
-                        <p class="text-gray-600 italic mb-6">"Ngaoyi Cleaning transformed my apartment. The cleaner was on time, polite, and thorough. I've already booked my next session!"</p>
+                        <p class="text-gray-600 italic mb-6 leading-relaxed">"Ngaoyi Cleaning transformed my apartment. The cleaner was on time, polite, and thorough. I've already booked my next session!"</p>
                         <div class="flex items-center">
-                            <div class="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold mr-3">TS</div>
+                            <div class="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold mr-3 text-sm">TS</div>
                             <div>
                                 <p class="font-bold text-primary text-sm">Thandi S.</p>
                                 <p class="text-xs text-gray-500">Sandton</p>
                             </div>
                         </div>
                     </div>
-                    <div class="bg-gray-50 p-8 rounded-2xl border border-gray-100 relative">
+                    <div class="bg-gray-50 p-8 rounded-2xl border border-gray-100 relative hover:shadow-md transition">
                         <i class="fas fa-quote-right absolute top-8 right-8 text-gray-200 text-4xl"></i>
                         <div class="flex text-yellow-400 mb-4 text-sm">
                             <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                         </div>
-                        <p class="text-gray-600 italic mb-6">"The weekly plan is a lifesaver. Coming home to a clean house on Fridays is the best feeling. Professional and secure."</p>
+                        <p class="text-gray-600 italic mb-6 leading-relaxed">"The weekly plan is a lifesaver. Coming home to a clean house on Fridays is the best feeling. Professional and secure."</p>
                         <div class="flex items-center">
-                            <div class="w-10 h-10 bg-accent text-white rounded-full flex items-center justify-center font-bold mr-3">MJ</div>
+                            <div class="w-10 h-10 bg-accent text-white rounded-full flex items-center justify-center font-bold mr-3 text-sm">MJ</div>
                             <div>
                                 <p class="font-bold text-primary text-sm">Michael J.</p>
                                 <p class="text-xs text-gray-500">Midrand</p>
@@ -359,16 +404,16 @@
         </section>
 
         <section class="relative py-20 bg-primary overflow-hidden">
-            <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-20 -mt-20"></div>
-            <div class="absolute bottom-0 left-0 w-40 h-40 bg-white/5 rounded-full -ml-10 -mb-10"></div>
+            <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-20 -mt-20 blur-3xl"></div>
+            <div class="absolute bottom-0 left-0 w-40 h-40 bg-white/5 rounded-full -ml-10 -mb-10 blur-2xl"></div>
             
             <div class="container mx-auto px-4 relative z-10 text-center">
-                <h2 class="text-3xl font-bold text-white mb-6">Ready for a cleaner space?</h2>
-                <div class="flex justify-center gap-4">
-                     <a href="booking.html" class="bg-white text-primary px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition shadow-lg">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Ready for a cleaner space?</h2>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                     <a href="booking.html" class="bg-white text-primary px-8 py-3.5 rounded-full font-bold hover:bg-gray-100 transition shadow-lg transform hover:-translate-y-1">
                         Book a Cleaner Now
                     </a>
-                    <a href="mailto:ngaoyicleaning@gmail.com?subject=Cleaner Application" class="border border-white text-white px-8 py-3 rounded-full font-bold hover:bg-white hover:text-primary transition">
+                    <a href="mailto:ngaoyicleaning@gmail.com?subject=Cleaner Application" class="border border-white text-white px-8 py-3.5 rounded-full font-bold hover:bg-white hover:text-primary transition">
                         Apply to Work
                     </a>
                 </div>
@@ -376,16 +421,16 @@
         </section>
     </main>
 
-    <footer class="bg-secondary text-white pt-12 border-t-4 border-accent">
+    <footer class="bg-secondary text-white pt-16 border-t-4 border-accent">
         <div class="container mx-auto px-4">
             <div class="grid md:grid-cols-4 gap-8 mb-8">
                 <div>
                     <h3 class="text-xl font-bold text-white mb-4">Ngaoyi Cleaning</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed mb-4">Professional, reliable cleaning services available across Gauteng. We take the stress out of the mess.</p>
-                    <div class="flex space-x-4">
-                        <a href="https://share.google/0YB0Nwk2nl58VvMB7" target="_blank" class="w-8 h-8 rounded bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-white hover:text-red-500 transition" title="Google Business Profile"><i class="fab fa-google"></i></a>
-                        <a href="#" class="w-8 h-8 rounded bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-accent hover:text-white transition"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="w-8 h-8 rounded bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-accent hover:text-white transition"><i class="fab fa-instagram"></i></a>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">Professional, reliable cleaning services available across Gauteng. We take the stress out of the mess.</p>
+                    <div class="flex space-x-3">
+                        <a href="https://share.google/0YB0Nwk2nl58VvMB7" target="_blank" class="w-9 h-9 rounded bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-white hover:text-red-500 transition duration-300" title="Google Business Profile"><i class="fab fa-google"></i></a>
+                        <a href="#" class="w-9 h-9 rounded bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-blue-600 hover:text-white transition duration-300"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-9 h-9 rounded bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-pink-600 hover:text-white transition duration-300"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
                 <div>
@@ -400,21 +445,25 @@
                 </div>
                 <div>
                     <h4 class="font-bold text-white mb-4">Contact</h4>
-                    <ul class="space-y-2 text-sm text-gray-400">
+                    <ul class="space-y-3 text-sm text-gray-400">
                         <li class="flex items-center"><i class="fas fa-phone mr-3 text-accent"></i> 070 764 3709</li>
                         <li class="flex items-center"><i class="fas fa-envelope mr-3 text-accent"></i> ngaoyicleaning@gmail.com</li>
                         <li class="flex items-center"><i class="fas fa-map-marker-alt mr-3 text-accent"></i> Gauteng, South Africa</li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="font-bold text-white mb-4">Book Online</h4>
-                    <p class="text-gray-400 text-sm mb-4">Secure your slot in 60 seconds.</p>
-                    <a href="booking.html" class="block bg-accent text-white text-center py-2 rounded font-bold hover:bg-cyan-400 transition">Book Now</a>
+                    <h4 class="font-bold text-white mb-4">Secure Booking</h4>
+                    <p class="text-gray-400 text-sm mb-4">Book in 60 seconds. SSL Secured.</p>
+                    <a href="booking.html" class="block bg-accent text-white text-center py-3 rounded-lg font-bold hover:bg-cyan-400 transition shadow-lg">Book Now</a>
+                    <div class="mt-4 flex justify-center gap-2 opacity-50">
+                        <i class="fab fa-cc-visa text-2xl"></i>
+                        <i class="fab fa-cc-mastercard text-2xl"></i>
+                    </div>
                 </div>
             </div>
             
             <div class="border-t border-gray-800 py-6 text-center">
-                 <p class="text-xs text-gray-500 font-bold mb-2 uppercase tracking-wide">Areas We Serve</p>
+                 <p class="text-[10px] text-gray-500 font-bold mb-2 uppercase tracking-wide">Areas We Serve</p>
                  <p class="text-xs text-gray-600 leading-relaxed max-w-4xl mx-auto">
                      Johannesburg | Pretoria | Sandton | Midrand | Centurion | Fourways | Randburg | Roodepoort | Kempton Park | Germiston | Alberton | Edenvale | Bedfordview | Boksburg | Benoni | Soweto
                  </p>
@@ -426,42 +475,51 @@
         </div>
     </footer>
 
-    <a href="https://wa.me/27707643709" target="_blank" class="fixed bottom-6 right-6 w-14 h-14 bg-green-500 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform z-50">
+    <a href="https://wa.me/27707643709" target="_blank" class="fixed bottom-20 md:bottom-6 right-4 md:right-6 w-14 h-14 bg-green-500 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform z-50">
         <i class="fab fa-whatsapp text-3xl"></i>
     </a>
+
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 z-40 md:hidden flex items-center justify-between shadow-2xl">
+        <div class="flex flex-col ml-2">
+             <span class="text-xs text-gray-500">Starting from</span>
+             <span class="text-primary font-bold">R220 <span class="text-xs font-normal">/visit</span></span>
+        </div>
+        <a href="booking.html" class="bg-primary text-white px-6 py-2 rounded-lg font-bold shadow-lg">Book Now</a>
+    </div>
 
     <div id="promo-modal" class="fixed inset-0 z-50 flex items-center justify-center px-4 hidden modal-overlay">
         <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden transform scale-95 opacity-0 transition-all duration-300" id="modal-content">
             <div class="bg-primary p-6 text-center relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-full -mr-10 -mt-10"></div>
+                <div class="absolute bottom-0 left-0 w-16 h-16 bg-white/5 rounded-full -ml-8 -mb-8"></div>
                 <button onclick="closeModal()" class="absolute top-4 right-4 text-white/70 hover:text-white"><i class="fas fa-times text-xl"></i></button>
-                <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-white/30 backdrop-blur-sm">
-                    <i class="fas fa-percentage text-white text-3xl"></i>
+                <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-white/30 backdrop-blur-sm animate-bounce">
+                    <i class="fas fa-gift text-white text-3xl"></i>
                 </div>
                 <h2 class="text-2xl font-bold text-white mb-1">Januworry Savings!</h2>
                 <p class="text-blue-100 text-sm">Start the year fresh with cleaner spaces.</p>
             </div>
             
             <div class="p-6 space-y-4 bg-gray-50">
-                <div class="bg-white border border-dashed border-blue-200 rounded-xl p-4 relative group cursor-pointer hover:border-accent transition" onclick="copyCode('FRESH15')">
+                <div class="bg-white border border-dashed border-blue-200 rounded-xl p-4 relative group cursor-pointer hover:border-accent transition shadow-sm" onclick="copyCode('FRESH15', this.querySelector('.code-text'))">
                     <div class="flex justify-between items-center mb-1">
-                        <span class="text-xs font-bold text-accent uppercase tracking-wider">Best Value</span>
-                        <span class="text-xs text-gray-400"><i class="far fa-copy"></i> Copy</span>
+                        <span class="text-[10px] font-bold text-accent uppercase tracking-wider bg-blue-50 px-2 py-0.5 rounded">Best Value</span>
+                        <span class="text-xs text-gray-400 copy-status"><i class="far fa-copy"></i> Copy</span>
                     </div>
                     <h3 class="font-bold text-gray-800 text-lg">15% OFF Bi-Weekly Plans</h3>
-                    <div class="mt-2 bg-blue-50 text-primary font-mono font-bold text-center py-2 rounded border border-blue-100">FRESH15</div>
+                    <div class="mt-2 bg-gray-100 text-gray-600 font-mono font-bold text-center py-2 rounded border border-gray-200 code-text transition-colors">FRESH15</div>
                 </div>
 
-                <div class="bg-white border border-dashed border-orange-200 rounded-xl p-4 relative group cursor-pointer hover:border-orange-400 transition" onclick="copyCode('JANUWORRY10')">
+                <div class="bg-white border border-dashed border-orange-200 rounded-xl p-4 relative group cursor-pointer hover:border-orange-400 transition shadow-sm" onclick="copyCode('JANUWORRY10', this.querySelector('.code-text'))">
                     <div class="flex justify-between items-center mb-1">
-                        <span class="text-xs font-bold text-orange-500 uppercase tracking-wider">Popular</span>
-                        <span class="text-xs text-gray-400"><i class="far fa-copy"></i> Copy</span>
+                        <span class="text-[10px] font-bold text-orange-500 uppercase tracking-wider bg-orange-50 px-2 py-0.5 rounded">Popular</span>
+                        <span class="text-xs text-gray-400 copy-status"><i class="far fa-copy"></i> Copy</span>
                     </div>
                     <h3 class="font-bold text-gray-800 text-lg">10% OFF Weekly Plans</h3>
-                    <div class="mt-2 bg-orange-50 text-orange-600 font-mono font-bold text-center py-2 rounded border border-orange-100">JANUWORRY10</div>
+                    <div class="mt-2 bg-gray-100 text-gray-600 font-mono font-bold text-center py-2 rounded border border-gray-200 code-text transition-colors">JANUWORRY10</div>
                 </div>
 
-                <a href="booking.html" class="block w-full bg-primary text-white text-center font-bold py-3 rounded-xl hover:bg-primary-light transition shadow-lg mt-2">
+                <a href="booking.html" class="block w-full bg-primary text-white text-center font-bold py-3.5 rounded-xl hover:bg-primary-light transition shadow-lg mt-2 pulse-btn">
                     Book & Save Now
                 </a>
             </div>
@@ -476,25 +534,51 @@
 
         // Modal Logic
         window.onload = function() {
+            // Only show modal if they haven't closed it this session
             if(!sessionStorage.getItem('seenJanuworry')) {
-                const modal = document.getElementById('promo-modal');
-                const content = document.getElementById('modal-content');
-                modal.classList.remove('hidden');
                 setTimeout(() => {
-                    content.classList.remove('scale-95', 'opacity-0');
-                    content.classList.add('scale-100', 'opacity-100');
-                }, 100);
+                    const modal = document.getElementById('promo-modal');
+                    const content = document.getElementById('modal-content');
+                    modal.classList.remove('hidden');
+                    // Small animation delay
+                    setTimeout(() => {
+                        content.classList.remove('scale-95', 'opacity-0');
+                        content.classList.add('scale-100', 'opacity-100');
+                    }, 50);
+                }, 1500); // Show after 1.5 seconds
             }
         }
 
         function closeModal() {
-            document.getElementById('promo-modal').classList.add('hidden');
+            const content = document.getElementById('modal-content');
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                document.getElementById('promo-modal').classList.add('hidden');
+            }, 300);
             sessionStorage.setItem('seenJanuworry', 'true');
         }
 
-        function copyCode(code) {
-            navigator.clipboard.writeText(code);
-            alert("Promo Code " + code + " copied!");
+        // Improved Copy Code Function
+        function copyCode(code, element) {
+            navigator.clipboard.writeText(code).then(() => {
+                // Visual feedback
+                if(element) {
+                    const originalText = element.innerText;
+                    const originalBg = element.className;
+                    
+                    element.innerText = "COPIED!";
+                    element.classList.remove('bg-gray-100', 'text-gray-600');
+                    element.classList.add('bg-green-500', 'text-white', 'border-green-600');
+                    
+                    setTimeout(() => {
+                        element.innerText = originalText;
+                        element.className = originalBg;
+                    }, 1500);
+                } else {
+                    alert("Promo Code " + code + " copied!");
+                }
+            });
         }
     </script>
 </body>
